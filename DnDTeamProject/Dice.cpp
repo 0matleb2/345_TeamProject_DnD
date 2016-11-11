@@ -2,6 +2,9 @@
 #include <time.h>
 #include <regex>
 #include <set>
+#include <vector>
+
+#include "Errors.h"
 #include "dice.h"
 
 bool Dice::isSeeded = false;
@@ -14,66 +17,69 @@ void Dice::seed()
 
 int Dice::roll(const std::string input)
 {
-	//std::cout << "Rolling \"" << input << "\"" << std::endl;
+	std::cout << "\nRolling \"" << input << "\"" << std::endl;
 
-	// Rolling the pseudorandom number generator
 	if (!isSeeded) { seed(); }
 
-	std::regex rgx("^([0-9]+)?[dD]([0-9]+)([+-][0-9]+)?$");
+	std::regex rgx("^(\\(([+-]?)([0-9]+)\\))?([0-9]+)?[dD]([0-9]+)([+-][0-9]+)?$");
 	std::smatch match;
 
-	if (regex_search(input.begin(), input.end(), match, rgx))
-	{
-		// Get number of dice from input match results, 1 if omitted in input
-		int numDice = (match[1] == "") ? 1 : stoi(match[1]);
+	if (regex_search(input.begin(), input.end(), match, rgx)) {
 
-		// Get dice type from match results
-		int diceType = stoi(match[2]);
+		std::cout << "match[0] :" << match[0] << std::endl;
+		std::cout << "match[1] :" << match[1] << std::endl;
+		std::cout << "match[2] :" << match[2] << std::endl;
+		std::cout << "match[3] :" << match[3] << std::endl;
+		std::cout << "match[4] :" << match[4] << std::endl;
+		std::cout << "match[5] :" << match[5] << std::endl;
+		std::cout << "match[6] :" << match[6] << std::endl;
+		std::cout << "match[7] :" << match[7] << std::endl;
 
-		// Validate dice type
-		std::set<int> validDice = { 4,6,8,10,12,20,100 };
-		if (!(validDice.find(diceType) != validDice.end()))
-		{
-			//std::cout << "Invalid dice type" << std::endl;
-			return -1;
+
+		std::string advantage = match[2];
+		int bestX = (match[3] == "") ? 1 : stoi(match[3]);
+		int numDice = (match[4] == "") ? 1 : stoi(match[4]);
+		int diceType = stoi(match[5]);
+		int modifier = (match[6] == "") ? 0 : stoi(match[6]);
+
+		std::set<int> validDice = { 1,4,6,8,10,12,20,100 };
+		if (!(validDice.find(diceType) != validDice.end())) {
+			fatalError("Invalid dice type passed to Dice::roll!");
+		}
+		if (bestX > numDice) {
+			fatalError("Cannot take best " + std::to_string(bestX) + " of " + std::to_string(numDice) + " dice!");
 		}
 
-		// Get modifier from input match results, 0 if omitted, negative modifiers allowed
-		int modifier = (match[3] == "") ? 0 : stoi(match[3]);
-
-		// Sum individual dice rolls and modifier
-		int sum = modifier;
+		std::vector<int> rolls;
 		for (int i = 0; i < numDice; i++) {
-			int roll = rand() % diceType + 1;
-			//std::cout << "[Roll #" << i + 1 << ": " << roll << "] ";
-			sum += roll;
+			int roll = (rand() % diceType) + 1;
+			std::cout << "Roll: " << roll << std::endl;
+			rolls.push_back(roll);
+		}
+
+		std::sort(rolls.begin(), rolls.end()); //low to high
+		if (advantage == "+" || advantage == "") {
+			std::reverse(rolls.begin(), rolls.end());
+		}
+
+		for each (int i in rolls) {
+			std::cout << i << ", ";
+		}
+		std::cout << std::endl;
+
+		rolls.resize(bestX);
+
+		int sum = modifier;
+		for (int i = 0; i < rolls.size(); i++) {
+			sum += rolls[i];
 		}
 
 		// Return the total modified roll, 0 if negative
-		//std::cout << "[Total Modified Roll: " << sum << "]" << std::endl;
+		std::cout << "The total modified roll is " << sum << std::endl;
 		return (sum > 0) ? sum : 0;
 	}
-	else
-	{
-		//std::cout << "Invalid dice roll" << std::endl;
+	else {
+		fatalError("Invalid string passed to Dice::roll");
 		return -1;
 	}
 }
-
-/*int Dice::statRoll(std::string name, std::string attribute) {
-	std::cout << "Rolling for character " << name << "'s " << attribute << " attribute." << std::endl;
-	int roll_1 = roll("1d6");
-	int roll_2 = roll("1d6");
-	int roll_3 = roll("1d6");
-	int highestThree[3] = { roll_1, roll_2, roll_3 };
-	int lastRoll = roll("1d6");
-	for (int i = 0; i < 2; i++) {
-		if (lastRoll > highestThree[i]) {
-			highestThree[i] = lastRoll;
-			break;
-		}
-	}
-	std::cout << "The best 3 rolls are " << highestThree[0] << ", " << highestThree[1] << ", and " << highestThree[2] << ", for a total of: "
-		<< (highestThree[0] + highestThree[1] + highestThree[2]) << std::endl;
-	return (highestThree[0] + highestThree[1] + highestThree[2]);
-}*/
