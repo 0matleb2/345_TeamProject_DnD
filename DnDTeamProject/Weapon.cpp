@@ -4,7 +4,7 @@
 #include "Weapon.h"
 
 //! default constructor
-Weapon::Weapon() : Item("Default", itemType::WEAPON, vector<Enchant*>()), range(0), subtype(weaponType::MELEE)
+Weapon::Weapon() : Item("Default", ItemType::WEAPON, std::vector<Enchant*>()), range(0), subtype(WeaponType::MELEE)
 {
 
 }
@@ -15,7 +15,7 @@ Weapon::Weapon() : Item("Default", itemType::WEAPON, vector<Enchant*>()), range(
 //! @param nv : weapon's vector of Enchants
 //! @param rng : range of weapon
 //! @param st : subtype of weapon (sword, bow, ...)
-Weapon::Weapon(string nm, itemType tp, vector<Enchant*> nv, int rng, weaponType st) : Item(nm, tp, nv), range(rng), subtype(st)
+Weapon::Weapon(std::string nm, ItemType tp, std::vector<Enchant*> nv, int rng, WeaponType st) : Item(nm, tp, nv), range(rng), subtype(st)
 {
 
 }
@@ -34,7 +34,7 @@ int Weapon::getRange()
 }
 
 //! accessor for weapon subtype
-weaponType Weapon::getSubtype()
+WeaponType Weapon::getSubtype()
 {
 	return subtype;
 }
@@ -48,21 +48,19 @@ void Weapon::setRange(int nr)
 
 //! mutator for weapon type
 //! @param nt : new subtype for weapon
-void Weapon::setSubtype(weaponType nt)
+void Weapon::setSubtype(WeaponType nt)
 {
 	subtype = nt;
 }
 
 // returns a pointer to a newly-created identical object
-Weapon* Weapon::clone()
-{
+Weapon* Weapon::clone() {
 	return new Weapon(*this);
 }
 
 //! print method for weapon
-void Weapon::print()
-{
-	cout << Item::getName() << ", [" << Weapon::subtype << "], range: " << Weapon::getRange() << endl;
+void Weapon::print() {
+	std::cout << Item::getName() << ", [" << Weapon::subtype << "], range: " << Weapon::getRange() << std::endl;
 
 	for (int i = 0; i < Item::getEnch().size(); i++)
 	{
@@ -70,7 +68,6 @@ void Weapon::print()
 	}
 }
 
-Weapon::~Weapon()
-{
+Weapon::~Weapon() {
 
 }

@@ -1,94 +1,65 @@
 //! @file
-//! @brief Implementation file for character as map element
+//! @brief Implementation file for character as map character
 //!
-//! This object represents a character as a map element, it contains the elements coordinates and a pointer to the object itself
+//! This object represents a character as a map character, it contains the characters coordinates and a pointer to the object itself
 
 #include "MapCharacter.h"
 
-//! default constructor
-MapCharacter::MapCharacter() : x_pos(0), y_pos(0), element(new Character())
-{
 
+
+MapCharacter::MapCharacter() : _x(0), _y(0), _character(&Character()) {
 }
 
-//! parametrized constructor
-//! @param x : width index
-//! @param y : height index
-//! @param ele : pointer to character object
-MapCharacter::MapCharacter(int x, int y, Character* ele, char sym) : x_pos(x), y_pos(y), element(ele), symbol(sym)
-{
-
+MapCharacter::MapCharacter(int x, int y, Character* ele, char sym) : _x(x), _y(y), _character(ele), _symbol(sym) {
 }
 
-//! destructor
-MapCharacter::~MapCharacter()
-{
-	//delete element;
+MapCharacter::~MapCharacter() {
 }
 
-//! accessor for character proper
-//! @return character itself
-Character* MapCharacter::getElement()
-{
-	return element;
+
+//Accessors
+int MapCharacter::getX() {
+	return _x;
 }
 
-//! mutator for contained character
-//! @param ele : new character to set
-void MapCharacter::setElement(Character* ele)
-{
-	element = ele;
+int MapCharacter::getY() {
+	return _y;
 }
 
-//! accessor for width index
-//! @return element's width index
-int MapCharacter::getX()
-{
-	return x_pos;
+char MapCharacter::getSymbol() {
+	return _symbol;
 }
 
-//! mutator for width index
-//! @param x : new width index
-void MapCharacter::setX(int x)
-{
-	x_pos = x;
+Character* MapCharacter::getCharacter() {
+	return _character;
 }
 
-//! accessor for height index
-//! @return element's height index
-int MapCharacter::getY()
-{
-	return y_pos;
+
+//Mutators
+void MapCharacter::setX(int x) {
+	_x = x;
 }
 
-//! mutator for height index
-//! @param y : new height index
-void MapCharacter::setY(int y)
-{
-	y_pos = y;
+void MapCharacter::setY(int y) {
+	_y = y;
 }
 
-char MapCharacter::getSymbol()
-{
-	return symbol;
+void MapCharacter::setSymbol(char symbol) {
+	_symbol = symbol;
 }
 
-void MapCharacter::setSymbol(char ns)
-{
-	symbol = ns;
+void MapCharacter::setCharacter(Character* ele) {
+	_character = ele;
 }
 
-//! rescale character to desired level
-//! @param tgt_lvl : target level to rescale to
-void MapCharacter::rescale(int tgt_lvl)
-{
-	element->rescale(tgt_lvl);
+
+
+void MapCharacter::rescale(int targetLvl) {
+	_character->rescale(targetLvl);
 }
 
-//! print character and position
-void MapCharacter::print()
-{
-	cout << "Character element at position: (" << x_pos << ", " << y_pos << ")" << endl;
+void MapCharacter::print() {
+	cout << "Character _character at position: (" << _x << ", " << _y << ")" << endl;
 	cout << "Details:" << endl;
-	element->printStats();
+	_character->printStats();
 }

@@ -5,14 +5,10 @@
 //#include "stdafx.h"
 #include <iostream>
 #include <string>
-
 #include "Enums.h"
 
-using namespace std;
-
-//! overload for stats
-ostream& operator<<(ostream& op, stats st)
-{
+//! overload for Stats
+std::ostream& operator<<(std::ostream& op, Stats st) {
 	switch (st)
 	{
 	case STR: op << "Strength"; break;
@@ -31,8 +27,7 @@ ostream& operator<<(ostream& op, stats st)
 }
 
 //! overload for item categories
-ostream& operator <<(ostream& op, itemType ty)
-{
+std::ostream& operator <<(std::ostream& op, ItemType ty) {
 	switch (ty)
 	{
 	case HELMET: op << "Helmet"; break;
@@ -48,8 +43,7 @@ ostream& operator <<(ostream& op, itemType ty)
 	return op;
 }
 
-ostream& operator <<(ostream& op, weaponType wt)
-{
+std::ostream& operator <<(std::ostream& op, WeaponType wt) {
 	switch (wt)
 	{
 	case MELEE: op << "Melee"; break;
