@@ -4,8 +4,7 @@
 //! This class handles weapons. Weapons have all the same attributes that standard equipment does,
 //! as well as a subtype for weapon category, a dice object representing damage, and a value
 //! representing it's range. Besides that, it functions just as any other item.
-#ifndef Weapon_h
-#define Weapon_h
+#pragma once
 
 #include "Item.h"
 
@@ -24,18 +23,18 @@ public:
 	// default constructor
 	Weapon();
 	// parametrized constructor
-	Weapon(string nm, itemType tp, vector<Enchant*> nv, int rng, weaponType st);
+	Weapon(std::string nm, ItemType tp, std::vector<Enchant*> nv, int rng, WeaponType st);
 
 	Weapon(const Weapon& orig);
 
 	// get weapon's range
 	int getRange();
 	// get weapon's subtype
-	weaponType getSubtype();
+	WeaponType getSubtype();
 	// set weapon's range
 	void setRange(int nr);
 	// set weapon's subtype
-	void setSubtype(weaponType nt);
+	void setSubtype(WeaponType nt);
 	// overriden print method
 
 	Weapon* clone();
@@ -51,7 +50,6 @@ private:
 	int range;
 
 	//type of weapon: sword, bow, etc...
-	weaponType subtype;
+	WeaponType subtype;
 };
 
-#endif

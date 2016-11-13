@@ -10,17 +10,18 @@
 using namespace std;
 
 class Character: public Observable {
+
 public:
-	//constructors & destructor
-	Character();								//default constructor
-	Character(string, string, int);				//argument constructor 1
-	Character(int, int, int, int, int, int);	//argument constructor 2
-	Character(std::string name, std::string charaClass, int lvl, int str, int dex, int con, int intel, int wis, int cha); //argument constructor for CharacterMaker-generated character, meant for NPCs
-	Character(const Character& orig);			//copy constructor
-	~Character();								//destructor
-	//getter methods for level & attributes
-	string getCharacterName();
-	string getCharacterClass();
+
+	Character();
+	Character(string, string, int);
+	Character(int, int, int, int, int, int);
+	Character(std::string name, std::string charaClass, int lvl, int str, int dex, int con, int intel, int wis, int cha);
+	Character(const Character& original);
+	~Character();
+
+	string getName();
+	string getClass();
 	int getLevel();
 	int getStrength();
 	int getDexterity();
@@ -31,7 +32,6 @@ public:
 	int getMaxHitPoints();
 	int getCurrentHitPoints();
 	int getExpPoints();
-	//getter methods for modifiers & bonuses
 	int getStrengthModifier();
 	int getDexterityModifier();
 	int getConstitutionModifier();
@@ -42,7 +42,6 @@ public:
 	int getDamageBonus();
 	int getBaseAttackBonus(int i);
 	int getAttackBonus(int i);
-	//getter methods for equipment
 	ItemContainer* getBackpack();
 	Weapon* getEquippedWeapon();
 	Equipment* getEquippedShield();
@@ -51,20 +50,18 @@ public:
 	Equipment* getEquippedBelt();
 	Equipment* getEquippedBoots();
 	Equipment* getEquippedRing();
-	//mutators for name, class, level, exp, and current HP
+
 	void setName(string s);
 	void setClass(string s);
 	void setLevel(int i);
 	void setExpPoints(int i);
 	void setCurrentHitPoints(int i);
-	//mutators for attributes
 	void setStrength(int i);
 	void setDexterity(int i);
 	void setConstitution(int i);
 	void setIntelligence(int i);
 	void setWisdom(int i);
 	void setCharisma(int i);
-	//setter methods for equipment
 	void setEquippedWeapon(Weapon*);
 	void setEquippedShield(Equipment*);
 	void setEquippedHelmet(Equipment*);
@@ -72,18 +69,16 @@ public:
 	void setEquippedBelt(Equipment*);
 	void setEquippedBoots(Equipment*);
 	void setEquippedRing(Equipment*);
-	//testing methods
+
 	bool validateNewCharacter();
 	bool validateNewNPC();
 	void printStats();
 	void levelUpHitPointGain();
 	void setInitialMaxHP(int lvl, int modifier);
-	//in-game status changes
-	//void attack(int x, int y);		//to be implemented
 	void hit(int);
 	void gainExp(int i);
+
 	void printEquippedItems();
-	//item-related actions
 	void takeItem(Item* i);
 	Item* dropItem(int i);
 	void equipItem(Item* e);
@@ -96,16 +91,60 @@ public:
 	void unequipBoots();
 	void unequipRing();
 
-	//rescale level
 	void rescale(int tgt_lvl);
 
-	//serialization
-	friend class boost::serialization::access;
+private:
 
-	template<class Archive> void serialize(Archive & ar, const unsigned int version)
-	{
-		ar & boost::serialization::base_object<Observable>(*this);
-		
+	string _name;
+	string _class;
+	int _lvl;
+	int _xp;
+	int _abilityScores[6]; //str, dex, cons, int, wisd, char
+	int _strengthModifier;
+	int _dexterityModifier;
+	int _constitutionModifier;
+	int _intelligenceModifier;
+	int _wisdomModifier;
+	int _charismaModifier;
+	int _maxHp;
+	int _hp;
+	bool _isAlive;
+	int _armorClass;
+	int _damageBonus;
+	Weapon* _weapon;
+	Equipment* _equipment[6]; //shield, helmet, armor, belt, boots, ring
+	ItemContainer* _backpack;
+	int _baseAttackBonus[4];
+	int _attackBonus[4];
+
+
+
+	void updateBaseAttackBonus();
+	void updateAttackBonus();
+	//Stats-setting & modifier updates (upon level-up or equipment change)
+	int abilityModifier(double attribute);
+	void updateModifiersAndBonuses();
+
+	//adding enchantment effects from equipping items,
+	//no addWeaponEnchEffects() because already covered by
+	//updateModifiersAndBonuses() & updateAttackBonus()
+	void addShieldEnchEffects(Equipment* e);
+	void addHelmetEnchEffects(Equipment* e);
+	void addArmorEnchEffects(Equipment* e);
+	void addBeltEnchEffects(Equipment* e);
+	void addBootsEnchEffects(Equipment* e);
+	void addRingEnchEffects(Equipment* e);
+
+	void removeWeaponEnchEffects(Weapon* w);
+	void removeShieldEnchEffects(Equipment* e);
+	void removeHelmetEnchEffects(Equipment* e);
+	void removeArmorEnchEffects(Equipment* e);
+	void removeBeltEnchEffects(Equipment* e);
+	void removeBootsEnchEffects(Equipment* e);
+	void removeRingEnchEffects(Equipment* e);
+
+	friend class boost::serialization::access;
+	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
 		ar & characterName;
 		ar & characterClass;
 		ar & level;
@@ -121,7 +160,6 @@ public:
 		ar & isAlive;
 		ar & baseAttackBonus;
 		ar & attackBonus;
-
 		ar & strengthModifier;
 		ar & dexterityModifier;
 		ar & intelligenceModifier;
@@ -130,68 +168,4 @@ public:
 		ar & constitutionModifier;
 	}
 
-private:
-	string characterName;
-	string characterClass;
-	int level;
-	int expPoints;
-	//attributes
-	//	index 0: strength
-	//	index 1: dexterity
-	//	index 2: constitution
-	//	index 3: intelligence
-	//	index 4: wisdom
-	//	index 5: charisma
-	int abilityScores[6];
-	//ability modifiers
-	int strengthModifier;
-	int dexterityModifier;
-	int intelligenceModifier;
-	int wisdomModifier;
-	int charismaModifier;
-	int constitutionModifier;
-	//status-related
-	int maxHitPoints;
-	int currentHitPoints;
-	bool isAlive;
-	//attack & damage bonus
-	int armorClass;
-	int damageBonus;
-	//character-equipped items
-	Weapon* equippedWeapon;
-	//other equipped items:
-	// index 0: Shield
-	// index 1: Helmet
-	// index 2: Armor
-	// index 3: Belt
-	// index 4: Boots
-	// index 5: Ring
-	Equipment* equipped[6];
-	ItemContainer* backpack;
-	int baseAttackBonus[4];
-	int attackBonus[4];
-	void updateBaseAttackBonus();
-	void updateAttackBonus();
-	//stats-setting & modifier updates (upon level-up or equipment change)
-	int abilityModifier(double attribute);
-	void updateModifiersAndBonuses();
-
-	//adding enchantment effects from equipping items,
-	//no addWeaponEnchEffects() because already covered by
-	//updateModifiersAndBonuses() & updateAttackBonus()
-	void addShieldEnchEffects(Equipment* e);
-	void addHelmetEnchEffects(Equipment* e);
-	void addArmorEnchEffects(Equipment* e);
-	void addBeltEnchEffects(Equipment* e);
-	void addBootsEnchEffects(Equipment* e);
-	void addRingEnchEffects(Equipment* e);
-
-	//removing enchantment effects from unequipping items
-	void removeWeaponEnchEffects(Weapon* w);
-	void removeShieldEnchEffects(Equipment* e);
-	void removeHelmetEnchEffects(Equipment* e);
-	void removeArmorEnchEffects(Equipment* e);
-	void removeBeltEnchEffects(Equipment* e);
-	void removeBootsEnchEffects(Equipment* e);
-	void removeRingEnchEffects(Equipment* e);
 };

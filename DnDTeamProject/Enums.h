@@ -1,28 +1,25 @@
 //! @file
 //! @brief Header file for enumerated types used for Items and Enchantments
 //!
-//!I decided to use enumerated types to represent stats and types of items as they are both finite sets.
-#ifndef Enums_h
-#define Enums_h
-
+//!I decided to use enumerated types to represent Stats and types of items as they are both finite sets.
+#pragma once
 #include <iostream>
 #include <string>
 
-using namespace std;
+
 
 //!enum for Statistics used in Enchantments
-enum stats { STR, DEX, CON, INT, WIS, CHA, AC, ATK, DMG };
+enum Stats { STR, DEX, CON, INT, WIS, CHA, AC, ATK, DMG };
 
 //!enum for the different types of items
-enum itemType { HELMET, ARMOR, SHIELD, RING, BELT, BOOTS, WEAPON, OTHER };
+enum ItemType { HELMET, ARMOR, SHIELD, RING, BELT, BOOTS, WEAPON, OTHER };
 
-enum weaponType { MELEE, RANGED };
+enum WeaponType { MELEE, RANGED };
 
 //!overload output operator to print enum names.
-ostream& operator<<(ostream& op, stats st);
+std::ostream& operator<<(std::ostream& op, Stats st);
 
-ostream& operator<<(ostream& op, itemType ty);
+std::ostream& operator<<(std::ostream& op, ItemType ty);
 
-ostream& operator<<(ostream& op, weaponType wt);
+std::ostream& operator<<(std::ostream& op, WeaponType wt);
 
-#endif

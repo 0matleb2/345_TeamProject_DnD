@@ -5,16 +5,16 @@
 
 
 //! default constructor
-Item::Item() : name("Default"), type(itemType::OTHER), ench(vector<Enchant*>())
+Item::Item() : name("Default"), type(ItemType::OTHER), ench(std::vector<Enchant*>())
 {
 
 }
 
-//! parametrized constructor accepting a string for item name, enum for type, and a vector of Enchants
+//! parametrized constructor accepting a std::string for item name, enum for type, and a vector of Enchants
 //! @param nm : name of Item
 //! @param tp : type of Item
 //! @param nv : vector of Enchants
-Item::Item(string nm, itemType tp, vector<Enchant*> nv) : name(nm), type(tp), ench(nv)
+Item::Item(std::string nm, ItemType tp, std::vector<Enchant*> nv) : name(nm), type(tp), ench(nv)
 {
 
 }
@@ -28,42 +28,42 @@ Item::Item(const Item& orig) : name(orig.name), type(orig.type), ench(orig.ench)
 
 //! accessor for name
 //! @return : Item's name
-string Item::getName()
+std::string Item::getName()
 {
 	return name;
 }
 
 //! accessor for item type
 //! @return : category of item
-itemType Item::getType()
+ItemType Item::getType()
 {
 	return type;
 }
 
-//! accessor for Enchant vector
-//! @return : vector of Item's Enchants
-vector<Enchant*> Item::getEnch()
+//! accessor for Enchant std::vector
+//! @return : std::vector of Item's Enchants
+std::vector<Enchant*> Item::getEnch()
 {
 	return ench;
 }
 
 //! mutator for name
 //! @param nn : new name to set
-void Item::setName(string nn)
+void Item::setName(std::string nn)
 {
 	name = nn;
 }
 
 //! mutator for type
 //! @param itp : new item type
-void Item::setType(itemType itp)
+void Item::setType(ItemType itp)
 {
 	type = itp;
 }
 
 //! mutator for Item's set of Enchants
 //! @param ech : Enchant to add
-void Item::setEnch(vector<Enchant*> ech)
+void Item::setEnch(std::vector<Enchant*> ech)
 {
 	ench = ech;
 }
@@ -89,33 +89,33 @@ bool Item::isValid()
 		// check if each item type lines up with enhanced stat
 		switch (type)
 		{
-		case itemType::HELMET:
-			if (ench[i]->getType() != stats::INT && ench[i]->getType() != stats::WIS && ench[i]->getType() != stats::AC)
+		case ItemType::HELMET:
+			if (ench[i]->getType() != Stats::INT && ench[i]->getType() != Stats::WIS && ench[i]->getType() != Stats::AC)
 				return false;
 			break;
-		case itemType::ARMOR:
-			if (ench[i]->getType() != stats::AC)
+		case ItemType::ARMOR:
+			if (ench[i]->getType() != Stats::AC)
 				return false;
 			break;
-		case itemType::SHIELD:
-			if (ench[i]->getType() != stats::AC)
+		case ItemType::SHIELD:
+			if (ench[i]->getType() != Stats::AC)
 				return false;
 			break;
-		case itemType::RING:
-			if (ench[i]->getType() != stats::AC && ench[i]->getType() != stats::STR && ench[i]->getType() != stats::CON
-				&& ench[i]->getType() != stats::WIS && ench[i]->getType() != stats::CHA)
+		case ItemType::RING:
+			if (ench[i]->getType() != Stats::AC && ench[i]->getType() != Stats::STR && ench[i]->getType() != Stats::CON
+				&& ench[i]->getType() != Stats::WIS && ench[i]->getType() != Stats::CHA)
 				return false;
 			break;
-		case itemType::BELT:
-			if (ench[i]->getType() != stats::CON && ench[i]->getType() != stats::STR)
+		case ItemType::BELT:
+			if (ench[i]->getType() != Stats::CON && ench[i]->getType() != Stats::STR)
 				return false;
 			break;
-		case itemType::BOOTS:
-			if (ench[i]->getType() != stats::AC && ench[i]->getType() != stats::DEX)
+		case ItemType::BOOTS:
+			if (ench[i]->getType() != Stats::AC && ench[i]->getType() != Stats::DEX)
 				return false;
 			break;
-		case itemType::WEAPON:
-			if (ench[i]->getType() != stats::ATK && ench[i]->getType() != stats::DMG)
+		case ItemType::WEAPON:
+			if (ench[i]->getType() != Stats::ATK && ench[i]->getType() != Stats::DMG)
 				return false;
 			break;
 		default:
@@ -127,14 +127,14 @@ bool Item::isValid()
 	return true;
 }
 
-//! add Enchant to item's vector
+//! add Enchant to item's std::vector
 //! @param eh : Enchant object to add
 void Item::addEnch(Enchant* eh)
 {
 	ench.push_back(eh);
 }
 
-//! remove Enchant object from Item's vector
+//! remove Enchant object from Item's std::vector
 //! @param pos : position of Enchant to remove
 //! @return : removed Enchant
 Enchant Item::removeEnch(int pos)
@@ -171,37 +171,37 @@ void Item::print()
 //! @param tgt_type : item type 
 //! @param tgt_stat : stat boosted
 //! @return : valid or no enchant
-bool Item::validEnch(itemType tgt_type, stats tgt_stat)
+bool Item::validEnch(ItemType tgt_type, Stats tgt_stat)
 {
 	switch (tgt_type)
 	{
-	case itemType::HELMET:
-		if (tgt_stat != stats::WIS && tgt_stat != stats::INT && tgt_stat != stats::AC)
+	case ItemType::HELMET:
+		if (tgt_stat != Stats::WIS && tgt_stat != Stats::INT && tgt_stat != Stats::AC)
 			return false;
 		break;
-	case itemType::ARMOR:
-		if (tgt_stat != stats::AC)
+	case ItemType::ARMOR:
+		if (tgt_stat != Stats::AC)
 			return false;
 		break;
-	case itemType::SHIELD:
-		if (tgt_stat != stats::AC)
+	case ItemType::SHIELD:
+		if (tgt_stat != Stats::AC)
 			return false;
 		break;
-	case itemType::RING:
-		if (tgt_stat != stats::AC && tgt_stat != stats::STR && tgt_stat != stats::CON
-			&& tgt_stat != stats::WIS && tgt_stat != stats::CHA)
+	case ItemType::RING:
+		if (tgt_stat != Stats::AC && tgt_stat != Stats::STR && tgt_stat != Stats::CON
+			&& tgt_stat != Stats::WIS && tgt_stat != Stats::CHA)
 			return false;
 		break;
-	case itemType::BELT:
-		if (tgt_stat != stats::CON && tgt_stat != stats::STR)
+	case ItemType::BELT:
+		if (tgt_stat != Stats::CON && tgt_stat != Stats::STR)
 			return false;
 		break;
-	case itemType::BOOTS:
-		if (tgt_stat != stats::AC && tgt_stat != stats::DEX)
+	case ItemType::BOOTS:
+		if (tgt_stat != Stats::AC && tgt_stat != Stats::DEX)
 			return false;
 		break;
-	case itemType::WEAPON:
-		if (tgt_stat != stats::ATK && tgt_stat != stats::DMG)
+	case ItemType::WEAPON:
+		if (tgt_stat != Stats::ATK && tgt_stat != Stats::DMG)
 			return false;
 		break;
 	default:
@@ -229,36 +229,36 @@ Enchant Item::RandomEnch(int value)
 
 		int stat_select = rand() % 9 + 1;
 
-		stats selected;
+		Stats selected;
 
 		switch (stat_select)
 		{
 		case 1:
-			selected = stats::STR;
+			selected = Stats::STR;
 			break;
 		case 2:
-			selected = stats::DEX;
+			selected = Stats::DEX;
 			break;
 		case 3:
-			selected = stats::CON;
+			selected = Stats::CON;
 			break;
 		case 4:
-			selected = stats::INT;
+			selected = Stats::INT;
 			break;
 		case 5:
-			selected = stats::WIS;
+			selected = Stats::WIS;
 			break;
 		case 6:
-			selected = stats::CHA;
+			selected = Stats::CHA;
 			break;
 		case 7:
-			selected = stats::AC;
+			selected = Stats::AC;
 			break;
 		case 8:
-			selected = stats::ATK;
+			selected = Stats::ATK;
 			break;
 		case 9:
-			selected = stats::DMG;
+			selected = Stats::DMG;
 			break;
 		}
 
@@ -299,9 +299,9 @@ void Item::rescale(int tgt_lvl)
 }
 
 
-ostream& operator<<(ostream& op, Item it)
+std::ostream& operator<<(std::ostream& op, Item it)
 {
-	op << it.getName() << ", [" << it.getType() << "] " << endl;
+	op << it.getName() << ", [" << it.getType() << "] " << std::endl;
 
 	for (int i = 0; i < it.getEnch().size(); i++)
 	{

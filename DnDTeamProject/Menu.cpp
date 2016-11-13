@@ -55,7 +55,7 @@ void itemContainerEditor();
 void EnchantAdd(Item* ic);
 
 void editEquipment(vector<Equipment*>& equipmentList, string equipmentTypeC, string equipmentType);
-void editWeapons(vector<Weapon*>& weaponList, string weaponTypeC, string weaponType, bool isMelee);
+void editWeapons(vector<Weapon*>& weaponList, string WeaponTypeC, string WeaponType, bool isMelee);
 void editEnchantments_e(vector<Equipment*>& equipmentList, int index);
 void editEnchantments_w(vector<Weapon*>& equipmentList, int index);
 
@@ -240,16 +240,16 @@ void mapMode(Map& m, Character* c)
 		switch (choice)
 		{
 		case 'n':
-			m.moveChar(m.getPC(), 'n');
+			m.moveCharacter(m.getPC(), 'n');
 			break;
 		case 'w':
-			m.moveChar(m.getPC(), 'w');
+			m.moveCharacter(m.getPC(), 'w');
 			break;
 		case 'e':
-			m.moveChar(m.getPC(), 'e');
+			m.moveCharacter(m.getPC(), 'e');
 			break;
 		case 's':
-			m.moveChar(m.getPC(), 's');
+			m.moveCharacter(m.getPC(), 's');
 			break;
 		case 'q':
 			cout << "Leaving map mode." << endl;
@@ -259,7 +259,7 @@ void mapMode(Map& m, Character* c)
 			examineMode(m);
 			break;
 		case 'c':
-			characterMode(m.getPC()->getElement());
+			characterMode(m.getPC()->getCharacter());
 			m.notify();
 			break;
 		default:
@@ -515,11 +515,11 @@ void mapCreator()
 			{
 				cout << "element out of bounds! please try again." << endl;
 			}
-			else if (eleX == cMap.EntranceGetX() && eleY == cMap.EntranceGetY())
+			else if (eleX == cMap.getEntry()->getX() && eleY == cMap.getEntry()->getY())
 			{
 				cout << "cannot place over entrance." << endl;
 			}
-			else if (eleX == cMap.ExitGetX() && eleY == cMap.ExitGetY())
+			else if (eleX == cMap.getExit()->getX() && eleY == cMap.getExit()->getY())
 			{
 				cout << "Cannot place over exit." << endl;
 			}
@@ -817,13 +817,13 @@ void mapDoorEditor(Map& m, int width, int height)
 				{
 					cout << "Cannot place at corner" << endl;
 				}
-				else if (chx == m.ExitGetX() && chy == m.ExitGetY())
+				else if (chx == m.getExit()->getX() && chy == m.getExit()->getY())
 				{
 					cout << "Cannot place here. Exit present." << endl;
 				}
 				else
 				{
-					m.resetEntrance(chx, chy);
+					m.setEntry(chx, chy);
 					editEn = false;
 				}
 
@@ -862,13 +862,13 @@ void mapDoorEditor(Map& m, int width, int height)
 				{
 					cout << "Cannot place at corner" << endl;
 				}
-				else if (chx == m.EntranceGetX() && chy == m.EntranceGetY())
+				else if (chx == m.getEntry()->getX() && chy == m.getEntry()->getY())
 				{
 					cout << "Cannot place here. Entrance present." << endl;
 				}
 				else
 				{
-					m.resetExit(chx, chy);
+					m.setExit(chx, chy);
 					editEx = false;
 				}
 
@@ -971,29 +971,29 @@ void itemMakerMenu()
 	}
 }
 
-string legalEnchants(itemType it)
+string legalEnchants(ItemType it)
 {
 	switch (it)
 	{
-	case itemType::HELMET:
+	case ItemType::HELMET:
 		return "Intelligence, Wisdom, Armor Class";
 		break;
-	case itemType::ARMOR:
+	case ItemType::ARMOR:
 		return "Armor Class";
 		break;
-	case itemType::SHIELD:
+	case ItemType::SHIELD:
 		return "Armor Class";
 		break;
-	case itemType::RING:
+	case ItemType::RING:
 		return "Armor Class, Strength, Constitution, Wisdom, Charisma";
 		break;
-	case itemType::BELT:
+	case ItemType::BELT:
 		return "Constitution, Strength";
 		break;
-	case itemType::BOOTS:
+	case ItemType::BOOTS:
 		return "Armor Class, Dexterity";
 		break;
-	case itemType::WEAPON:
+	case ItemType::WEAPON:
 		return "Attack Bonus, Damage Bonus";
 		break;
 	default:
@@ -1015,8 +1015,8 @@ void itemCreator()
 		bool step2 = false;
 		bool step3 = false;
 
-		itemType cType;
-		weaponType cSub;
+		ItemType cType;
+		WeaponType cSub;
 
 		while (step1)
 		{
@@ -1032,51 +1032,51 @@ void itemCreator()
 			switch (choice1)
 			{
 			case 'h':
-				cType = itemType::HELMET;
+				cType = ItemType::HELMET;
 				cout << cType << " selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 's':
-				cType = itemType::SHIELD;
+				cType = ItemType::SHIELD;
 				cout << cType << " selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 'a':
-				cType = itemType::ARMOR;
+				cType = ItemType::ARMOR;
 				cout << cType << " selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 'r':
-				cType = itemType::RING;
+				cType = ItemType::RING;
 				cout << cType << " selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 'b':
-				cType = itemType::BELT;
+				cType = ItemType::BELT;
 				cout << cType << " selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 'o':
-				cType = itemType::BOOTS;
+				cType = ItemType::BOOTS;
 				cout << cType << " selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 'm':
-				cType = itemType::WEAPON;
-				cSub = weaponType::MELEE;
+				cType = ItemType::WEAPON;
+				cSub = WeaponType::MELEE;
 				cout << cType << "[ " << cSub << "] " << "selected" << endl;
 				step1 = false;
 				step2 = true;
 				break;
 			case 'w':
-				cType = itemType::WEAPON;
-				cSub = weaponType::RANGED;
+				cType = ItemType::WEAPON;
+				cSub = WeaponType::RANGED;
 				cout << cType << "[ " << cSub << "] " << "selected" << endl;
 				step1 = false;
 				step2 = true;
@@ -1108,9 +1108,9 @@ void itemCreator()
 
 		Item* cItem;
 
-		if (cType == itemType::WEAPON)
+		if (cType == ItemType::WEAPON)
 		{
-			if (cSub == weaponType::RANGED)
+			if (cSub == WeaponType::RANGED)
 				cItem = new Weapon(cName, cType, vector<Enchant*>(), 2, cSub);
 			else
 				cItem = new Weapon(cName, cType, vector<Enchant*>(), 0, cSub);
@@ -1192,7 +1192,7 @@ void EnchantAdd(Item* ic)
 {
 	bool loop1 = true;
 
-	stats cStat;
+	Stats cStat;
 
 	while (loop1)
 	{
@@ -1209,39 +1209,39 @@ void EnchantAdd(Item* ic)
 		switch (choice)
 		{
 		case 's':
-			cStat = stats::STR;
+			cStat = Stats::STR;
 			loop1 = false;
 			break;
 		case 'w':
-			cStat = stats::WIS;
+			cStat = Stats::WIS;
 			loop1 = false;
 			break;
 		case 'c':
-			cStat = stats::CON;
+			cStat = Stats::CON;
 			loop1 = false;
 			break;
 		case 'i':
-			cStat = stats::INT;
+			cStat = Stats::INT;
 			loop1 = false;
 			break;
 		case 'd':
-			cStat = stats::DEX;
+			cStat = Stats::DEX;
 			loop1 = false;
 			break;
 		case 'h':
-			cStat = stats::CHA;
+			cStat = Stats::CHA;
 			loop1 = false;
 			break;
 		case 'a':
-			cStat = stats::AC;
+			cStat = Stats::AC;
 			loop1 = false;
 			break;
 		case 't':
-			cStat = stats::ATK;
+			cStat = Stats::ATK;
 			loop1 = false;
 			break;
 		case 'm':
-			cStat = stats::DMG;
+			cStat = Stats::DMG;
 			loop1 = false;
 			break;
 		}
@@ -1400,10 +1400,10 @@ void editEquipment(vector<Equipment*>& equipmentList, string equipmentTypeC, str
 	}
 }
 
-void editWeapons(vector<Weapon*>& weaponList, string weaponTypeC, string weaponType, bool isMelee) {
+void editWeapons(vector<Weapon*>& weaponList, string WeaponTypeC, string WeaponType, bool isMelee) {
 	int indexOfItem;
 
-	cout << "Please enter the index of the " << weaponType << " you would like to edit.";
+	cout << "Please enter the index of the " << WeaponType << " you would like to edit.";
 
 	cin >> indexOfItem;
 	if ((indexOfItem < 0) || (indexOfItem >(weaponList.size() - 1))) {
@@ -1412,11 +1412,11 @@ void editWeapons(vector<Weapon*>& weaponList, string weaponTypeC, string weaponT
 		fflush(stdin);
 	}
 	else {
-		cout << "Printing " << weaponType << " details:" << endl;
+		cout << "Printing " << WeaponType << " details:" << endl;
 		weaponList[indexOfItem]->print();
 		cout << "What would you like to edit? Enter -1 to cancel." << endl;
-		cout << "1. " << weaponTypeC << " name" << endl;
-		cout << "2. " << weaponTypeC << " enchantments" << endl;
+		cout << "1. " << WeaponTypeC << " name" << endl;
+		cout << "2. " << WeaponTypeC << " enchantments" << endl;
 		if (!isMelee)
 			cout << "3. Weapon range." << endl;
 
@@ -1655,14 +1655,14 @@ void playable_character_creation(vector<Character*>& playableCharacters) {
 		int level;
 		std::cin >> level;
 
-		std::cout << "Rolling stats..." << endl;
+		std::cout << "Rolling Stats..." << endl;
 		std::vector<int> vec;
 		std::vector<int> attributes;
 
 		bool didntChooseReroll = false;
 		while (!didntChooseReroll) {
 			attributes.clear();
-			//rolling for initial stats
+			//rolling for initial Stats
 			// Rolls 4d20 and keeps the three highest rolls for each ability score
 			for (int i = 0; i < 6; i++) {
 				for (int j = 0; j < 4; j++) {
@@ -1672,7 +1672,7 @@ void playable_character_creation(vector<Character*>& playableCharacters) {
 				attributes.push_back(vec[0] + vec[1] + vec[2]);
 				vec.clear();
 			}
-			//sorting stats;
+			//sorting Stats;
 			std::sort(attributes.begin(), attributes.begin() + 6, std::greater<int>());
 
 			cout << "Here are your possible fighter build choices: \n" << endl;
@@ -1746,7 +1746,7 @@ void playable_character_creation(vector<Character*>& playableCharacters) {
 							case 1:
 								playableCharacters.push_back(createdFighter);
 								//maybe save to file here?
-								std::cout << "New playable character " << playableCharacters[playableCharacters.size() - 1]->getCharacterName() << " has been saved." << endl;
+								std::cout << "New playable character " << playableCharacters[playableCharacters.size() - 1]->getName() << " has been saved." << endl;
 								has_chosen_to_save_or_not = true;
 								break;
 							case 2:
@@ -1787,7 +1787,7 @@ void playable_character_creation(vector<Character*>& playableCharacters) {
 							case 1:
 								playableCharacters.push_back(createdFighter);
 								//maybe save to file here?
-								std::cout << "New playable character " << playableCharacters[playableCharacters.size() - 1]->getCharacterName() << " has been saved." << endl;
+								std::cout << "New playable character " << playableCharacters[playableCharacters.size() - 1]->getName() << " has been saved." << endl;
 								has_chosen_to_save_or_not = true;
 								break;
 							case 2:
@@ -1828,7 +1828,7 @@ void playable_character_creation(vector<Character*>& playableCharacters) {
 							case 1:
 								playableCharacters.push_back(createdFighter);
 								//maybe save to file here?
-								std::cout << "New playable character " << playableCharacters[playableCharacters.size() - 1]->getCharacterName() << " has been saved." << endl;
+								std::cout << "New playable character " << playableCharacters[playableCharacters.size() - 1]->getName() << " has been saved." << endl;
 								has_chosen_to_save_or_not = true;
 								break;
 							case 2:
@@ -1851,7 +1851,7 @@ void playable_character_creation(vector<Character*>& playableCharacters) {
 					break;
 				case 4:
 					//re-rolling. coming back to while loop
-					cout << "\nRe-rolling stats..." << endl;
+					cout << "\nRe-rolling Stats..." << endl;
 					//starting roll from scratch, breaking out of inner while loop, but not the outer one
 					validFighterBuildChoice = true;
 					skipNewCharacter = true;
@@ -2006,7 +2006,7 @@ void displayAllCharacters(vector<Character*>& characterList) {
 	else {
 		std::cout << "Displaying stored characters..." << endl;
 		for (int i = 0; i < characterList.size(); i++) {
-			std::cout << i << ". " << "Name: " << characterList[i]->getCharacterName() << " Class: " << characterList[i]->getCharacterClass() << " Level: " << characterList[i]->getLevel() << endl;
+			std::cout << i << ". " << "Name: " << characterList[i]->getName() << " Class: " << characterList[i]->getClass() << " Level: " << characterList[i]->getLevel() << endl;
 		}
 	}
 }
@@ -2014,8 +2014,8 @@ void displayAllCharacters(vector<Character*>& characterList) {
 void displayDetailedInfo(vector<Character*>& characterList, int index) {
 	Character* chara = characterList[index];
 	std::cout << "Displaying character stored at index " << index << "..." << endl;
-	std::cout << "NAME: " << chara->getCharacterName() << endl;
-	std::cout << "CLASS: " << chara->getCharacterClass() << endl;
+	std::cout << "NAME: " << chara->getName() << endl;
+	std::cout << "CLASS: " << chara->getClass() << endl;
 	std::cout << "LEVEL: " << chara->getLevel() << endl;
 	std::cout << "EXP: " << chara->getExpPoints() << endl;
 	std::cout << "CURRENT HIT POINTS: " << chara->getCurrentHitPoints() << endl;
@@ -2115,7 +2115,7 @@ void editCharacterAtIndex(vector<Character*>& characterList, bool hasPlayerChara
 			case 1:
 				std::cout << "Please enter your new desired character name: ";
 				std::cin >> inString;
-				std::cout << "Character's name changed from \"" << characterList[index]->getCharacterName() << "\" to \"" << inString << "\"." << endl;
+				std::cout << "Character's name changed from \"" << characterList[index]->getName() << "\" to \"" << inString << "\"." << endl;
 				characterList[index]->setName(inString);
 				std::cout << endl;
 				std::cout << "Character after edit:" << std::endl;
@@ -2127,7 +2127,7 @@ void editCharacterAtIndex(vector<Character*>& characterList, bool hasPlayerChara
 				std::cout << "Please enter your new desired character class: ";
 				std::cin >> inString;
 				if (!hasPlayerCharaValidationCond) {
-					std::cout << "Character's class changed from \"" << characterList[index]->getCharacterClass() << "\" to \"" << inString << "\"." << endl;
+					std::cout << "Character's class changed from \"" << characterList[index]->getClass() << "\" to \"" << inString << "\"." << endl;
 					characterList[index]->setClass(inString);
 					std::cout << endl;
 					std::cout << "Character after edit:" << std::endl;
@@ -2298,7 +2298,7 @@ void deleteCharacterAtIndex(vector<Character*>& characterList) {
 			fflush(stdin);
 		}
 		else {
-			std::cout << "Character " << characterList[index]->getCharacterName() << " has been deleted." << endl;
+			std::cout << "Character " << characterList[index]->getName() << " has been deleted." << endl;
 			characterList.erase(characterList.begin() + index);
 			return;
 		}

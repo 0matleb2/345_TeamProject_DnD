@@ -4,11 +4,15 @@
 #include "Character.h"
 
 class CharacterObserver: public Observer {
+
 	public:
-		CharacterObserver(Character* chara);
-		virtual ~CharacterObserver();
-		virtual void update();
+
+		CharacterObserver(Character* character);
+		~CharacterObserver();
+
+		void update();
 
 	private:
-		Character* subject;
+
+		Character* _subject;
 };

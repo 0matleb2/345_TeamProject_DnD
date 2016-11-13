@@ -3,97 +3,59 @@
 //!
 #include "MapContainer.h"
 
-//! default constructor
-MapContainer::MapContainer() : x_pos(0), y_pos(0), element(new ItemContainer()), symbol('H')
-{
 
+
+MapContainer::MapContainer() : _x(0), _y(0), _itemContainer(&ItemContainer()), _symbol('H') {
 }
 
-//! parametrized constructor
-//! @param x : width index
-//! @param y : height index
-//! @param ele : container element contained
-MapContainer::MapContainer(int x, int y, ItemContainer* ele, char sprite) : x_pos(x), y_pos(y), element(ele), symbol(sprite)
-{
-
+MapContainer::MapContainer(int x, int y, ItemContainer* ele, char sprite) : _x(x), _y(y), _itemContainer(ele), _symbol(sprite) {
 }
 
-//! destructor
-MapContainer::~MapContainer()
-{
-	//delete element;
+MapContainer::~MapContainer() {
 }
 
-//! set container element
-//! @param ele : pointer to container element
-void MapContainer::setElement(ItemContainer* ele)
-{
-	element = ele;
+void MapContainer::setItemContainer(ItemContainer* itemContainer) {
+	_itemContainer = itemContainer;
 }
 
-//! return contained container
-//! @return container of map element
-ItemContainer* MapContainer::getElement()
-{
-	return element;
+//Accessors
+int MapContainer::getX() {
+	return _x;
 }
 
-//! accessor for width index
-//! @return width index
-int MapContainer::getX()
-{
-	return x_pos;
+int MapContainer::getY() {
+	return _y;
 }
 
-//! accessor for height index
-//! @return height index
-int MapContainer::getY()
-{
-	return y_pos;
+ItemContainer* MapContainer::getItemContainer() {
+	return _itemContainer;
 }
 
-//! mutator for width index
-//! @param x : new width index
-void MapContainer::setX(int x)
-{
-	x_pos = x;
+char MapContainer::getSymbol() {
+	return _symbol;
 }
 
-//! mutator for height index
-//! @param y : new height index
-void MapContainer::setY(int y)
-{
-	y_pos = y;
+//Mutators
+void MapContainer::setX(int x) {
+	_x = x;
 }
 
-//! rescale items in container to target level
-//! @param tgt_lvl : target level to rescale to
-void MapContainer::rescale(int tgt_lvl)
-{
-	element->rescale(tgt_lvl);
+void MapContainer::setY(int y) {
+	_y = y;
 }
 
-char MapContainer::getSymbol()
-{
-	return symbol;
+void MapContainer::setSymbol(char symbol) {
+	_symbol = symbol;
 }
 
-void MapContainer::setSymbol(char ns)
-{
-	symbol = ns;
+
+
+void MapContainer::rescale(int targetLvl) {
+	_itemContainer->rescale(targetLvl);
 }
 
-//! print contained container's contents
-void MapContainer::print()
-{
-	cout << "Container element at position: (" << x_pos << ", " << y_pos << ")" << endl;
+void MapContainer::print() { 
+	cout << "Container _itemContainer at position: (" << _x << ", " << _y << ")" << endl;
 	cout << "Details:" << endl;
-	element->printContents();
-}
-
-//! add item to container
-//! @param it : pointer of item to add
-void MapContainer::addItem(Item* it)
-{
-	element->addItem(it);
+	_itemContainer->printContents();
 }
