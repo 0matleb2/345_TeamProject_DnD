@@ -2,7 +2,7 @@
 //! @brief Header File for Item class
 //!
 //! This class handles items. Items have a _name, a _type, and a number of Enchants, implemented through a std::vector.
-//! I chose to use string as it is suitable for a _name, and std::vector as it is an array of adjustable size that permits random access.
+//! I chose to use std::string as it is suitable for a _name, and std::vector as it is an array of adjustable size that permits random access.
 //! Class also has a method to check if the item in question has a legal Enchant. This class is not meant to be initialized
 //! the Equipment and Weapon classes are meant to be concrete
 #pragma once

@@ -11,7 +11,7 @@ Weapon::Weapon() : Item("Default", ItemType::WEAPON, std::vector<Enchant*>()), _
 //! parametrized constructor
 //! @param nm : name of weapon
 //! @param tp : item type of weapon (always "weapon")
-//! @param nv : weapon's vector of Enchants
+//! @param nv : weapon's std::vector of Enchants
 //! @param rng : _range of weapon
 //! @param st : _subtype of weapon (sword, bow, ...)
 Weapon::Weapon(std::string nm, ItemType tp, std::vector<Enchant*> nv, int rng, WeaponType st) : Item(nm, tp, nv), _range(rng), _subtype(st) {

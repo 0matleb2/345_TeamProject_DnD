@@ -7,10 +7,10 @@
 Item::Item() : _name("Default"), _type(ItemType::OTHER), _enchant(std::vector<Enchant*>()) {
 }
 
-//! parametrized constructor accepting a std::string for item _name, enum for _type, and a vector of Enchants
+//! parametrized constructor accepting a std::string for item _name, enum for _type, and a std::vector of Enchants
 //! @param nm : _name of Item
 //! @param tp : _type of Item
-//! @param nv : vector of Enchants
+//! @param nv : std::vector of Enchants
 Item::Item(std::string nm, ItemType tp, std::vector<Enchant*> nv) : _name(nm), _type(tp), _enchant(nv) {
 }
 

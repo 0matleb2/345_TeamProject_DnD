@@ -175,6 +175,7 @@
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapCharacter.cpp" />
     <ClCompile Include="MapContainer.cpp" />

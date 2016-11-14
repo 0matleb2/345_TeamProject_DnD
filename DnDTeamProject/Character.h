@@ -7,21 +7,20 @@
 #include "Dice.h"
 #include "ItemContainer.h"
 #include "Observable.h"
-using namespace std;
 
 class Character: public Observable {
 
 public:
 
 	Character();
-	Character(string, string, int);
+	Character(std::string, std::string, int);
 	Character(int, int, int, int, int, int);
 	Character(std::string name, std::string charaClass, int lvl, int str, int dex, int con, int intel, int wis, int cha);
 	Character(const Character& original);
 	~Character();
 
-	string getName();
-	string getClass();
+	std::string getName();
+	std::string getClass();
 	int getLevel();
 	int getStrength();
 	int getDexterity();
@@ -51,8 +50,8 @@ public:
 	Equipment* getEquippedBoots();
 	Equipment* getEquippedRing();
 
-	void setName(string s);
-	void setClass(string s);
+	void setName(std::string s);
+	void setClass(std::string s);
 	void setLevel(int i);
 	void setExpPoints(int i);
 	void setCurrentHitPoints(int i);
@@ -95,8 +94,8 @@ public:
 
 private:
 
-	string _name;
-	string _class;
+	std::string _name;
+	std::string _class;
 	int _lvl;
 	int _xp;
 	int _abilityScores[6]; //str, dex, cons, int, wisd, char
