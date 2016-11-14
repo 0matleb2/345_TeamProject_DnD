@@ -36,13 +36,13 @@ Character::Character() {
 	setInitialMaxHP(_lvl, abilityModifier(_abilityScores[2]));		//_abilityScores[2] is constitution
 	_hp = _maxHp;
 	//equipment
-	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, vector<Enchant*>(), 0, WeaponType::MELEE);
-	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, vector<Enchant*>());
-	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, vector<Enchant*>());
-	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, vector<Enchant*>());
-	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, vector<Enchant*>());
-	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, vector<Enchant*>());
-	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, vector<Enchant*>());
+	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, std::vector<Enchant*>(), 0, WeaponType::MELEE);
+	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, std::vector<Enchant*>());
+	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, std::vector<Enchant*>());
+	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, std::vector<Enchant*>());
+	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, std::vector<Enchant*>());
+	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, std::vector<Enchant*>());
+	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, std::vector<Enchant*>());
 	_backpack = new ItemContainer();
 	updateModifiersAndBonuses();
 }
@@ -51,7 +51,7 @@ Character::Character() {
 //! @param charaClass: The wanted character class (Fighter is the only choice at the moment)
 //! @param lvl: The wanted character _lvl
 //! All Stats with the exception of _attackBonus() are generated upon creation
-Character::Character(string charaName,  string charaClass, int lvl) {
+Character::Character(std::string charaName,  std::string charaClass, int lvl) {
 	_name = charaName;
 	_class = charaClass;
 	_lvl = lvl;
@@ -66,7 +66,7 @@ Character::Character(string charaName,  string charaClass, int lvl) {
 	updateBaseAttackBonus();
 
 	//rolling for initial Stats
-	vector<int> vec;
+	std::vector<int> vec;
 	// Rolls 4d20 and keeps the three highest rolls for each ability score
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -90,13 +90,13 @@ Character::Character(string charaName,  string charaClass, int lvl) {
 	_hp = _maxHp;
 
 	//equipment
-	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, vector<Enchant*>(), 0, WeaponType::MELEE);
-	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, vector<Enchant*>());
-	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, vector<Enchant*>());
-	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, vector<Enchant*>());
-	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, vector<Enchant*>());
-	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, vector<Enchant*>());
-	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, vector<Enchant*>());
+	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, std::vector<Enchant*>(), 0, WeaponType::MELEE);
+	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, std::vector<Enchant*>());
+	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, std::vector<Enchant*>());
+	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, std::vector<Enchant*>());
+	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, std::vector<Enchant*>());
+	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, std::vector<Enchant*>());
+	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, std::vector<Enchant*>());
 	_backpack = new ItemContainer();
 
 	_damageBonus = _strengthModifier;
@@ -136,13 +136,13 @@ Character::Character(std::string name, std::string charaClass, int lvl, int str,
 	setInitialMaxHP(_lvl, _constitutionModifier);
 	_hp = _maxHp;
 	//equipment
-	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, vector<Enchant*>(), 0, WeaponType::MELEE);
-	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, vector<Enchant*>());
-	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, vector<Enchant*>());
-	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, vector<Enchant*>());
-	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, vector<Enchant*>());
-	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, vector<Enchant*>());
-	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, vector<Enchant*>());
+	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, std::vector<Enchant*>(), 0, WeaponType::MELEE);
+	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, std::vector<Enchant*>());
+	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, std::vector<Enchant*>());
+	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, std::vector<Enchant*>());
+	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, std::vector<Enchant*>());
+	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, std::vector<Enchant*>());
+	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, std::vector<Enchant*>());
 	_backpack = new ItemContainer();
 
 	_damageBonus = _strengthModifier;
@@ -182,13 +182,13 @@ Character::Character(int str, int dex, int con, int intel, int wis, int cha) {
 	_maxHp = 10;
 	_hp = 10;
 	//equipment
-	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, vector<Enchant*>(), 0, WeaponType::MELEE);
-	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, vector<Enchant*>());
-	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, vector<Enchant*>());
-	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, vector<Enchant*>());
-	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, vector<Enchant*>());
-	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, vector<Enchant*>());
-	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, vector<Enchant*>());
+	_weapon = new Weapon("Basic Sword", ItemType::WEAPON, std::vector<Enchant*>(), 0, WeaponType::MELEE);
+	_equipment[0] = new Equipment("Basic Shield", ItemType::SHIELD, std::vector<Enchant*>());
+	_equipment[1] = new Equipment("Basic Helmet", ItemType::HELMET, std::vector<Enchant*>());
+	_equipment[2] = new Equipment("Basic Armor", ItemType::ARMOR, std::vector<Enchant*>());
+	_equipment[3] = new Equipment("Basic Belt", ItemType::BELT, std::vector<Enchant*>());
+	_equipment[4] = new Equipment("Basic Boots", ItemType::BOOTS, std::vector<Enchant*>());
+	_equipment[5] = new Equipment("Basic Ring", ItemType::RING, std::vector<Enchant*>());
 	_backpack = new ItemContainer();
 
 	_damageBonus = _strengthModifier;
@@ -245,7 +245,7 @@ Character::~Character() {
 	delete _backpack;
 	_backpack = NULL;
 
-	cout << "Character object has been destroyed" << endl;
+	std::cout << "Character object has been destroyed" << std::endl;
 }
 
 //! Function for giving max HP for a newly-created character.
@@ -298,13 +298,13 @@ void Character::levelUpHitPointGain() {
 		// _hp initially set to -1 to show that character is still being created (see in setInitialMaxHP() function)
 		// thus signaling there is no need to print max HP increase
 		if (!(_hp == (-1) ))
-			cout << "0 (" << std::to_string(_maxHp) << "->" << std::to_string(_maxHp) << ")." << endl;
+			std::cout << "0 (" << std::to_string(_maxHp) << "->" << std::to_string(_maxHp) << ")." << std::endl;
 		gain = 0;
 	}
 	// _hp initially set to -1 to show that character is still being created (see in setInitialMaxHP() function)
 	// thus signaling there is no need to print max HP increase
 	if (!(_hp == (-1)))
-		cout << gain << " (" << std::to_string(_maxHp) << "->" << std::to_string((_maxHp + gain)) << ")" << endl;
+		std::cout << gain << " (" << std::to_string(_maxHp) << "->" << std::to_string((_maxHp + gain)) << ")" << std::endl;
 	_maxHp += gain;
 }
 
@@ -357,7 +357,7 @@ void Character::updateAttackBonus() {
 		}
 	else {
 		int enchValue = 0;
-		vector<Enchant*> enchants = _weapon->getEnch();
+		std::vector<Enchant*> enchants = _weapon->getEnch();
 		for (unsigned int i = 0; i < enchants.size(); i++) {
 			if (enchants[i]->getType() == ATK)
 				enchValue += enchants[i]->getValue();
@@ -406,85 +406,85 @@ void Character::hit(int damage) {
 
 //! Function to print out the Character's Stats, attributes, and all the info stored in a nice and pretty way
 void Character::printStats() {
-	cout << "\n\n== CHARACTER SHEET ==" << endl;
-	cout << "NAME: " << getName() << endl;
-	cout << "STATUS: " << (_isAlive ? "Alive" : "Dead") << endl;
-	cout << "CLASS: " << getClass() << endl;
-	cout << "LEVEL: " << getLevel() << endl;
-	cout << "EXP: " << getExpPoints() << endl;
-	cout << "HIT POINTS: " << getCurrentHitPoints() << " out of " << getMaxHitPoints() << endl;
-	cout << "STR: " << getStrength() << " (modifier: " << getStrengthModifier() << ")" << endl;
-	cout << "DEX: " << getDexterity() << " (modifier: " << getDexterityModifier() << ")" << endl;
-	cout << "CON: " << getConstitution() << " (modifier: " << getConstitutionModifier() << ")" << endl;
-	cout << "INT: " << getIntelligence() << " (modifier: " << getIntelligenceModifier() << ")" << endl;
-	cout << "WIS: " << getWisdom() << " (modifier: " << getWisdomModifier() << ")" << endl;
-	cout << "CHA: " << getCharisma() << " (modifier: " << getCharismaModifier() << ")" << endl;
-	cout << "ARMOR CLASS: " << getArmorClass() << endl;
+	std::cout << "\n\n== CHARACTER SHEET ==" << std::endl;
+	std::cout << "NAME: " << getName() << std::endl;
+	std::cout << "STATUS: " << (_isAlive ? "Alive" : "Dead") << std::endl;
+	std::cout << "CLASS: " << getClass() << std::endl;
+	std::cout << "LEVEL: " << getLevel() << std::endl;
+	std::cout << "EXP: " << getExpPoints() << std::endl;
+	std::cout << "HIT POINTS: " << getCurrentHitPoints() << " out of " << getMaxHitPoints() << std::endl;
+	std::cout << "STR: " << getStrength() << " (modifier: " << getStrengthModifier() << ")" << std::endl;
+	std::cout << "DEX: " << getDexterity() << " (modifier: " << getDexterityModifier() << ")" << std::endl;
+	std::cout << "CON: " << getConstitution() << " (modifier: " << getConstitutionModifier() << ")" << std::endl;
+	std::cout << "INT: " << getIntelligence() << " (modifier: " << getIntelligenceModifier() << ")" << std::endl;
+	std::cout << "WIS: " << getWisdom() << " (modifier: " << getWisdomModifier() << ")" << std::endl;
+	std::cout << "CHA: " << getCharisma() << " (modifier: " << getCharismaModifier() << ")" << std::endl;
+	std::cout << "ARMOR CLASS: " << getArmorClass() << std::endl;
 	//printing base attack bonus
-	cout << "BASE ATTACK BONUS: " << "+" << getBaseAttackBonus(0);
+	std::cout << "BASE ATTACK BONUS: " << "+" << getBaseAttackBonus(0);
 	if (_lvl > 5)
-		cout << "/+" << getBaseAttackBonus(1);
+		std::cout << "/+" << getBaseAttackBonus(1);
 	if (_lvl > 10)
-		cout << "/+" << getBaseAttackBonus(2);
+		std::cout << "/+" << getBaseAttackBonus(2);
 	if (_lvl > 15)
-		cout << "/+" << getBaseAttackBonus(3);
-	cout << endl;
+		std::cout << "/+" << getBaseAttackBonus(3);
+	std::cout << std::endl;
 	//printing attack bonus
-	cout << "ATTACK BONUS: " << ((getAttackBonus(0) > (-1)) ? "+" : "") << getAttackBonus(0);
+	std::cout << "ATTACK BONUS: " << ((getAttackBonus(0) > (-1)) ? "+" : "") << getAttackBonus(0);
 	if (_lvl > 5)
-		cout << ((getAttackBonus(1) > (-1)) ? "/+" : "/") << getAttackBonus(1);
+		std::cout << ((getAttackBonus(1) > (-1)) ? "/+" : "/") << getAttackBonus(1);
 	if (_lvl > 10)
-		cout << ((getAttackBonus(2) > (-1)) ? "/+" : "/") << getAttackBonus(2);
+		std::cout << ((getAttackBonus(2) > (-1)) ? "/+" : "/") << getAttackBonus(2);
 	if (_lvl > 15)
-		cout << ((getAttackBonus(3) > (-1)) ? "/+" : "/") << getAttackBonus(3);
-	cout << endl;
-	cout << "DAMAGE BONUS: " << getDamageBonus() << endl;
-	cout << endl;
+		std::cout << ((getAttackBonus(3) > (-1)) ? "/+" : "/") << getAttackBonus(3);
+	std::cout << std::endl;
+	std::cout << "DAMAGE BONUS: " << getDamageBonus() << std::endl;
+	std::cout << std::endl;
 	printEquippedItems();
-	cout << endl;
+	std::cout << std::endl;
 	_backpack->printContents();
-	cout << "\n\n" << endl;
+	std::cout << "\n\n" << std::endl;
 }
 
 //! Function to print out the character's worn equipment
 void Character::printEquippedItems() {
-	cout << "EQUIPPED" << endl;
-	cout << "========" << endl;
+	std::cout << "EQUIPPED" << std::endl;
+	std::cout << "========" << std::endl;
 	//printing weapon
-	cout << "WEAPON: ";
+	std::cout << "WEAPON: ";
 	if (!(_weapon == NULL))
-		cout << _weapon->getName() << " (TYPE: " << _weapon->getSubtype() << ")" << endl;
-	else cout << "None (TYPE: Melee)" << endl;
+		std::cout << _weapon->getName() << " (TYPE: " << _weapon->getSubtype() << ")" << std::endl;
+	else std::cout << "None (TYPE: Melee)" << std::endl;
 	//printing shield
-	cout << "SHIELD: ";
+	std::cout << "SHIELD: ";
 	if (!(_equipment[0] == NULL))
-		cout << _equipment[0]->getName() << endl;
-	else cout << "None" << endl;
+		std::cout << _equipment[0]->getName() << std::endl;
+	else std::cout << "None" << std::endl;
 	//printing helmet
-	cout << "HELMET: ";
+	std::cout << "HELMET: ";
 	if (!(_equipment[1] == NULL))
-		cout << _equipment[1]->getName() << endl;
-	else cout << "None" << endl;
+		std::cout << _equipment[1]->getName() << std::endl;
+	else std::cout << "None" << std::endl;
 	//printing armor
-	cout << "ARMOR: ";
+	std::cout << "ARMOR: ";
 	if (!(_equipment[2] == NULL))
-		cout << _equipment[2]->getName() << endl;
-	else cout << "None" << endl;
+		std::cout << _equipment[2]->getName() << std::endl;
+	else std::cout << "None" << std::endl;
 	//printing belt
-	cout << "BELT: ";
+	std::cout << "BELT: ";
 	if (!(_equipment[3] == NULL))
-		cout << (*_equipment[3]).getName() << endl;
-	else cout << "None" << endl;
+		std::cout << (*_equipment[3]).getName() << std::endl;
+	else std::cout << "None" << std::endl;
 	//printing boots
-	cout << "BOOTS: ";
+	std::cout << "BOOTS: ";
 	if (!(_equipment[4] == NULL))
-		cout << _equipment[4]->getName() << endl;
-	else cout << "None" << endl;
+		std::cout << _equipment[4]->getName() << std::endl;
+	else std::cout << "None" << std::endl;
 	//printing ring
-	cout << "RING: ";
+	std::cout << "RING: ";
 	if (!(_equipment[5] == NULL))
-		cout << _equipment[5]->getName() << endl;
-	else cout << "None" << endl;
+		std::cout << _equipment[5]->getName() << std::endl;
+	else std::cout << "None" << std::endl;
 }
 
 // FROM ROBERT: Code below is Charles' part. Commenting this out, as this is not relevant to my assignment submission
@@ -563,7 +563,7 @@ void Character::gainExp(int i) {
 	}
 	//output into terminal for each _lvl-up
 	while (_lvl < (newLvlTemp - 1)) {
-		cout << "\nYou have _lvled up: " << _lvl << "->" << (_lvl + 1) << endl;
+		std::cout << "\nYou have _lvled up: " << _lvl << "->" << (_lvl + 1) << std::endl;
 		_lvl++;
 		//note for later: any _lvl-up related functions can be called here
 		levelUpHitPointGain();
@@ -577,7 +577,7 @@ void Character::gainExp(int i) {
 //! @param it: item being taken
 void Character::takeItem(Item* it) {
 	_backpack->addItem(it);
-	cout << "\"" << it->getName() << "\" has been taken." << endl;
+	std::cout << "\"" << it->getName() << "\" has been taken." << std::endl;
 	//notifying CharacterObserver of changes
 	notify();
 }
@@ -597,7 +597,7 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_weapon = static_cast<Weapon*>(_backpack->removeItem(itemIndex));
 			//addWeaponEnch(_weapon);
-			cout << "Weapon \"" << _weapon->getName() << "\" has been _equipment." << endl;
+			std::cout << "Weapon \"" << _weapon->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		case ItemType::SHIELD:
@@ -606,7 +606,7 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_equipment[0] = static_cast<Equipment*>(_backpack->removeItem(itemIndex));
 			addShieldEnchEffects(_equipment[0]);
-			cout << "Shield \"" << _equipment[0]->getName() << "\" has been _equipment." << endl;
+			std::cout << "Shield \"" << _equipment[0]->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		case ItemType::HELMET:
@@ -615,7 +615,7 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_equipment[1] = static_cast<Equipment*>(_backpack->removeItem(itemIndex));
 			addHelmetEnchEffects(_equipment[1]);
-			cout << "Helmet \"" << _equipment[1]->getName() << "\" has been _equipment." << endl;
+			std::cout << "Helmet \"" << _equipment[1]->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		case ItemType::ARMOR:
@@ -624,7 +624,7 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_equipment[2] = static_cast<Equipment*>(_backpack->removeItem(itemIndex));
 			addArmorEnchEffects(_equipment[2]);
-			cout << "Armor \"" << _equipment[2]->getName() << "\" has been _equipment." << endl;
+			std::cout << "Armor \"" << _equipment[2]->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		case ItemType::BELT:
@@ -633,7 +633,7 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_equipment[3] = static_cast<Equipment*>(_backpack->removeItem(itemIndex));
 			addBeltEnchEffects(_equipment[3]);
-			cout << "Belt \"" << _equipment[3]->getName() << "\" has been _equipment." << endl;
+			std::cout << "Belt \"" << _equipment[3]->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		case ItemType::BOOTS:
@@ -642,7 +642,7 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_equipment[4] = static_cast<Equipment*>(_backpack->removeItem(itemIndex));
 			addBootsEnchEffects(_equipment[4]);
-			cout << "Boots \"" << _equipment[4]->getName() << "\" has been _equipment." << endl;
+			std::cout << "Boots \"" << _equipment[4]->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		case ItemType::RING:
@@ -651,16 +651,16 @@ void Character::equipItem(Item* it) {
 			//equip the item
 			_equipment[5] = static_cast<Equipment*>(_backpack->removeItem(itemIndex));
 			addRingEnchEffects(_equipment[5]);
-			cout << "Ring \"" << _equipment[5]->getName() << "\" has been _equipment." << endl;
+			std::cout << "Ring \"" << _equipment[5]->getName() << "\" has been _equipment." << std::endl;
 			updateModifiersAndBonuses();
 			break;
 		default:
-			cout << "Item \"" << it->getName() << "\" cannot be _equipment." << endl;
+			std::cout << "Item \"" << it->getName() << "\" cannot be _equipment." << std::endl;
 			break;
 		}
 	}
 	else
-		cout << "You do not have \"" << it->getName() << "." << endl;
+		std::cout << "You do not have \"" << it->getName() << "." << std::endl;
 }
 
 //! function for unequipping items: adds items back into the _backpack, and sets element at array index to point to null
@@ -691,7 +691,7 @@ void Character::unequipItem(int i) {
 					removeRingEnchEffects(_equipment[i]);
 					break;
 				default:
-					cout << "Error" << endl;
+					std::cout << "Error" << std::endl;
 					break;
 			}
 			_backpack->addItem(_equipment[i]);
@@ -734,7 +734,7 @@ void Character::unequipWeapon() {
 //! function for removing a to-be-un_equipment weapon's enchantments
 //! @param w: to-be-removed weapon
 void Character::removeWeaponEnchEffects(Weapon* w) {
-	vector<Enchant*> enchants = w->getEnch();
+	std::vector<Enchant*> enchants = w->getEnch();
 	//removing damage attack bonus enchantment
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == ATK)
@@ -751,7 +751,7 @@ void Character::removeWeaponEnchEffects(Weapon* w) {
 //! function for removing a to-be-un_equipment shield's enchantments
 //! @param e: to-be-removed shield
 void Character::removeShieldEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -762,7 +762,7 @@ void Character::removeShieldEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment helmet's enchantments
 //! @param e: to-be-removed helmet
 void Character::removeHelmetEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -783,7 +783,7 @@ void Character::removeHelmetEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment armor's enchantments
 //! @param e: to-be-removed armor
 void Character::removeArmorEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -794,7 +794,7 @@ void Character::removeArmorEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment belt's enchantments
 //! @param e: to-be-removed belt
 void Character::removeBeltEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//removing constitution enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == CON)
@@ -810,7 +810,7 @@ void Character::removeBeltEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment boots's enchantments
 //! @param e: to-be-removed boots
 void Character::removeBootsEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -826,7 +826,7 @@ void Character::removeBootsEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment ring's enchantments
 //! @param e: to-be-removed ring
 void Character::removeRingEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -855,7 +855,7 @@ void Character::removeRingEnchEffects(Equipment* e) {
 }
 
 void Character::addShieldEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -863,7 +863,7 @@ void Character::addShieldEnchEffects(Equipment* e) {
 	}
 }
 void Character::addHelmetEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -881,7 +881,7 @@ void Character::addHelmetEnchEffects(Equipment* e) {
 	}
 }
 void Character::addArmorEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -889,7 +889,7 @@ void Character::addArmorEnchEffects(Equipment* e) {
 	}
 }
 void Character::addBeltEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//adding constitution enhancement
 	for (int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == CON)
@@ -902,7 +902,7 @@ void Character::addBeltEnchEffects(Equipment* e) {
 	}
 }
 void Character::addBootsEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//adding armor class enhancement
 	for (int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -915,7 +915,7 @@ void Character::addBootsEnchEffects(Equipment* e) {
 	}
 }
 void Character::addRingEnchEffects(Equipment* e) {
-	vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnch();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -949,20 +949,20 @@ void Character::addRingEnchEffects(Equipment* e) {
 Item* Character::dropItem(int i) {
 	Item* droppedItem = _backpack->removeItem(i);
 	//notifying CharacterObserver of changes
-	cout << "Dropped item \"" << droppedItem->getName() << "\" from _backpack." << endl;
+	std::cout << "Dropped item \"" << droppedItem->getName() << "\" from _backpack." << std::endl;
 	notify();
 	return droppedItem;
 }
 
 //! getter method for _name
-//! @return _name
-string Character::getName() {
+//! @return _name
+std::string Character::getName() {
 	return _name;
 }
 
 //! getter method for _class
-//! @return _class
-string Character::getClass() {
+//! @return _class
+std::string Character::getClass() {
 	return _class;
 }
 
@@ -1109,7 +1109,7 @@ Equipment* Character::getEquippedRing() {
 
 //! setter for character name
 //! @param n: new name
-void Character::setName(string n) {
+void Character::setName(std::string n) {
 	_name = n;
 	//notifying CharacterObserver of changes
 	notify();
@@ -1117,7 +1117,7 @@ void Character::setName(string n) {
 
 //! setter for character class
 //! @param c: new class
-void Character::setClass(string c) {
+void Character::setClass(std::string c) {
 	_class = c;
 	//notifying CharacterObserver of changes
 	notify();

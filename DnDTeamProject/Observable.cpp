@@ -1,5 +1,4 @@
 #include "Observable.h"
-using namespace std;
 
 //! constructor
 Observable::Observable() {}

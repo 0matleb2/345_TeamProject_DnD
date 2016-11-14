@@ -83,7 +83,7 @@ Map::Map(const int w, const int h) {
 	_width = w;
 	_height = h;
 
-	//Cells are instantiated in the grid vector, it is one dimensional for simpilicity
+	//Cells are instantiated in the grid std::vector, it is one dimensional for simpilicity
 	_grid.reserve(w*h);
 	for (int i = 0; i < w*h; i++) {
 		_grid.push_back(Cell(i%w, i / w));
@@ -247,7 +247,7 @@ void Map::addNPC(Character* npc, int x, int y, char sprite)
 {
 	if (_grid[y*_width + x].getSprite() != '.')
 	{
-		cout << "Failed to add npc. Cell occupied" << endl;
+		std::cout << "Failed to add npc. Cell occupied" << std::endl;
 		return;
 	}
 
@@ -259,7 +259,7 @@ void Map::addNPC(Character* npc, int x, int y, char sprite)
 void Map::addLoot(ItemContainer* cont, int x, int y, char sprite) {
 	if (_grid[y*_width + x].getSprite() != '.')
 	{
-		cout << "Failed to add container. Cell Occupied" << endl;
+		std::cout << "Failed to add container. Cell Occupied" << std::endl;
 		return;
 	}
 
@@ -440,32 +440,32 @@ void Map::examine(char direction) {
 		break;
 	}
 
-	cout << "Return to examine menu" << endl;
+	std::cout << "Return to examine menu" << std::endl;
 	system("PAUSE");
 	notify();
 }
 
 void Map::examine(int x, int y) {
 	if (x < 0 || y < 0 || x >= _width || y >= _height) {
-		cout << "Cannot examine. Out of Bounds." << endl;
+		std::cout << "Cannot examine. Out of Bounds." << std::endl;
 		return;
 	}
 
 	char mapSprite = _grid[y * _width + x].getSprite();
 	if (mapSprite == '.') {
-		cout << "There is nothing here" << endl;
+		std::cout << "There is nothing here" << std::endl;
 		return;
 	}
 	if (mapSprite == '#') {
-		cout << "This is a normal-looking wall." << endl;
+		std::cout << "This is a normal-looking wall." << std::endl;
 		return;
 	}
 	if (mapSprite == '/') {
-		cout << "This is the entrance." << endl;
+		std::cout << "This is the entrance." << std::endl;
 		return;
 	}
 	if (mapSprite == '\\') {
-		cout << "This is the _exit." << endl;
+		std::cout << "This is the _exit." << std::endl;
 		return;
 	}
 
@@ -490,7 +490,7 @@ void Map::examine(int x, int y) {
 	}
 
 	//no match found
-	cout << "object unknown" << endl;
+	std::cout << "object unknown" << std::endl;
 }
 
 bool Map::exitReached() {

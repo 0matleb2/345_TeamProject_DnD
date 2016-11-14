@@ -87,8 +87,8 @@ private:
 	Cell* _entry;
 	Cell* _exit;
 	MapCharacter* _player;
-	vector<MapCharacter*> _npcs;
-	vector<MapContainer*> _itemContainers;
+	std::vector<MapCharacter*> _npcs;
+	std::vector<MapContainer*> _itemContainers;
 
 
 	bool validate(Cell* vertex);
