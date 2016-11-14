@@ -8,6 +8,8 @@ class Observer;
 
 class Map : public Observable {
 public:
+	// forward declaration
+	class SearchCell;
 
 	class Cell {
 
@@ -23,6 +25,13 @@ public:
 			int getY();
 			void setX(int x);
 			void setY(int y);
+
+			// check if cells have same coordinates
+			bool sameCell(Cell* c2);
+
+			//used for A* alg
+			int calcH(Cell* c2);
+			bool isIn(std::vector<SearchCell>& v);
 
 			Cell* getNorth();
 			Cell* getEast();
@@ -52,6 +61,34 @@ public:
 			}
 	};
 
+	//! class used in the A* algorithm
+	class SearchCell
+	{
+	public:
+		SearchCell();
+		// start node (no parent)
+		SearchCell(Cell* c, int gv, int hv);
+		// with parent
+		SearchCell(Cell* c, SearchCell* p, int gv, int hv);
+		~SearchCell();
+
+		// getters
+		Cell* getCell();
+		SearchCell* getParent();
+		int getG();
+		int getH();
+
+		int calcF();
+
+		
+
+	private:
+		Cell* _cell;
+		SearchCell* _parent;
+		int _gValue;
+		int _hValue;
+	};
+
 	Map();
 	Map(int w, int h);
 	~Map();
@@ -61,6 +98,9 @@ public:
 	MapCharacter* getPC();
 	MapCharacter* getNPC(int x, int y);
 	MapContainer* getLoot(int x, int y);
+
+	// get cell at (x, y)
+	Map::Cell* getCell(int x, int y);
 
 	void setCell(int x, int y, char c);
 	void setEntry(int x, int y);
@@ -73,11 +113,20 @@ public:
 	bool validate();
 	void printPC();
 	void moveCharacter(MapCharacter* actor, char direction);
+	void moveChar(MapCharacter* actor, int x, int y);
 	// allows playable character to get information on contents of adjacent tiles
 	void examine(char dir);
 	void examine(int x, int y);
 	bool exitReached();
 	void rescale(int tgt_lvl);
+
+	// related to pathfinding
+
+	// find smallest f value in a given vector
+	int smallestF(std::vector<SearchCell>* v);
+	
+	//move npc 1 square towards target
+	void advance(MapCharacter* actor, Cell* target);
 
 private:
 
@@ -87,8 +136,8 @@ private:
 	Cell* _entry;
 	Cell* _exit;
 	MapCharacter* _player;
-	vector<MapCharacter*> _npcs;
-	vector<MapContainer*> _itemContainers;
+	std::vector<MapCharacter*> _npcs;
+	std::vector<MapContainer*> _itemContainers;
 
 
 	bool validate(Cell* vertex);

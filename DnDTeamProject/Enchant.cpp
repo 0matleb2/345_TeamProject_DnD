@@ -5,60 +5,45 @@
 #include "Enchant.h"
 
 
-//! default constructor
-Enchant::Enchant() : type(Stats::STR), value(0) {
+Enchant::Enchant() : _type(Stats::STR), _value(0) {
 }
 
-//! constructor receives type of stat as an enum and value as an int
-//! @param type : type of stat affected
-//! @param value : bonus value
-Enchant::Enchant(Stats t, int v) : type(t), value(v) {
+Enchant::Enchant(Stats t, int v) : _type(t), _value(v) {
 }
 
-//! copy constructor
-//! @param orig : original enchant to be copied
-Enchant::Enchant(const Enchant& orig) : type(orig.type), value(orig.value) {
+Enchant::Enchant(const Enchant& orig) : _type(orig._type), _value(orig._value) {
 }
 
-//! destructor
 Enchant::~Enchant() {
 }
 
-//prints out information
-void Enchant::print() {
-	std::cout << "Enchantment Type: " << type << ", Value: +" << value << std::endl;
-}
 
-//! accessor for stat affected by Enchant
-//! @return : type of stat of Enchant
+//Accessors
 Stats Enchant::getType() {
-	return type;
+	return _type;
 }
 
-//! accessor for bonus value of Enchant
-//! @return : value of bonus
 int Enchant::getValue() {
-	return value;
+	return _value;
 }
 
-//! mutator for type
-//! @param nt : new stat type to set
+
+//Mutators
 void Enchant::setType(Stats nt) {
-	type = nt;
+	_type = nt;
 }
 
-//! mutator for bonus value
-//! @param nv : new value for Enchant
 void Enchant::setValue(int nv) {
-	value = nv;
+	_value = nv;
 }
 
 
 
-//! overload for output operator
-std::ostream& operator<<(std::ostream& op, Enchant e)
-{
-	op << "Enchantment Type: " << e.getType() << ", Value: +" << e.getValue() << std::endl;
+void Enchant::print() {
+	std::cout << "Enchantment Type: " << _type << ", Value: +" << _value << std::endl;
+}
 
+std::ostream& operator<<(std::ostream& op, Enchant e) {
+	op << "Enchantment Type: " << e.getType() << ", Value: +" << e.getValue() << std::endl;
 	return op;
 }

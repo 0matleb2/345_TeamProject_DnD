@@ -55,7 +55,7 @@ void MapContainer::rescale(int targetLvl) {
 }
 
 void MapContainer::print() { 
-	cout << "Container _itemContainer at position: (" << _x << ", " << _y << ")" << endl;
-	cout << "Details:" << endl;
+	std::cout << "Container _itemContainer at position: (" << _x << ", " << _y << ")" << std::endl;
+	std::cout << "Details:" << std::endl;
 	_itemContainer->printContents();
 }

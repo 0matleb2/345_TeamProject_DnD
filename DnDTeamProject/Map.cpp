@@ -67,8 +67,95 @@ void Map::Cell::setWest(Map::Cell* cell) {
 void Map::Cell::setDfsVisited(bool b) {
 	_dfsVisited = b;
 }
+
+//! calculate H-value, used for A*
+int Map::Cell::calcH(Cell* c2)
+{
+	int temp = abs(c2->getX() - _x) + abs(c2->getY() - _y);
+
+	return temp;
+}
+
+bool Map::Cell::sameCell(Cell* c2)
+{
+	if (_x == c2->getX() && _y == c2->getY())
+		return true;
+
+	return false;
+}
+
+bool Map::Cell::isIn(std::vector<Map::SearchCell>& v)
+{
+	if (v.size() > 0)
+	{
+		for (int i = 0; i < v.size(); i++)
+		{
+			if (sameCell(v[i].getCell()))
+				return true;
+		}
+	}
+
+	return false;
+}
+
+
 //[X] End of Cell nested class
 
+//[$] Start of SearchCell nested class
+
+Map::SearchCell::SearchCell()
+{
+
+}
+
+// used for start
+Map::SearchCell::SearchCell(Cell* c, int gv, int hv) : _cell(c), _parent(nullptr), _gValue(gv), _hValue(hv)
+{
+	
+}
+
+// for all nodes except start
+Map::SearchCell::SearchCell(Cell* c, SearchCell* p, int gv, int hv) : _cell(c), _parent(p), _gValue(gv), _hValue(hv)
+{
+
+}
+
+Map::SearchCell::~SearchCell()
+{
+
+}
+
+// getters
+
+Map::Cell* Map::SearchCell::getCell()
+{
+	return _cell;
+}
+
+Map::SearchCell* Map::SearchCell::getParent()
+{
+	return _parent;
+}
+
+int Map::SearchCell::getG()
+{
+	return _gValue;
+}
+
+int Map::SearchCell::getH()
+{
+	return _hValue;
+}
+
+//! calculate F-value of cell
+int Map::SearchCell::calcF()
+{
+	return (_gValue + _hValue);
+}
+
+
+
+//[X] End of SearchCell nested class
 
 
 Map::Map() {
@@ -83,7 +170,7 @@ Map::Map(const int w, const int h) {
 	_width = w;
 	_height = h;
 
-	//Cells are instantiated in the grid vector, it is one dimensional for simpilicity
+	//Cells are instantiated in the grid std::vector, it is one dimensional for simpilicity
 	_grid.reserve(w*h);
 	for (int i = 0; i < w*h; i++) {
 		_grid.push_back(Cell(i%w, i / w));
@@ -208,6 +295,13 @@ MapContainer* Map::getLoot(int x, int y)
 	return nullptr;
 }
 
+Map::Cell* Map::getCell(int x, int y)
+{
+	if (x >= 0 && x < _width && y >= 0 && y < _height)
+		return &_grid[y*_width + x];
+
+	return nullptr;
+}
 
 //Map mutators
 void Map::setCell(int x, int y, char c) {
@@ -247,7 +341,7 @@ void Map::addNPC(Character* npc, int x, int y, char sprite)
 {
 	if (_grid[y*_width + x].getSprite() != '.')
 	{
-		cout << "Failed to add npc. Cell occupied" << endl;
+		std::cout << "Failed to add npc. Cell occupied" << std::endl;
 		return;
 	}
 
@@ -259,7 +353,7 @@ void Map::addNPC(Character* npc, int x, int y, char sprite)
 void Map::addLoot(ItemContainer* cont, int x, int y, char sprite) {
 	if (_grid[y*_width + x].getSprite() != '.')
 	{
-		cout << "Failed to add container. Cell Occupied" << endl;
+		std::cout << "Failed to add container. Cell Occupied" << std::endl;
 		return;
 	}
 
@@ -418,6 +512,30 @@ void Map::moveCharacter(MapCharacter* actor, char direction) {
 	}
 }
 
+//! move a character to given coords
+void Map::moveChar(MapCharacter* actor, int x, int y)
+{
+	for (int i = 0; i < _grid.size(); i++)
+	{
+		if (_grid[i].getX() == x && _grid[i].getY() == y)
+		{
+			// check if cell is open
+			if (_grid[i].getSprite() == '.')
+			{
+				// set old cell to blank
+				setCell(actor->getX(), actor->getY(), '.');
+
+				// set actor's new coords
+				actor->setX(x);
+				actor->setY(y);
+
+				// set symbol on new cell
+				setCell(x, y, actor->getSymbol());
+			}
+		}
+	}
+}
+
 void Map::examine(char direction) {
 
 	int x = getPC()->getX();
@@ -440,32 +558,32 @@ void Map::examine(char direction) {
 		break;
 	}
 
-	cout << "Return to examine menu" << endl;
+	std::cout << "Return to examine menu" << std::endl;
 	system("PAUSE");
 	notify();
 }
 
 void Map::examine(int x, int y) {
 	if (x < 0 || y < 0 || x >= _width || y >= _height) {
-		cout << "Cannot examine. Out of Bounds." << endl;
+		std::cout << "Cannot examine. Out of Bounds." << std::endl;
 		return;
 	}
 
 	char mapSprite = _grid[y * _width + x].getSprite();
 	if (mapSprite == '.') {
-		cout << "There is nothing here" << endl;
+		std::cout << "There is nothing here" << std::endl;
 		return;
 	}
 	if (mapSprite == '#') {
-		cout << "This is a normal-looking wall." << endl;
+		std::cout << "This is a normal-looking wall." << std::endl;
 		return;
 	}
 	if (mapSprite == '/') {
-		cout << "This is the entrance." << endl;
+		std::cout << "This is the entrance." << std::endl;
 		return;
 	}
 	if (mapSprite == '\\') {
-		cout << "This is the _exit." << endl;
+		std::cout << "This is the _exit." << std::endl;
 		return;
 	}
 
@@ -490,7 +608,7 @@ void Map::examine(int x, int y) {
 	}
 
 	//no match found
-	cout << "object unknown" << endl;
+	std::cout << "object unknown" << std::endl;
 }
 
 bool Map::exitReached() {
@@ -511,4 +629,39 @@ void Map::rescale(int targetLvl) {
 		for (int i = 0; i < _itemContainers.size(); i++)
 			_itemContainers[i]->rescale(targetLvl);
 	}
+}
+
+void Map::advance(MapCharacter* actor, Cell* target)
+{
+	std::vector<SearchCell> closed = std::vector<SearchCell>();
+	std::vector<SearchCell> open = std::vector<SearchCell>();
+
+	Cell* startCell = getCell(actor->getX(), actor->getY());
+	SearchCell initial = SearchCell(startCell, 0, startCell->calcH(target));
+
+	open.push_back(initial);
+	
+	bool found = false;
+
+	/*
+	while (open.size() != 0)
+	{
+		int current = smallestF(&open);
+
+		SearchCell temp
+	}
+	*/
+}
+
+int Map::smallestF(std::vector<Map::SearchCell>* v)
+{
+	int indexSmall = 0;
+
+	for (int i = 0; i < v->size(); i++)
+	{
+		if (v->at(i).calcF() < v->at(i).calcF())
+			indexSmall = i;
+	}
+
+	return indexSmall;
 }

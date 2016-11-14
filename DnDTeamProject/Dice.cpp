@@ -59,7 +59,7 @@ int Dice::roll(const std::string input)
 		return (sum > 0) ? sum : 0;
 	}
 	else {
-		fatalError("Invalid string passed to Dice::roll");
+		fatalError("Invalid std::string passed to Dice::roll");
 		return -1;
 	}
 }
