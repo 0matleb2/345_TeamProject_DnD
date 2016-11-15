@@ -26,10 +26,6 @@ int Dice::roll(const std::string input)
 		int diceType = stoi(match[5]);
 		int modifier = (match[6] == "") ? 0 : stoi(match[6]);
 
-		std::set<int> validDice = { 1,4,6,8,10,12,20,100 };
-		if (!(validDice.find(diceType) != validDice.end())) {
-			fatalError("Invalid dice type passed to Dice::roll!");
-		}
 		if (bestX > numDice) {
 			fatalError("Cannot take best " + std::to_string(bestX) + " of " + std::to_string(numDice) + " dice!");
 		}

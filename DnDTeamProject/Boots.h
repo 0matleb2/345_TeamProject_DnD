@@ -1,0 +1,37 @@
+#pragma once
+#include "Item.h"
+
+
+
+class Boots : public Item {
+
+public:
+
+	Boots();
+	~Boots();
+
+	int getArmorClass();
+	int getDexterityBonus();
+
+	void setArmorClass(int armorClass);
+	void setDexterityBonus(int dexterityBonus);
+	
+	void randomBonuses();
+
+	std::string toString();
+
+private:
+
+	int _armorClass;
+	int _dexterityBonus;
+
+
+	friend class boost::serialization::access;
+	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
+		ar & boost::serialization::base_object<Item>(*this);
+		ar & _armorClass;
+		ar & _dexterityBonus;
+	}
+
+};
+

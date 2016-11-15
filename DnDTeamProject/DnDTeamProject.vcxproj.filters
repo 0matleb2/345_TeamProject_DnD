@@ -15,105 +15,81 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Equipment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Errors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemContainer.h">
+    <ClInclude Include="Dice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="Helmet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapCharacter.h">
+    <ClInclude Include="Armor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapContainer.h">
+    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapObserver.h">
+    <ClInclude Include="Shield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Observable.h">
+    <ClInclude Include="Bracers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.h">
+    <ClInclude Include="Ring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Belt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Boots.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enchant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
+    <ClInclude Include="Names.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Enums.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Equipment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Errors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapCharacter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Observable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Dice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enchant.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Helmet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Armor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shield.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bracers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Belt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Boots.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
