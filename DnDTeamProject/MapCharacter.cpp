@@ -61,5 +61,5 @@ void MapCharacter::rescale(int targetLvl) {
 void MapCharacter::print() {
 	std::cout << "Character _character at position: (" << _x << ", " << _y << ")" << std::endl;
 	std::cout << "Details:" << std::endl;
-	_character->printStats();
+	_character->printStat();
 }

@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv) {
 
-	std::vector<Enchant*> enchants{ &Enchant(Stats::ATK, 5) };
+	std::vector<Enchant*> enchants{ &Enchant(Stat::ATK, 5) };
 	Item testItem("Halberd", ItemType::WEAPON, enchants);
 
 	ItemContainer testContainer;

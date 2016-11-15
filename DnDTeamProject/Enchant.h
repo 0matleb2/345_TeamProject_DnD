@@ -16,16 +16,16 @@ class Enchant {
 public:
 
 	Enchant();
-	Enchant(Stats t, int v);
+	Enchant(Stat t, int v);
 	Enchant(const Enchant& orig);
 	~Enchant();
 
 
 
-	Stats getType();
+	Stat getType();
 	int getValue();
 
-	void setType(Stats nt);
+	void setType(Stat nt);
 	void setValue(int nv);
 
 
@@ -34,7 +34,7 @@ public:
 
 private:
 
-	Stats _type;
+	Stat _type;
 	int _value;
 
 	friend class boost::serialization::access;

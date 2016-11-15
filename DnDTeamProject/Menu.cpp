@@ -54,8 +54,10 @@ void EnchantAdd(Item* ic);
 
 void editEquipment(std::vector<Equipment*>& equipmentList, std::string equipmentTypeC, std::string equipmentType);
 void editWeapons(std::vector<Weapon*>& weaponList, std::string WeaponTypeC, std::string WeaponType, bool isMelee);
+/*
 void editEnchantments_e(std::vector<Equipment*>& equipmentList, int index);
 void editEnchantments_w(std::vector<Weapon*>& equipmentList, int index);
+*/
 
 //static std::vector storing items
 static std::vector<Weapon*> rangedWeaponList;
@@ -129,7 +131,7 @@ void start_game() {
 	std::cout << "Please select your character (select by index):" << std::endl;
 	for (int i = 0; i < savedMaps.size(); i++) {
 		std::cout << "Player Charcter #" << i << std::endl;
-		player_characters[i]->printStats();
+		player_characters[i]->printStat();
 		std::cout << std::endl;
 	}
 	int playerCharacChoice;
@@ -313,7 +315,7 @@ void characterMode(Character* c)
 {
 	bool exitMenu = false;
 
-	c->printStats();
+	c->printStat();
 
 	while (!exitMenu)
 	{
@@ -624,7 +626,7 @@ void mapAddObjects(Map& m, int width, int height)
 				}
 				else
 				{
-					savedCharacters[index]->printStats();
+					savedCharacters[index]->printStat();
 					std::cout << "Do you want to add this character?" << std::endl
 						<< "y - yes, n - no" << std::endl;
 
@@ -1122,9 +1124,9 @@ void itemCreator()
 		cItem->print();
 		system("PAUSE");
 
-		bool add_enchant = true;
+		bool add_enchants = true;
 
-		while (add_enchant)
+		while (add_enchants)
 		{
 			std::cout << "Would you like to add an Enchant?" << std::endl
 				<< "y - yes, n - no" << std::endl;
@@ -1137,7 +1139,7 @@ void itemCreator()
 				EnchantAdd(cItem);
 
 			if (choose == 'n')
-				add_enchant = false;
+				add_enchants = false;
 
 		}
 
@@ -1190,7 +1192,7 @@ void EnchantAdd(Item* ic)
 {
 	bool loop1 = true;
 
-	Stats cStat;
+	Stat Stat;
 
 	while (loop1)
 	{
@@ -1204,49 +1206,48 @@ void EnchantAdd(Item* ic)
 
 		std::cin >> choice;
 
-		switch (choice)
-		{
+		switch (choice)	{
 		case 's':
-			cStat = Stats::STR;
+			Stat = Stat::STR;
 			loop1 = false;
 			break;
 		case 'w':
-			cStat = Stats::WIS;
+			Stat = Stat::WIS;
 			loop1 = false;
 			break;
 		case 'c':
-			cStat = Stats::CON;
+			Stat = Stat::CON;
 			loop1 = false;
 			break;
 		case 'i':
-			cStat = Stats::INT;
+			Stat = Stat::INT;
 			loop1 = false;
 			break;
 		case 'd':
-			cStat = Stats::DEX;
+			Stat = Stat::DEX;
 			loop1 = false;
 			break;
 		case 'h':
-			cStat = Stats::CHA;
+			Stat = Stat::CHA;
 			loop1 = false;
 			break;
 		case 'a':
-			cStat = Stats::AC;
+			Stat = Stat::AC;
 			loop1 = false;
 			break;
 		case 't':
-			cStat = Stats::ATK;
+			Stat = Stat::ATK;
 			loop1 = false;
 			break;
 		case 'm':
-			cStat = Stats::DMG;
+			Stat = Stat::DMG;
 			loop1 = false;
 			break;
 		}
 
 		if (!loop1)
 		{
-			if (!(ic->validEnch(ic->getType(), cStat)))
+			if (!(ic->validEnch(ic->getType(), Stat)))
 			{
 				std::cout << "Invalid Enchant!" << std::endl;
 				std::cin.clear();
@@ -1277,7 +1278,7 @@ void EnchantAdd(Item* ic)
 		}
 	}
 
-	ic->addEnch(new Enchant(cStat, enVal));
+	ic->addEnchant(new Enchant(Stat, enVal));
 }
 
 void itemEditor() {
@@ -1382,7 +1383,7 @@ void editEquipment(std::vector<Equipment*>& equipmentList, std::string equipment
 				noEditChoice = false;
 				break;
 			case 2:
-				editEnchantments_e(equipmentList, indexOfItem);
+				//editEnchantments_e(equipmentList, indexOfItem);
 				noEditChoice = false;
 				break;
 			case -1:
@@ -1432,7 +1433,7 @@ void editWeapons(std::vector<Weapon*>& weaponList, std::string WeaponTypeC, std:
 				noEditChoice = false;
 				break;
 			case 2:
-				editEnchantments_w(weaponList, indexOfItem);
+				//editEnchantments_w(weaponList, indexOfItem);
 				noEditChoice = false;
 				break;
 			case -1:
@@ -1448,26 +1449,27 @@ void editWeapons(std::vector<Weapon*>& weaponList, std::string WeaponTypeC, std:
 	}
 }
 
-void editEnchantments_e(std::vector<Equipment*>& equipmentList, int index) {
+/*
+void editEnchantments_e(std::vector<Equipment*> &equipmentList, int index) {
 	std::cout << "Item " << equipmentList[index]->getName() << "'s list of enchants:" << std::endl;
-	for (int i = 0; i < equipmentList[index]->getEnch().size(); i++) {
-		std::cout << i << ". ";
-		equipmentList[index]->getEnch()[i]->print();
+	for (int i = 0; i < equipmentList[index]->getEnchants().size(); i++) {
+		std::cout << i + 1  << ". ";
+		equipmentList[index]->getEnchants()[i]->print();
 	}
-	std::cout << "Enter the index of the enchantment item \"" << equipmentList[index]->getName() << "\" has that you would like to edit." << std::endl;
+	std::cout << "Enter the number of the enchantment item \"" << equipmentList[index]->getName() << "\" has that you would like to edit." << std::endl;
 
-	int index_of_enchant;
+	Stat chosenEnchantType;
 	int newEnchantValue;
 	bool loop = true;
 	while (loop) {
-		std::cin >> index_of_enchant;
-		if ((index_of_enchant < 0) || (index_of_enchant >(equipmentList[index]->getEnch().size() - 1))) {
+		std::cin >> index_of_enchants;
+		if ((index_of_enchants < 0) || (index_of_enchants >(equipmentList[index]->getEnchants().size() - 1))) {
 			std::cout << "Invalid index, please try again." << std::endl;
 			std::cin.clear();
 			fflush(stdin);
 		}
 		else {
-			equipmentList[index]->getEnch()[index_of_enchant]->print();
+			equipmentList[index]->getEnchants()[index_of_enchants]->print();
 			std::cout << "What would you like to do? Enter -1 to cancel." << std::endl;
 			std::cout << "1. Change enchant value" << std::endl;
 			std::cout << "2. Remove the enchant" << std::endl;
@@ -1478,14 +1480,14 @@ void editEnchantments_e(std::vector<Equipment*>& equipmentList, int index) {
 			case 1:
 				std::cout << "Please enter your new value for the enchant." << std::endl;
 				std::cin >> newEnchantValue;
-				equipmentList[index]->getEnch()[index_of_enchant]->setValue(newEnchantValue);
-				std::cout << "Enchant value has been set to " << equipmentList[index]->getEnch()[index_of_enchant]->getValue() << std::endl;
+				equipmentList[index]->getEnchants()[index_of_enchants]->setValue(newEnchantValue);
+				std::cout << "Enchant value has been set to " << equipmentList[index]->getEnchants()[index_of_enchants]->getValue() << std::endl;
 
 				loop = false;
 				break;
 			case 2:
 				std::cout << "Enchantment has been removed." << std::endl;
-				equipmentList[index]->removeEnch(index_of_enchant);
+				equipmentList[index]->removeEnchant(index_of_enchants);
 				loop = false;
 				break;
 			case -1:
@@ -1500,29 +1502,30 @@ void editEnchantments_e(std::vector<Equipment*>& equipmentList, int index) {
 		}
 	}
 }
+*/
 
 
-
+/**
 void editEnchantments_w(std::vector<Weapon*>& weaponList, int index) {
 	std::cout << "Item " << weaponList[index]->getName() << "'s list of enchants:" << std::endl;
-	for (int i = 0; i < weaponList[index]->getEnch().size(); i++) {
+	for (int i = 0; i < weaponList[index]->getEnchants().size(); i++) {
 		std::cout << i << ". ";
-		weaponList[index]->getEnch()[i]->print();
+		weaponList[index]->getEnchants()[i]->print();
 	}
 	std::cout << "Enter the index of the enchantment item \"" << weaponList[index]->getName() << "\" has that you would like to edit." << std::endl;
 
-	int index_of_enchant;
+	int index_of_enchants;
 	int newEnchantValue;
 	bool loop = true;
 	while (loop) {
-		std::cin >> index_of_enchant;
-		if ((index_of_enchant < 0) || (index_of_enchant >(weaponList[index]->getEnch().size() - 1))) {
+		std::cin >> index_of_enchants;
+		if ((index_of_enchants < 0) || (index_of_enchants >(weaponList[index]->getEnchants().size() - 1))) {
 			std::cout << "Invalid index, please try again." << std::endl;
 			std::cin.clear();
 			fflush(stdin);
 		}
 		else {
-			weaponList[index]->getEnch()[index_of_enchant]->print();
+			weaponList[index]->getEnchants()[index_of_enchants]->print();
 			std::cout << "What would you like to do? Enter -1 to cancel." << std::endl;
 			std::cout << "1. Change enchant value" << std::endl;
 			std::cout << "2. Remove the enchant" << std::endl;
@@ -1533,14 +1536,14 @@ void editEnchantments_w(std::vector<Weapon*>& weaponList, int index) {
 			case 1:
 				std::cout << "Please enter your new value for the enchant." << std::endl;
 				std::cin >> newEnchantValue;
-				weaponList[index]->getEnch()[index_of_enchant]->setValue(newEnchantValue);
-				std::cout << "Enchant value has been set to " << weaponList[index]->getEnch()[index_of_enchant]->getValue() << std::endl;
+				weaponList[index]->getEnchants()[index_of_enchants]->setValue(newEnchantValue);
+				std::cout << "Enchant value has been set to " << weaponList[index]->getEnchants()[index_of_enchants]->getValue() << std::endl;
 
 				loop = false;
 				break;
 			case 2:
 				std::cout << "Enchantment has been removed." << std::endl;
-				weaponList[index]->removeEnch(index_of_enchant);
+				weaponList[index]->removeEnchant(index_of_enchants);
 				loop = false;
 				break;
 			case -1:
@@ -1555,7 +1558,7 @@ void editEnchantments_w(std::vector<Weapon*>& weaponList, int index) {
 		}
 	}
 }
-
+*/
 
 
 //! function for displaying all contents of a std::vector that stores equipments of a certain type
@@ -1653,14 +1656,14 @@ void playable_character_creation(std::vector<Character*>& playableCharacters) {
 		int level;
 		std::cin >> level;
 
-		std::cout << "Rolling Stats..." << std::endl;
+		std::cout << "Rolling Stat..." << std::endl;
 		std::vector<int> vec;
 		std::vector<int> attributes;
 
 		bool didntChooseReroll = false;
 		while (!didntChooseReroll) {
 			attributes.clear();
-			//rolling for initial Stats
+			//rolling for initial Stat
 			// Rolls 4d20 and keeps the three highest rolls for each ability score
 			for (int i = 0; i < 6; i++) {
 				for (int j = 0; j < 4; j++) {
@@ -1670,7 +1673,7 @@ void playable_character_creation(std::vector<Character*>& playableCharacters) {
 				attributes.push_back(vec[0] + vec[1] + vec[2]);
 				vec.clear();
 			}
-			//sorting Stats;
+			//sorting Stat;
 			std::sort(attributes.begin(), attributes.begin() + 6, std::greater<int>());
 
 			std::cout << "Here are your possible fighter build choices: \n" << std::endl;
@@ -1736,7 +1739,7 @@ void playable_character_creation(std::vector<Character*>& playableCharacters) {
 					//save character? (if validated)
 					if (createdFighter->validateNewCharacter()) {
 						//print sheet
-						createdFighter->printStats();
+						createdFighter->printStat();
 						std::cout << "Would you like to save this character? (1 = Yes,  2 = No)" << std::endl;
 						while (!has_chosen_to_save_or_not) {
 							std::cin >> save_or_not;
@@ -1777,7 +1780,7 @@ void playable_character_creation(std::vector<Character*>& playableCharacters) {
 					//save character? (if validated)
 					if (createdFighter->validateNewCharacter()) {
 						//print sheet
-						createdFighter->printStats();
+						createdFighter->printStat();
 						std::cout << "Would you like to save this character? (1 = Yes,  2 = No)" << std::endl;
 						while (!has_chosen_to_save_or_not) {
 							std::cin >> save_or_not;
@@ -1818,7 +1821,7 @@ void playable_character_creation(std::vector<Character*>& playableCharacters) {
 					//save character? (if validated)
 					if (createdFighter->validateNewCharacter()) {
 						//print sheet
-						createdFighter->printStats();
+						createdFighter->printStat();
 						std::cout << "Would you like to save this character? (1 = Yes,  2 = No)" << std::endl;
 						while (!has_chosen_to_save_or_not) {
 							std::cin >> save_or_not;
@@ -1849,7 +1852,7 @@ void playable_character_creation(std::vector<Character*>& playableCharacters) {
 					break;
 				case 4:
 					//re-rolling. coming back to while loop
-					std::cout << "\nRe-rolling Stats..." << std::endl;
+					std::cout << "\nRe-rolling Stat..." << std::endl;
 					//starting roll from scratch, breaking out of inner while loop, but not the outer one
 					validFighterBuildChoice = true;
 					skipNewCharacter = true;
@@ -1939,7 +1942,7 @@ void npc_creation(std::vector<Character*>& nonPlayerCharacters, bool friendly) {
 
 		if (newChara->validateNewNPC()) {
 			std::cout << "New " << (friendly ? "friendly" : "hostile") << "character created." << std::endl;
-			newChara->printStats();
+			newChara->printStat();
 
 			std::cout << "Would you like to save this character? (1 = Yes,  2 = No)" << std::endl;
 			int save_or_not;

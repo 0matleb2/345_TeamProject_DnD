@@ -31,16 +31,16 @@ Equipment* Equipment::clone() {
 //! override for abstract print method in parent class. Deals with object slistd::cing when printing contents of container
 void Equipment::print() {
 	std::cout << Item::getName() << ", [" << Item::getType() << "]" << std::endl;
-	for (int i = 0; i < Item::getEnch().size(); i++)
+	for (int i = 0; i < Item::getEnchants().size(); i++)
 	{
-		Item::getEnch()[i]->print();
+		Item::getEnchants()[i]->print();
 	}
 }
 
 std::ostream& operator<<(std::ostream& op, Equipment it) {
 	op << it.getName() << ", [" << it.getType() << "] " << "derived" << std::endl;
-	for (int i = 0; i < it.getEnch().size(); i++) {
-		op << it.getEnch()[i];
+	for (int i = 0; i < it.getEnchants().size(); i++) {
+		op << it.getEnchants()[i];
 	}
 	return op;
 }

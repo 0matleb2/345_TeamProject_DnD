@@ -50,7 +50,7 @@ Character::Character() {
 //! Object constructor as per assignment instructions
 //! @param charaClass: The wanted character class (Fighter is the only choice at the moment)
 //! @param lvl: The wanted character _lvl
-//! All Stats with the exception of _attackBonus() are generated upon creation
+//! All Stat with the exception of _attackBonus() are generated upon creation
 Character::Character(std::string charaName,  std::string charaClass, int lvl) {
 	_name = charaName;
 	_class = charaClass;
@@ -65,7 +65,7 @@ Character::Character(std::string charaName,  std::string charaClass, int lvl) {
 	}
 	updateBaseAttackBonus();
 
-	//rolling for initial Stats
+	//rolling for initial Stat
 	std::vector<int> vec;
 	// Rolls 4d20 and keeps the three highest rolls for each ability score
 	for (int i = 0; i < 6; i++) {
@@ -357,7 +357,7 @@ void Character::updateAttackBonus() {
 		}
 	else {
 		int enchValue = 0;
-		std::vector<Enchant*> enchants = _weapon->getEnch();
+		std::vector<Enchant*> enchants = _weapon->getEnchants();
 		for (unsigned int i = 0; i < enchants.size(); i++) {
 			if (enchants[i]->getType() == ATK)
 				enchValue += enchants[i]->getValue();
@@ -376,7 +376,7 @@ void Character::updateAttackBonus() {
 }
 
 //! Implementation of the verification of a newly created Character
-//! @return bool value, true of the character is valid (Stats should be in the 3-18 range for a new character), false if invalid. 
+//! @return bool value, true of the character is valid (Stat should be in the 3-18 range for a new character), false if invalid. 
 bool Character::validateNewCharacter() {
 	for (int i = 0; i <= 5; i++)
 		if (_abilityScores[i]<3 || _abilityScores[i]>18)
@@ -385,7 +385,7 @@ bool Character::validateNewCharacter() {
 }
 
 //! verification for a newly created non-player character, conditions are more lax than player character as NPCs cover anything from rats to gods
-//! @return bool value, true if the character is valid (Stats should be at least 1 each), false if invalid. 
+//! @return bool value, true if the character is valid (Stat should be at least 1 each), false if invalid. 
 bool Character::validateNewNPC() {
 	for (int i = 0; i <= 5; i++) {
 		if (_abilityScores[i] < 1)
@@ -404,8 +404,8 @@ void Character::hit(int damage) {
 	notify();
 }
 
-//! Function to print out the Character's Stats, attributes, and all the info stored in a nice and pretty way
-void Character::printStats() {
+//! Function to print out the Character's Stat, attributes, and all the info stored in a nice and pretty way
+void Character::printStat() {
 	std::cout << "\n\n== CHARACTER SHEET ==" << std::endl;
 	std::cout << "NAME: " << getName() << std::endl;
 	std::cout << "STATUS: " << (_isAlive ? "Alive" : "Dead") << std::endl;
@@ -734,7 +734,7 @@ void Character::unequipWeapon() {
 //! function for removing a to-be-un_equipment weapon's enchantments
 //! @param w: to-be-removed weapon
 void Character::removeWeaponEnchEffects(Weapon* w) {
-	std::vector<Enchant*> enchants = w->getEnch();
+	std::vector<Enchant*> enchants = w->getEnchants();
 	//removing damage attack bonus enchantment
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == ATK)
@@ -751,7 +751,7 @@ void Character::removeWeaponEnchEffects(Weapon* w) {
 //! function for removing a to-be-un_equipment shield's enchantments
 //! @param e: to-be-removed shield
 void Character::removeShieldEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -762,7 +762,7 @@ void Character::removeShieldEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment helmet's enchantments
 //! @param e: to-be-removed helmet
 void Character::removeHelmetEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -783,7 +783,7 @@ void Character::removeHelmetEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment armor's enchantments
 //! @param e: to-be-removed armor
 void Character::removeArmorEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -794,7 +794,7 @@ void Character::removeArmorEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment belt's enchantments
 //! @param e: to-be-removed belt
 void Character::removeBeltEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//removing constitution enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == CON)
@@ -810,7 +810,7 @@ void Character::removeBeltEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment boots's enchantments
 //! @param e: to-be-removed boots
 void Character::removeBootsEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -826,7 +826,7 @@ void Character::removeBootsEnchEffects(Equipment* e) {
 //! function for removing a to-be-un_equipment ring's enchantments
 //! @param e: to-be-removed ring
 void Character::removeRingEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//removing armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -855,7 +855,7 @@ void Character::removeRingEnchEffects(Equipment* e) {
 }
 
 void Character::addShieldEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -863,7 +863,7 @@ void Character::addShieldEnchEffects(Equipment* e) {
 	}
 }
 void Character::addHelmetEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -881,7 +881,7 @@ void Character::addHelmetEnchEffects(Equipment* e) {
 	}
 }
 void Character::addArmorEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -889,7 +889,7 @@ void Character::addArmorEnchEffects(Equipment* e) {
 	}
 }
 void Character::addBeltEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//adding constitution enhancement
 	for (int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == CON)
@@ -902,7 +902,7 @@ void Character::addBeltEnchEffects(Equipment* e) {
 	}
 }
 void Character::addBootsEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//adding armor class enhancement
 	for (int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -915,7 +915,7 @@ void Character::addBootsEnchEffects(Equipment* e) {
 	}
 }
 void Character::addRingEnchEffects(Equipment* e) {
-	std::vector<Enchant*> enchants = e->getEnch();
+	std::vector<Enchant*> enchants = e->getEnchants();
 	//adding armor class enhancement
 	for (unsigned int i = 0; i < enchants.size(); i++) {
 		if (enchants[i]->getType() == AC)
@@ -955,13 +955,15 @@ Item* Character::dropItem(int i) {
 }
 
 //! getter method for _name
-//! @return _name
+//! @return _name
+
 std::string Character::getName() {
 	return _name;
 }
 
 //! getter method for _class
-//! @return _class
+//! @return _class
+
 std::string Character::getClass() {
 	return _class;
 }

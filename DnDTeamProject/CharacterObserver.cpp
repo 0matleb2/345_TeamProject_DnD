@@ -14,5 +14,5 @@ CharacterObserver::~CharacterObserver() {
 
 //! prints a character sheet with every update (called upon by the notify() function from Observable.cpp)
 void CharacterObserver::update() {
-	_subject->printStats();
+	_subject->printStat();
 }

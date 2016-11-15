@@ -21,27 +21,24 @@ class Item {
 public:
 
 	Item();
-	Item(std::string nm, ItemType tp, std::vector<Enchant*> nv);
+	Item(std::string name, ItemType type, std::vector<Enchant*> nv);
 	Item(const Item& orig);
 	virtual ~Item();
 	virtual Item* clone();
 
 	std::string getName();
 	ItemType getType();
-	std::vector<Enchant*> getEnch();
+	std::vector<Enchant*> getEnchants();
 
 
-	void setName(std::string nn);
-	void setType(ItemType itp);
-	void setEnch(std::vector<Enchant*> ech);
-	void addEnch(Enchant* eh);
-	Enchant removeEnch(int pos);
-	void clearEnch();
+	void setName(std::string name);
+	void setType(ItemType itemType);
+	void addEnchant(Enchant* enchantType);
+	void removeEnchant(Stat enchantType);
 
-	bool isValid();
-	bool validEnch(ItemType tgt__type, Stats tgt_stat);
+	bool validEnch(ItemType tgt__type, Stat tgt_stat);
 	Enchant RandomEnch(int value);
-	void rescale(int tgt_lvl);
+	void rescale(int targetLvl);
 	virtual void print();
 
 
@@ -51,14 +48,14 @@ private:
 
 	std::string _name;
 	ItemType _type;
-	std::vector<Enchant*> _enchant;
+	std::vector<Enchant*> _enchants;
 
 
 	friend class boost::serialization::access;
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
 		ar & _name;
 		ar & _type;
-		ar & _enchant;
+		ar & _enchants;
 	}
 
 };

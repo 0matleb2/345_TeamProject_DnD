@@ -71,7 +71,7 @@ public:
 
 	bool validateNewCharacter();
 	bool validateNewNPC();
-	void printStats();
+	void printStat();
 	void levelUpHitPointGain();
 	void setInitialMaxHP(int lvl, int modifier);
 	void hit(int);
@@ -120,7 +120,7 @@ private:
 
 	void updateBaseAttackBonus();
 	void updateAttackBonus();
-	//Stats-setting & modifier updates (upon level-up or equipment change)
+	//Stat-setting & modifier updates (upon level-up or equipment change)
 	int abilityModifier(double attribute);
 	void updateModifiersAndBonuses();
 

@@ -5,10 +5,10 @@
 #include "Enchant.h"
 
 
-Enchant::Enchant() : _type(Stats::STR), _value(0) {
+Enchant::Enchant() : _type(Stat::STR), _value(0) {
 }
 
-Enchant::Enchant(Stats t, int v) : _type(t), _value(v) {
+Enchant::Enchant(Stat t, int v) : _type(t), _value(v) {
 }
 
 Enchant::Enchant(const Enchant& orig) : _type(orig._type), _value(orig._value) {
@@ -19,7 +19,7 @@ Enchant::~Enchant() {
 
 
 //Accessors
-Stats Enchant::getType() {
+Stat Enchant::getType() {
 	return _type;
 }
 
@@ -29,7 +29,7 @@ int Enchant::getValue() {
 
 
 //Mutators
-void Enchant::setType(Stats nt) {
+void Enchant::setType(Stat nt) {
 	_type = nt;
 }
 

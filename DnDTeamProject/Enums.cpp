@@ -7,10 +7,9 @@
 #include <string>
 #include "Enums.h"
 
-//! overload for Stats
-std::ostream& operator<<(std::ostream& op, Stats st) {
-	switch (st)
-	{
+//! overload for Stat
+std::ostream& operator<<(std::ostream& op, Stat st) {
+	switch (st)	{
 	case STR: op << "Strength"; break;
 	case DEX: op << "Dexterity"; break;
 	case CON: op << "Constitution"; break;
@@ -22,14 +21,12 @@ std::ostream& operator<<(std::ostream& op, Stats st) {
 	case DMG: op << "Damage Bonus"; break;
 	default: op << "None";
 	}
-
 	return op;
 }
 
 //! overload for item categories
 std::ostream& operator <<(std::ostream& op, ItemType ty) {
-	switch (ty)
-	{
+	switch (ty)	{
 	case HELMET: op << "Helmet"; break;
 	case ARMOR: op << "Armor"; break;
 	case SHIELD: op << "Shield"; break;
@@ -44,8 +41,7 @@ std::ostream& operator <<(std::ostream& op, ItemType ty) {
 }
 
 std::ostream& operator <<(std::ostream& op, WeaponType wt) {
-	switch (wt)
-	{
+	switch (wt)	{
 	case MELEE: op << "Melee"; break;
 	case RANGED: op << "Ranged"; break;
 	default: op << "Other"; break;

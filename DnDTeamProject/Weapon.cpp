@@ -51,7 +51,7 @@ Weapon* Weapon::clone() {
 
 void Weapon::print() {
 	std::cout << Item::getName() << ", [" << Weapon::_subtype << "], _range: " << Weapon::getRange() << std::endl;
-	for (int i = 0, n = getEnch().size(); i < n; ++i) {
-		Item::getEnch()[i]->print();
+	for (int i = 0, n = getEnchants().size(); i < n; ++i) {
+		Item::getEnchants()[i]->print();
 	}
 }
