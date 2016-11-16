@@ -52,7 +52,7 @@ void Ring::setCharismaBonus(int charismaBonus) {
 }
 
 
-
+//Randoms a magical bonus modifier of between 1 and 5 for the item and applies the bonus, split randomly, into the items stat bonuses
 void Ring::randomBonuses() {
 	int totalBonus = Dice::roll("1d5");
 	int statBonuses[5] = { 0, 0, 0, 0, 0 };

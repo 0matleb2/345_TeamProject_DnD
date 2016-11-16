@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Item.h"
+#include "boost/serialization/vector.hpp"
 
 class ItemContainer {
 
@@ -30,5 +31,13 @@ class ItemContainer {
 		std::vector<Item*> _contents;
 		int _capacity;
 		int _quantity;
+
+
+		friend class boost::serialization::access;
+		template<class Archive> void serialize(Archive & ar, const unsigned int version) {
+			ar & _contents;
+			ar & _capacity;
+			ar & _quantity;
+		}
 
 };

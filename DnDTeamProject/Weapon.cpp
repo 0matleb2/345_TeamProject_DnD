@@ -66,7 +66,7 @@ void Weapon::setDamage(std::string damage) {
 }
 
 
-
+//Randoms a magical bonus modifier of between 1 and 5 for the item and applies the bonus, split randomly, into the items stat bonuses
 void Weapon::randomBonuses() {
 	int totalBonus = Dice::roll("1d5");
 	int statBonuses[2] = { 0, 0 };

@@ -33,5 +33,15 @@ private:
 	int _damageBonus;
 	std::string _damage;
 
+
+	friend class boost::serialization::access;
+	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
+		ar & boost::serialization::base_object<Item>(*this);
+		ar & _weaponType;
+		ar & _attackBonus;
+		ar & _damageBonus;
+		ar & _damage;
+	}
+
 };
 

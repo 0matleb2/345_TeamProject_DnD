@@ -59,7 +59,6 @@ void Shield::setShieldType(ShieldType shieldType) {
 }
 
 
-
 void Shield::randomBonuses() {
 	setArmorClassBonus(Dice::roll("1d5"));
 }

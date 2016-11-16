@@ -109,6 +109,7 @@ private:
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
 		ar & _name;
 		ar & _lvl;
+		ar & _hp;
 		ar & _maxHp;
 		ar & _strength;
 		ar & _dexterity;
@@ -116,6 +117,15 @@ private:
 		ar & _intelligence;
 		ar & _wisdom;
 		ar & _charisma;
+		ar & _armor;
+		ar & _belt;
+		ar & _boots;
+		ar & _bracers;
+		ar & _helmet;
+		ar & _ring;
+		ar & _shield;
+		ar & _weapon;
+		ar & _inventory;
 	}
 
 };

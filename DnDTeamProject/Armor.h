@@ -36,6 +36,7 @@ private:
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
 		ar & boost::serialization::base_object<Item>(*this);
 		ar & _armorClass;
+		ar & _armorClassBonus;
 		ar & _armorType;
 	}
 
