@@ -3,10 +3,12 @@
 #include "Names.h"
 
 
-Weapon::Weapon() {
+
+Weapon::Weapon() : _attackBonus(0), _damageBonus(0) {
+
 }
 
-Weapon::Weapon(WeaponType weaponType) {
+Weapon::Weapon(WeaponType weaponType) : Weapon() {
 	switch (weaponType) {
 	case WeaponType::LONGSWORD:
 		setName(longswordNames[Dice::roll("1d100-1")]);
@@ -67,7 +69,7 @@ void Weapon::setDamage(std::string damage) {
 
 void Weapon::randomBonuses() {
 	int totalBonus = Dice::roll("1d5");
-	int statBonuses[2];
+	int statBonuses[2] = { 0, 0 };
 	for (int i = 0; i < totalBonus; ++i) {
 		statBonuses[Dice::roll("1d2-1")]++;
 	}
@@ -84,8 +86,8 @@ std::string Weapon::toString() {
 	if (getDamage() != "")
 		s += ", Damage: " + getDamage();
 	if (getAttackBonus() != 0)
-		s += ", Attack bonus: " + getAttackBonus();
+		s += ", Attack bonus: " + std::to_string(getAttackBonus());
 	if (getDamageBonus() != 0)
-		s += ", Damage bonus: " + getDamageBonus();
+		s += ", Damage bonus: " + std::to_string(getDamageBonus());
 	return s;
 }

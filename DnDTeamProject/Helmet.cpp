@@ -3,7 +3,8 @@
 #include "Names.h"
 
 
-Helmet::Helmet() {
+
+Helmet::Helmet() : _armorClass(0), _intelligenceBonus(0), _wisdomBonus(0) {
 	setName(helmetNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -45,11 +46,23 @@ void Helmet::setWisdomBonus(int wisdomBonus) {
 
 void Helmet::randomBonuses() {
 	int totalBonus = Dice::roll("1d5");
-	int statBonuses[3];
+	int statBonuses[3] = { 0, 0, 0 };
 	for (int i = 0; i < totalBonus; ++i) {
 		statBonuses[Dice::roll("1d3-1")]++;
 	}
 	setArmorClass(statBonuses[0]);
 	setIntelligenceBonus(statBonuses[1]);
 	setWisdomBonus(statBonuses[2]);
+}
+
+std::string Helmet::toString() {
+	std::string s;
+	s = Item::toString();
+	if (getArmorClass() != 0)
+		s += ", Armor class: " + std::to_string(getArmorClass());
+	if (getIntelligenceBonus() != 0)
+		s += ", Intelligence bonus: " + std::to_string(getIntelligenceBonus());
+	if (getWisdomBonus() != 0)
+		s += ", Wisdom bonus: " + std::to_string(getWisdomBonus());
+	return s;
 }

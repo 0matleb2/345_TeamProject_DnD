@@ -9,13 +9,16 @@ class Armor : public Item {
 public:
 
 	Armor();
+	Armor(ArmorType armorType);
 	~Armor();
 
 	ArmorType getArmorType();
 	int getArmorClass();
+	int getArmorClassBonus();
 
 	void setArmorType(ArmorType armorType);
 	void setArmorClass(int armorClass);
+	void setArmorClassBonus(int armorClassBonus);
 
 	void randomBonuses();
 
@@ -25,6 +28,7 @@ private:
 
 	ArmorType _armorType;
 	int _armorClass;
+	int _armorClassBonus;
 	
 
 

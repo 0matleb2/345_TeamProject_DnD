@@ -18,7 +18,12 @@ public:
 	void setName(std::string);
 	virtual std::string toString();
 
+	bool operator==(const Item& item) const { //Needed for std::find()
+		return _id == item._id;
+	};
+
 private:
+
 	static int _sNextId;
 
 	const int _id;

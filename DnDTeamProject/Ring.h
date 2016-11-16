@@ -24,6 +24,8 @@ public:
 
 	void randomBonuses();
 
+	std::string toString();
+
 private:
 
 	int _armorClass;

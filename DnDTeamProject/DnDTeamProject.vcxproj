@@ -105,10 +105,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\dev\deps\boost_1_62_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\dev\deps\boost_1_62_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,10 +154,12 @@
     <ClInclude Include="Belt.h" />
     <ClInclude Include="Boots.h" />
     <ClInclude Include="Bracers.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Errors.h" />
     <ClInclude Include="Helmet.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemContainer.h" />
     <ClInclude Include="Names.h" />
     <ClInclude Include="Ring.h" />
     <ClInclude Include="Shield.h" />
@@ -167,10 +171,12 @@
     <ClCompile Include="Belt.cpp" />
     <ClCompile Include="Boots.cpp" />
     <ClCompile Include="Bracers.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="Helmet.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemContainer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Ring.cpp" />
     <ClCompile Include="Shield.cpp" />

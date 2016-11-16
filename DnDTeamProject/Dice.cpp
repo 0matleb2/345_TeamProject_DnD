@@ -1,7 +1,5 @@
-#include <iostream>
 #include <time.h>
 #include <regex>
-#include <set>
 #include <vector>
 
 #include "Errors.h"
@@ -33,7 +31,6 @@ int Dice::roll(const std::string input)
 		std::vector<int> rolls;
 		for (int i = 0; i < numDice; i++) {
 			int roll = (rand() % diceType) + 1;
-			std::cout << "Roll " << i << ": " << roll << std::endl;
 			rolls.push_back(roll);
 		}
 
@@ -42,8 +39,6 @@ int Dice::roll(const std::string input)
 			std::reverse(rolls.begin(), rolls.end());
 		}
 
-		std::cout << std::endl;
-
 		rolls.resize(bestX);
 
 		int sum = modifier;
@@ -51,7 +46,6 @@ int Dice::roll(const std::string input)
 			sum += rolls[i];
 		}
 
-		std::cout << "The total modified roll is " << sum << std::endl;
 		return (sum > 0) ? sum : 0;
 	}
 	else {

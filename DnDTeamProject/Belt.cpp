@@ -3,7 +3,8 @@
 #include "Names.h"
 
 
-Belt::Belt() {
+
+Belt::Belt() : _strengthBonus(0), _constitutionBonus(0) {
 	setName(beltNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -35,7 +36,7 @@ void Belt::setStrengthBonus(int strengthBonus) {
 
 void Belt::randomBonuses() {
 	int totalBonus = Dice::roll("1d5");
-	int statBonuses[2];
+	int statBonuses[2] = { 0, 0 };
 	for (int i = 0; i < totalBonus; ++i) {
 		statBonuses[Dice::roll("1d2-1")]++;
 	}
@@ -48,8 +49,8 @@ std::string Belt::toString() {
 	std::string s;
 	s = Item::toString();
 	if (getConstitutionBonus() != 0)
-		s += ", Constitution bonus: " + getConstitutionBonus();
+		s += ", Constitution bonus: " + std::to_string(getConstitutionBonus());
 	if (getStrengthBonus() != 0)
-		s += ", Strength bonus: " + getStrengthBonus();
+		s += ", Strength bonus: " + std::to_string(getStrengthBonus());
 	return s;
 }

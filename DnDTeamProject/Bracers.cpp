@@ -3,7 +3,8 @@
 #include "Names.h"
 
 
-Bracers::Bracers() {
+
+Bracers::Bracers() : _armorClass(0), _strengthBonus(0) {
 	setName(bracerNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -35,7 +36,7 @@ void Bracers::setStrengthBonus(int strengthBonus) {
 
 void Bracers::randomBonuses() {
 	int totalBonus = Dice::roll("1d5");
-	int statBonuses[2];
+	int statBonuses[2] = { 0, 0 };
 	for (int i = 0; i < totalBonus; ++i) {
 		statBonuses[Dice::roll("1d2-1")]++;
 	}
@@ -47,8 +48,8 @@ std::string Bracers::toString() {
 	std::string s;
 	s = Item::toString();
 	if (getArmorClass() != 0)
-		s += ", Armor Class: " + getArmorClass();
+		s += ", Armor class: " + std::to_string(getArmorClass());
 	if (getStrengthBonus() != 0)
-		s += ", Strength bonus: " + getStrengthBonus();
+		s += ", Strength bonus: " + std::to_string(getStrengthBonus());
 	return s;
 }

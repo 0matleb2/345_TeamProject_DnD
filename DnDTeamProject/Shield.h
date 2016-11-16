@@ -9,19 +9,25 @@ class Shield : public Item {
 public:
 
 	Shield();
+	Shield(ShieldType shieldType);
 	~Shield();
 
 	int getArmorClass();
+	int getArmorClassBonus();
 	ShieldType getShieldType();
 
 	void setArmorClass(int armorClass);
+	void setArmorClassBonus(int armorClassBonus);
 	void setShieldType(ShieldType shieldType);
 
 	void randomBonuses();
 
+	std::string toString();
+
 private:
 
 	int _armorClass;
+	int _armorClassBonus;
 	ShieldType _shieldType;
 
 
