@@ -37,7 +37,7 @@ void CharacterBuilder::setCharacter(Character * character) {
 
 
 void CharacterBuilder::construct() {
-	std::cout << "Creating a new character..." << std::endl;
+	std::cout << "Creating a new character..." << std::endl << std::endl;
 	_character = new Character();
 	buildIdentity();
 	buildStats();
@@ -48,16 +48,16 @@ void CharacterBuilder::construct() {
 
 
 void CharacterBuilder::buildIdentity() {
-	std::cout << "\nWhat is the character's name?" << std::endl;
+	std::cout << "What is the character's name?" << std::endl;
 	switch (menu(characterBuilderNameOptions)) {
 	case 1:
 		_character->setName(characterNames[Dice::roll("d" + std::to_string(characterNames.size()))]);
-		std::cout << "\nThe character is named " << _character->getName() << "." << std::endl;
+		std::cout << "The character is named " << _character->getName() << "." << std::endl << std::endl;
 		break;
 	case 2:
 		std::cout << "Enter a name: ";
 		_character->setName(getUserInputString());
-		std::cout << "\nThe character is named " << _character->getName() << "." << std::endl;
+		std::cout << "The character is named " << _character->getName() << "." << std::endl << std::endl;
 		break;
 	}
 }
@@ -65,7 +65,7 @@ void CharacterBuilder::buildIdentity() {
 
 
 void CharacterBuilder::buildStats() {
-	std::cout << "\nWhich attributes does the character favor most?" << std::endl;
+	std::cout << "Which attributes does the character favor most?" << std::endl;
 	switch (menu(characterBuilderStatOptions)) {
 	case 1:
 		rollStats();
@@ -90,7 +90,7 @@ void CharacterBuilder::buildStats() {
 		break;
 	}
 
-	std::cout << "\nWhat level is the character?" << std::endl;
+	std::cout << "What level is the character?" << std::endl;
 	int lvl = getUserInputInteger();
 	for (int i = 1; i < lvl; ++i) {
 		_character->levelUp();
@@ -118,7 +118,7 @@ void CharacterBuilder::rollStats(std::string firstPriority, std::string secondPr
 	bool rolling = true;
 	std::vector<int> stats; // { STR, DEX, CONS, INT, WISD, CHA }
 	while (rolling) {
-		std::cout << "\nRolling stats...\n" << std::endl;
+		std::cout << "Rolling stats...\n" << std::endl;
 		std::map<std::string, int> statIndexes = {
 			{ "Strength", 0 },{ "Dexterity", 1 },{ "Constitution", 2 },{ "Intelligence", 3 },{ "Wisdom", 4 },{ "Charisma", 5 },
 		};
@@ -143,9 +143,9 @@ void CharacterBuilder::rollStats(std::string firstPriority, std::string secondPr
 			}
 		}
 		std::cout << "Strength:\t" << stats[0] << "\tDexterity:\t" << stats[1] << "\nConstitution:\t" << stats[2]
-			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl;
+			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "\nAre you happy with these stats?" << std::endl;
+			std::cout << "Are you happy with these stats?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
@@ -178,15 +178,15 @@ void CharacterBuilder::rollStats() {
 	bool rolling = true;
 	std::vector<int> stats;
 	while (rolling) {
-		std::cout << "\nRolling stats...\n" << std::endl;
+		std::cout << "Rolling stats...\n" << std::endl;
 		stats.clear();
 		for (int i = 0; i < 6; ++i) {
 			stats.push_back(Dice::roll("(3)4d6"));
 		}
 		std::cout << "Strength:\t" << stats[0] << "\tDexterity:\t" << stats[1] << "\nConstitution:\t" << stats[2]
-			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl;
+			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "\nAre you happy with these stats?" << std::endl;
+			std::cout << "Are you happy with these stats?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");

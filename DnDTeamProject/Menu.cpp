@@ -14,23 +14,28 @@ int getUserInputInteger() {
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			fflush(stdin);
+			std::cout << std::endl;
 			return tmp;
 		}
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		fflush(stdin);
-	
-		std::cout << "Invalid input!" << std::endl;
+		std::cout << std::endl << "Invalid input!" << std::endl;
 	}
 }
+
+
 
 std::string getUserInputString() {
 	std::string tmp;
 	getline(std::cin, tmp);
 	std::cin.clear();
 	fflush(stdin);
+	std::cout << std::endl;
 	return tmp;
 }
+
+
 
 int menu(std::vector<std::string> options) {
 	for (int i = 0, n = options.size(); i < n; ++i) {
@@ -49,13 +54,15 @@ int menu(std::vector<std::string> options) {
 				continue;
 			}
 		}
-		catch (const std::exception& e) {	
+		catch (const std::exception& e) {
 		}
-		if (choice == "y" || choice == "Y") {
-			return 1;
-		}
-		if (choice == "n" || choice == "N") {
-			return 2;
+		if (options[0].substr(0,3) == "Yes") {
+			if (choice == "y" || choice == "Y") {
+				return 1;
+			}
+			if (choice == "n" || choice == "N") {
+				return 2;
+			}
 		}
 		std::cout << "Invalid choice. Unrecognized input!" << std::endl;
 	}
