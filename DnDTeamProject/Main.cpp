@@ -3,10 +3,15 @@
 #include "boost/archive/text_oarchive.hpp"
 #include "boost/archive/text_iarchive.hpp"
 #include "Character.h"
+#include "CharacterBuilder.h"
 
 int main(int argc, char** argv) {
 
+	CharacterBuilder builder;
+	builder.construct();
+	std::cout << builder.getCharacter()->toString() << std::endl;
 
+	/* 
 	Character* testChar = new Character();
 
 	testChar->setName("Bert Mackelin");
@@ -74,7 +79,9 @@ int main(int argc, char** argv) {
 	for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
 		std::cout << loadedCharacters[i]->toString() << std::endl;
 	}
+	*/
 
+	std::cout << "Enter any key to quit: ";
 	getchar();
 
 }

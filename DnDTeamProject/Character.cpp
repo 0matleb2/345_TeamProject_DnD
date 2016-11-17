@@ -19,7 +19,6 @@ Character::Character() : _lvl(1) {
 	_hp = _maxHp;
 }
 
-
 Character::~Character() {
 }
 
@@ -212,16 +211,32 @@ std::string Character::toString() {
 		+ ", Intelligence: " + std::to_string(getIntelligence())
 		+ ", Wisdom: " + std::to_string(getWisdom())
 		+ ", Charisma: " + std::to_string(getCharisma())
-		+ "\n\n[EQUIPPED ITEMS]"
-		+ "\nArmor:\t\t" + getArmor()->toString()
-		+ "\nBelt:\t\t" + getBelt()->toString()
-		+ "\nBoots:\t\t" + getBoots()->toString()
-		+ "\nBracers:\t" + getBracers()->toString()
-		+ "\nHelmet:\t\t" + getHelmet()->toString()
-		+ "\nRing:\t\t" + getRing()->toString()
-		+ "\nShield:\t\t" + getShield()->toString()
-		+ "\nWeapon:\t\t" + getWeapon()->toString()
-		+ "\n\n[INVENTORY]"
+		+ "\n\n[EQUIPPED ITEMS]";
+	if (getArmor()) {
+		s += "\nArmor:\t\t" + getArmor()->toString();
+	}
+	if (getBelt()) {
+		s += "\nBelt:\t\t" + getBelt()->toString();
+	}
+	if (getBoots()) {
+		s += "\nBoots:\t\t" + getBoots()->toString();
+	}
+	if (getBracers()) {
+		s += "\nBracers:\t" + getBracers()->toString();
+	}
+	if (getHelmet()) {
+		s += "\nHelmet:\t\t" + getHelmet()->toString();
+	}
+	if (getRing()) {
+		s += "\nRing:\t\t" + getRing()->toString();
+	}
+	if (getShield()) {
+		s += "\nShield:\t\t" + getShield()->toString();
+	}
+	if (getWeapon()) {
+		s += "\nWeapon:\t\t" + getWeapon()->toString();
+	}
+	s += "\n\n[INVENTORY]"
 		+ getInventory()->toString() + "\n";
 	return s;
 }

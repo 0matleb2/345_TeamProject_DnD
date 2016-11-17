@@ -72,6 +72,7 @@ public:
 
 
 	std::string toString();
+	void levelUp();
 
 
 private:
@@ -103,7 +104,6 @@ private:
 
 
 	int abilityScoreToModifier(int score);
-	void levelUp();
 
 	friend class boost::serialization::access;
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
