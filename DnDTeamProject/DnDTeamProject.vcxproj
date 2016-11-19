@@ -159,13 +159,16 @@
     <ClInclude Include="CharacterBuilder.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Errors.h" />
+    <ClInclude Include="FileIO.h" />
     <ClInclude Include="Helmet.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemArchive.h" />
     <ClInclude Include="ItemBuilder.h" />
     <ClInclude Include="ItemContainer.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Names.h" />
     <ClInclude Include="Ring.h" />
+    <ClInclude Include="SavedItems.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Weapon.h" />
@@ -179,8 +182,10 @@
     <ClCompile Include="CharacterBuilder.cpp" />
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Errors.cpp" />
+    <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="Helmet.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemArchive.cpp" />
     <ClCompile Include="ItemBuilder.cpp" />
     <ClCompile Include="ItemContainer.cpp" />
     <ClCompile Include="Main.cpp" />

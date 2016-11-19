@@ -5,19 +5,22 @@
 #include "Character.h"
 #include "CharacterBuilder.h"
 #include "ItemBuilder.h"
+#include "ItemArchive.h"
 
 int main(int argc, char** argv) {
 
-	ItemBuilder builder;
+	CharacterBuilder builder;
 	builder.construct();
-	std::cout << builder.getItem()->toString() << std::endl << std::endl;
+
+	//ItemBuilder builder;
+	//builder.construct();
 
 	/*
 	CharacterBuilder builder;
 	builder.construct();
 	std::cout << builder.getCharacter()->toString() << std::endl;
 	*/
-	/* 
+	/*
 	Character* testChar = new Character();
 
 	testChar->setName("Bert Mackelin");
@@ -65,28 +68,35 @@ int main(int argc, char** argv) {
 	testChar3->getInventory()->depositItem(*(new Bracers()));
 	testChar3->getInventory()->depositItem(*(new Bracers()));
 	testChar3->getInventory()->depositItem(*(new Helmet()));
+	*/
+	/*
+	std::vector<Item*> itemsToSave;
+	itemsToSave.push_back(new Weapon(WeaponType::LONGBOW));
+	itemsToSave.push_back(new Armor(ArmorType::LEATHER));
+	itemsToSave.push_back(new Ring());
+	ItemArchive saveArchive(itemsToSave);
 
 	{ //Save data
-		std::ofstream outfilestream("characterFile.txt");
+		std::ofstream outfilestream("itemFile.txt");
 		boost::archive::text_oarchive outarchive(outfilestream);
-		std::vector<Character*> charactersToSave = { testChar, testChar2, testChar3 };
-		outarchive << charactersToSave;
+		outarchive << saveArchive;
 	}
 
 
-	std::vector<Character*> loadedCharacters;
+	ItemArchive loadArchive;
 
 	{ //Load data
-		std::ifstream infilestream("characterFile.txt");
+		std::ifstream infilestream("itemFile.txt");
 		boost::archive::text_iarchive inarchive(infilestream);
-		inarchive >> loadedCharacters;
+		inarchive >> loadArchive;
 	}
 
-	for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
-		std::cout << loadedCharacters[i]->toString() << std::endl;
+
+
+	for (int i = 0, n = loadArchive.getItemArchive().size(); i < n; ++i) {
+		std::cout << loadArchive.getItemArchive()[i]->toString() << std::endl;
 	}
 	*/
-
 	std::cout << "Enter any key to quit: ";
 	getchar();
 

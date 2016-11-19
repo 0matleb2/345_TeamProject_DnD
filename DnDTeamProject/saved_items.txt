@@ -1,0 +1,3 @@
+22 serialization::archive 14 0 0 0 0 2 0 1 1 0
+0 0 0 35 Golden Cuirass of Condemned Justice 1 4 1 8 1 0
+1 28 Vulture, Whisper of Wizardry 2 0 3 3 1d8

@@ -4,6 +4,7 @@
 #include "Names.h"
 #include "Dice.h"
 #include "Menu.h"
+#include "FileIO.h"
 
 
 
@@ -43,6 +44,7 @@ void CharacterBuilder::construct() {
 	buildStats();
 	buildEquippedItems();
 	buildInventory();
+	saveCharacter(_character);
 }
 
 

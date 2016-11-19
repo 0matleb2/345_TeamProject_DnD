@@ -11,6 +11,7 @@
 #include "Weapon.h"
 #include "Names.h"
 #include "Dice.h"
+#include "FileIO.h"
 
 
 ItemBuilder::ItemBuilder() {
@@ -57,6 +58,7 @@ void ItemBuilder::construct() {
 		buildWeapon();
 		break;
 	}
+	saveItem(_item);
 }
 
 void ItemBuilder::buildType() {
