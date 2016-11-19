@@ -18,8 +18,17 @@ private:
 
 	Item* _item;
 
+	void buildType();
 	void buildIdentity();
-	void buildStats();
+
+	void buildArmor();
+	void buildBelt();
+	void buildBoots();
+	void buildBracers();
+	void buildHelmet();
+	void buildRing();
+	void buildShield();
+	void buildWeapon();
 
 };
 

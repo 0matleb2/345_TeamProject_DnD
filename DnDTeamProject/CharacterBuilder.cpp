@@ -49,7 +49,7 @@ void CharacterBuilder::construct() {
 
 void CharacterBuilder::buildIdentity() {
 	std::cout << "What is the character's name?" << std::endl;
-	switch (menu(characterBuilderNameOptions)) {
+	switch (menu(builderNameOptions)) {
 	case 1:
 		_character->setName(characterNames[Dice::roll("d" + std::to_string(characterNames.size()))]);
 		std::cout << "The character is named " << _character->getName() << "." << std::endl << std::endl;
@@ -118,7 +118,7 @@ void CharacterBuilder::rollStats(std::string firstPriority, std::string secondPr
 	bool rolling = true;
 	std::vector<int> stats; // { STR, DEX, CONS, INT, WISD, CHA }
 	while (rolling) {
-		std::cout << "Rolling stats...\n" << std::endl;
+		std::cout << "Rolling character stats...\n" << std::endl;
 		std::map<std::string, int> statIndexes = {
 			{ "Strength", 0 },{ "Dexterity", 1 },{ "Constitution", 2 },{ "Intelligence", 3 },{ "Wisdom", 4 },{ "Charisma", 5 },
 		};

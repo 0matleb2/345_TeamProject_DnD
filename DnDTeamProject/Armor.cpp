@@ -12,7 +12,6 @@ Armor::Armor(ArmorType armorType) : Armor() {
 	_armorType = armorType;
 	setName(armorNames[Dice::roll("1d100-1")]);
 	randomBonuses();
-
 	switch (armorType) {
 	case ArmorType::PADDED:
 		_armorClass = 1;
@@ -35,13 +34,14 @@ Armor::Armor(ArmorType armorType) : Armor() {
 	case ArmorType::HALF_PLATE:
 		_armorClass = 7;
 		break;
-	case ArmorType::PLATE:
+	case ArmorType::FULL_PLATE:
 		_armorClass = 8;
 		break;
 	}
 }
 
 Armor::~Armor() {
+
 }
 
 

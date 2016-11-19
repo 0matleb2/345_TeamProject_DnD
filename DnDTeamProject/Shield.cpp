@@ -40,7 +40,7 @@ int Shield::getArmorClassBonus() {
 }
 
 ShieldType Shield::getShieldType() {
-	return ShieldType();
+	return _shieldType;
 }
 
 

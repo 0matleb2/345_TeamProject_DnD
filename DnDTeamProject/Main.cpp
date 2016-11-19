@@ -4,13 +4,19 @@
 #include "boost/archive/text_iarchive.hpp"
 #include "Character.h"
 #include "CharacterBuilder.h"
+#include "ItemBuilder.h"
 
 int main(int argc, char** argv) {
 
+	ItemBuilder builder;
+	builder.construct();
+	std::cout << builder.getItem()->toString() << std::endl << std::endl;
+
+	/*
 	CharacterBuilder builder;
 	builder.construct();
 	std::cout << builder.getCharacter()->toString() << std::endl;
-
+	*/
 	/* 
 	Character* testChar = new Character();
 

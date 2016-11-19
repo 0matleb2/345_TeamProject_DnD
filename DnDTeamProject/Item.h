@@ -17,6 +17,7 @@ public:
 
 	void setName(std::string);
 	virtual std::string toString();
+	virtual void randomBonuses() = 0;
 
 	bool operator==(const Item& item) const { //Needed for std::find()
 		return _id == item._id;

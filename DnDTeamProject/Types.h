@@ -13,9 +13,7 @@ enum class ArmorType {
 	BREASTPLATE,
 	BANDED_MAIL,
 	HALF_PLATE,
-	PLATE
-
-
+	FULL_PLATE
 };
 static std::map<ArmorType, std::string> armorTypeInfo = {
 	{ ArmorType::PADDED, "Padded armor" },
@@ -25,7 +23,7 @@ static std::map<ArmorType, std::string> armorTypeInfo = {
 	{ ArmorType::BREASTPLATE, "Breastplate" },
 	{ ArmorType::BANDED_MAIL, "Banded mail armor" },
 	{ ArmorType::HALF_PLATE, "Half plate armor" },
-	{ ArmorType::PLATE, "Plate armor" }
+	{ ArmorType::FULL_PLATE, "Full plate armor" }
 };
 template<class Archive> void serialize(Archive & ar, ArmorType armorType, const unsigned int version) {
 	ar & armorType;
