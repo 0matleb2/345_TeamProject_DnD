@@ -37,6 +37,22 @@ static std::vector<std::string> itemBuilderTypeOptions = {
 	"Weapon"
 };
 
+static std::vector<std::string> characterBuilderInventoryOptions = {
+	"Add an item",
+	"Remove an item",
+	"Create a new item",
+	"Finished storing items"
+};
+
+static std::vector<std::string> characterBuilderReviewOptions = {
+	"Change name",
+	"Change equipped items",
+	"Change inventory contents",
+	"Finished building character"
+};
+
+
+
 static std::vector<std::string> itemBuilderArmorTypeOptions = {
 	"Padded armor",
 	"Leather armor",

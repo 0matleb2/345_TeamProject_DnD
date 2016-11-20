@@ -55,6 +55,10 @@ void Helmet::randomBonuses() {
 	setWisdomBonus(statBonuses[2]);
 }
 
+ItemType Helmet::getItemType() {
+	return ItemType::HELMET;
+}
+
 std::string Helmet::toString() {
 	std::string s;
 	s = Item::toString();

@@ -46,6 +46,10 @@ void Belt::randomBonuses() {
 	setStrengthBonus(statBonuses[1]);
 }
 
+ItemType Belt::getItemType() {
+	return ItemType::BELT;
+}
+
 
 std::string Belt::toString() {
 	std::string s;

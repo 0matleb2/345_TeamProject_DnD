@@ -4,6 +4,28 @@
 
 
 
+enum class ItemType {
+	DEFAULT = 0,
+	ARMOR,
+	BELT,
+	BOOTS,
+	BRACERS,
+	HELMET,
+	RING,
+	SHIELD,
+	WEAPON
+};
+static std::map<ItemType, std::string> itemTypeInfo = {
+	{ ItemType::ARMOR, "Armor" },
+	{ ItemType::BELT, "Belt" },
+	{ ItemType::BOOTS, "Boots" },
+	{ ItemType::BRACERS, "Bracers" },
+	{ ItemType::HELMET, "Helmet" },
+	{ ItemType::RING, "Ring" },
+	{ ItemType::SHIELD, "Shield" },
+	{ ItemType::WEAPON, "Weapon" }
+};
+
 enum class ArmorType {
 	DEFAULT = 0,
 	PADDED,

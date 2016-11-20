@@ -56,7 +56,7 @@ int menu(std::vector<std::string> options) {
 		}
 		catch (const std::exception& e) {
 		}
-		if (options[0].substr(0,3) == "Yes") {
+		if (options[0].substr(0, 3) == "Yes") {
 			if (choice == "y" || choice == "Y") {
 				return 1;
 			}

@@ -3,7 +3,6 @@
 #include "Types.h"
 
 
-
 class Shield : public Item {
 
 public:
@@ -21,6 +20,7 @@ public:
 	void setShieldType(ShieldType shieldType);
 
 	void randomBonuses();
+	ItemType getItemType();
 
 	std::string toString();
 

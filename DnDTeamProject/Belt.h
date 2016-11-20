@@ -1,5 +1,6 @@
 #pragma once
 #include "Item.h"
+#include "Types.h"
 
 
 
@@ -17,6 +18,7 @@ public:
 	void setStrengthBonus(int strengthBonus);
 
 	void randomBonuses();
+	ItemType getItemType();
 
 	std::string toString();
 

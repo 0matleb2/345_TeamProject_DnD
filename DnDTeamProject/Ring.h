@@ -1,6 +1,6 @@
 #pragma once
 #include "Item.h"
-
+#include "Types.h"
 
 
 class Ring : public Item {
@@ -23,6 +23,7 @@ public:
 	void setCharismaBonus(int charismaBonus);
 
 	void randomBonuses();
+	ItemType getItemType();
 
 	std::string toString();
 

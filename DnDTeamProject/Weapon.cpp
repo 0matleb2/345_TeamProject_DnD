@@ -77,6 +77,10 @@ void Weapon::randomBonuses() {
 	setDamageBonus(statBonuses[1]);
 }
 
+ItemType Weapon::getItemType() {
+	return ItemType::WEAPON;
+}
+
 
 std::string Weapon::toString() {
 	std::string s;

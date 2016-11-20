@@ -83,6 +83,10 @@ void Armor::randomBonuses() {
 	setArmorClassBonus(Dice::roll("1d5"));
 }
 
+ItemType Armor::getItemType() {
+	return ItemType::ARMOR;
+}
+
 
 std::string Armor::toString() {
 	std::string s;

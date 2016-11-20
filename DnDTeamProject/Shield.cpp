@@ -63,6 +63,10 @@ void Shield::randomBonuses() {
 	setArmorClassBonus(Dice::roll("1d5"));
 }
 
+ItemType Shield::getItemType() {
+	return ItemType::SHIELD;
+}
+
 std::string Shield::toString() {
 	std::string s;
 	s = Item::toString();

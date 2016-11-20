@@ -45,6 +45,10 @@ void Bracers::randomBonuses() {
 	setStrengthBonus(statBonuses[1]);
 }
 
+ItemType Bracers::getItemType() {
+	return ItemType::BRACERS;
+}
+
 std::string Bracers::toString() {
 	std::string s;
 	s = Item::toString();

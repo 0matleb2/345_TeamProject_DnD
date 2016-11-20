@@ -66,6 +66,10 @@ void Ring::randomBonuses() {
 	setCharismaBonus(statBonuses[4]);
 }
 
+ItemType Ring::getItemType() {
+	return ItemType::RING;
+}
+
 std::string Ring::toString() {
 	std::string s;
 	s = Item::toString();

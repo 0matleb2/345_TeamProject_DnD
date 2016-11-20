@@ -55,3 +55,7 @@ std::string Boots::toString() {
 		s += ", Dexterity bonus: " + std::to_string(getDexterityBonus());
 	return s;
 }
+
+ItemType Boots::getItemType() {
+	return ItemType::BOOTS;
+}

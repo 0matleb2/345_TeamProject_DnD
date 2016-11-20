@@ -1,5 +1,6 @@
 #pragma once
 #include "Item.h"
+#include "Types.h"
 
 
 
@@ -19,6 +20,7 @@ public:
 	void randomBonuses();
 
 	std::string toString();
+	ItemType getItemType();
 
 private:
 
