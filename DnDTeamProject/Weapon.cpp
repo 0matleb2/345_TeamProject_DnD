@@ -1,57 +1,97 @@
-//! @file
-//! @brief Implementation file for the Weapon class
-//! 
 #include "Weapon.h"
+#include "Dice.h"
+#include "Names.h"
 
 
 
-Weapon::Weapon() : Item("Default", ItemType::WEAPON, std::vector<Enchant*>()), _range(0), _subtype(WeaponType::MELEE) {
+Weapon::Weapon() : _attackBonus(0), _damageBonus(0) {
+
 }
 
-//! parametrized constructor
-//! @param nm : name of weapon
-//! @param tp : item type of weapon (always "weapon")
-//! @param nv : weapon's std::vector of Enchants
-//! @param rng : _range of weapon
-//! @param st : _subtype of weapon (sword, bow, ...)
-Weapon::Weapon(std::string nm, ItemType tp, std::vector<Enchant*> nv, int rng, WeaponType st) : Item(nm, tp, nv), _range(rng), _subtype(st) {
+Weapon::Weapon(WeaponType weaponType) : Weapon() {
+	switch (weaponType) {
+	case WeaponType::LONGSWORD:
+		setName(longswordNames[Dice::roll("1d100-1")]);
+		setDamage("1d8");
+		break;
+	case WeaponType::LONGBOW:
+		setName(longbowNames[Dice::roll("1d100-1")]);
+		setDamage("1d8");
+		break;
+	}
+	setWeaponType(weaponType);
+	randomBonuses();
 }
 
-Weapon::Weapon(const Weapon& orig) : Item(orig), _subtype(orig._subtype), _range(orig._range) {
-}
 
 Weapon::~Weapon() {
 }
 
 
+
 //Accessors
-int Weapon::getRange() {
-	return _range;
+WeaponType Weapon::getWeaponType() {
+	return _weaponType;
 }
 
-WeaponType Weapon::getSubtype() {
-	return _subtype;
+int Weapon::getAttackBonus() {
+	return _attackBonus;
 }
+
+int Weapon::getDamageBonus() {
+	return _damageBonus;
+}
+
+std::string Weapon::getDamage() {
+	return _damage;
+}
+
 
 
 //Mutators
-void Weapon::setRange(int nr) {
-	_range = nr;
+void Weapon::setWeaponType(WeaponType weaponType) {
+	_weaponType = weaponType;
 }
 
-void Weapon::setSubtype(WeaponType nt) {
-	_subtype = nt;
+void Weapon::setAttackBonus(int attackBonus) {
+	_attackBonus = attackBonus;
+}
+
+void Weapon::setDamageBonus(int damageBonus) {
+	_damageBonus = damageBonus;
+}
+
+void Weapon::setDamage(std::string damage) {
+	_damage = damage;
 }
 
 
-
-Weapon* Weapon::clone() {
-	return new Weapon(*this);
-}
-
-void Weapon::print() {
-	std::cout << Item::getName() << ", [" << Weapon::_subtype << "], _range: " << Weapon::getRange() << std::endl;
-	for (int i = 0, n = getEnch().size(); i < n; ++i) {
-		Item::getEnch()[i]->print();
+//Randoms a magical bonus modifier of between 1 and 5 for the item and applies the bonus, split randomly, into the items stat bonuses
+void Weapon::randomBonuses() {
+	int totalBonus = Dice::roll("1d5");
+	int statBonuses[2] = { 0, 0 };
+	for (int i = 0; i < totalBonus; ++i) {
+		statBonuses[Dice::roll("1d2-1")]++;
 	}
+	setAttackBonus(statBonuses[0]);
+	setDamageBonus(statBonuses[1]);
+}
+
+ItemType Weapon::getItemType() {
+	return ItemType::WEAPON;
+}
+
+
+std::string Weapon::toString() {
+	std::string s;
+	s = Item::toString();
+	if (getWeaponType() != WeaponType::DEFAULT)
+		s += ", Weapon type: " + weaponTypeInfo[getWeaponType()];
+	if (getDamage() != "")
+		s += ", Damage: " + getDamage();
+	if (getAttackBonus() != 0)
+		s += ", Attack bonus: " + std::to_string(getAttackBonus());
+	if (getDamageBonus() != 0)
+		s += ", Damage bonus: " + std::to_string(getDamageBonus());
+	return s;
 }

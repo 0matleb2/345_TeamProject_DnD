@@ -1,170 +1,132 @@
 #pragma once
-
+#include <iostream>
+#include <map>
+#include <vector>
 #include <string>
-#include "Item.h"
-#include "Equipment.h"
+#include "Types.h"
+#include "Armor.h"
+#include "Belt.h"
+#include "Boots.h"
+#include "Bracers.h"
+#include "Helmet.h"
+#include "Ring.h"
+#include "Shield.h"
 #include "Weapon.h"
-#include "Dice.h"
 #include "ItemContainer.h"
-#include "Observable.h"
 
-class Character: public Observable {
+#include "boost/serialization/access.hpp"
+
+class Character {
 
 public:
 
 	Character();
-	Character(std::string, std::string, int);
-	Character(int, int, int, int, int, int);
-	Character(std::string name, std::string charaClass, int lvl, int str, int dex, int con, int intel, int wis, int cha);
-	Character(const Character& original);
+	
 	~Character();
 
+
+	int getX();
+	int getY();
 	std::string getName();
-	std::string getClass();
-	int getLevel();
+	int getLvl();
+	int getHp();
+	int getMaxHp();
 	int getStrength();
 	int getDexterity();
-	int getConstitution();
+	int getConsitiution();
 	int getIntelligence();
 	int getWisdom();
 	int getCharisma();
-	int getMaxHitPoints();
-	int getCurrentHitPoints();
-	int getExpPoints();
-	int getStrengthModifier();
-	int getDexterityModifier();
-	int getConstitutionModifier();
-	int getIntelligenceModifier();
-	int getWisdomModifier();
-	int getCharismaModifier();
-	int getArmorClass();
-	int getDamageBonus();
-	int getBaseAttackBonus(int i);
-	int getAttackBonus(int i);
-	ItemContainer* getBackpack();
-	Weapon* getEquippedWeapon();
-	Equipment* getEquippedShield();
-	Equipment* getEquippedHelmet();
-	Equipment* getEquippedArmor();
-	Equipment* getEquippedBelt();
-	Equipment* getEquippedBoots();
-	Equipment* getEquippedRing();
+	Armor* getArmor();
+	Belt* getBelt();
+	Boots* getBoots();
+	Bracers* getBracers();
+	Helmet* getHelmet();
+	Ring* getRing();
+	Shield* getShield();
+	Weapon* getWeapon();
+	ItemContainer* getInventory();
 
-	void setName(std::string s);
-	void setClass(std::string s);
-	void setLevel(int i);
-	void setExpPoints(int i);
-	void setCurrentHitPoints(int i);
-	void setStrength(int i);
-	void setDexterity(int i);
-	void setConstitution(int i);
-	void setIntelligence(int i);
-	void setWisdom(int i);
-	void setCharisma(int i);
-	void setEquippedWeapon(Weapon*);
-	void setEquippedShield(Equipment*);
-	void setEquippedHelmet(Equipment*);
-	void setEquippedArmor(Equipment*);
-	void setEquippedBelt(Equipment*);
-	void setEquippedBoots(Equipment*);
-	void setEquippedRing(Equipment*);
 
-	bool validateNewCharacter();
-	bool validateNewNPC();
-	void printStats();
-	void levelUpHitPointGain();
-	void setInitialMaxHP(int lvl, int modifier);
-	void hit(int);
-	void gainExp(int i);
+	void setX(int x);
+	void setY(int y);
+	void setName(std::string name);
+	void setLvl(int lvl);
+	void setHp(int hp);
+	void setMaxHp(int maxHp);
+	void setStrength(int strength);
+	void setDexterity(int dexterity);
+	void setConsitiution(int constitution);
+	void setIntelligence(int intelligence);
+	void setWisdom(int wisdom);
+	void setCharisma(int charisma);
+	void setArmor(Armor* armor);
+	void setBelt(Belt* belt);
+	void setBoots(Boots* boots);
+	void setBracers(Bracers* bracers);
+	void setHelmet(Helmet* helmet);
+	void setRing(Ring* ring);
+	void setShield(Shield* shield);
+	void setWeapon(Weapon* weapon);
+	void setInventory(ItemContainer* inventory);
 
-	void printEquippedItems();
-	void takeItem(Item* i);
-	Item* dropItem(int i);
-	void equipItem(Item* e);
-	void unequipItem(int i);
-	void unequipWeapon();
-	void unequipShield();
-	void unequipHelmet();
-	void unequipArmor();
-	void unequipBelt();
-	void unequipBoots();
-	void unequipRing();
 
-	void rescale(int tgt_lvl);
+	std::string toString();
+	void levelUp();
+
 
 private:
-
+	
+	int _x;
+	int _y;
 	std::string _name;
-	std::string _class;
 	int _lvl;
-	int _xp;
-	int _abilityScores[6]; //str, dex, cons, int, wisd, char
-	int _strengthModifier;
-	int _dexterityModifier;
-	int _constitutionModifier;
-	int _intelligenceModifier;
-	int _wisdomModifier;
-	int _charismaModifier;
-	int _maxHp;
 	int _hp;
-	bool _isAlive;
-	int _armorClass;
-	int _damageBonus;
+	int _maxHp;
+	int _strength;
+	int _dexterity;
+	int _constitution;
+	int _intelligence;
+	int _wisdom;
+	int _charisma;
+
+	Armor* _armor;
+	Belt* _belt;
+	Boots* _boots;
+	Bracers* _bracers;
+	Helmet* _helmet;
+	Ring* _ring;
+	Shield* _shield;
 	Weapon* _weapon;
-	Equipment* _equipment[6]; //shield, helmet, armor, belt, boots, ring
-	ItemContainer* _backpack;
-	int _baseAttackBonus[4];
-	int _attackBonus[4];
+
+	ItemContainer* _inventory;
 
 
 
-	void updateBaseAttackBonus();
-	void updateAttackBonus();
-	//Stats-setting & modifier updates (upon level-up or equipment change)
-	int abilityModifier(double attribute);
-	void updateModifiersAndBonuses();
-
-	//adding enchantment effects from equipping items,
-	//no addWeaponEnchEffects() because already covered by
-	//updateModifiersAndBonuses() & updateAttackBonus()
-	void addShieldEnchEffects(Equipment* e);
-	void addHelmetEnchEffects(Equipment* e);
-	void addArmorEnchEffects(Equipment* e);
-	void addBeltEnchEffects(Equipment* e);
-	void addBootsEnchEffects(Equipment* e);
-	void addRingEnchEffects(Equipment* e);
-
-	void removeWeaponEnchEffects(Weapon* w);
-	void removeShieldEnchEffects(Equipment* e);
-	void removeHelmetEnchEffects(Equipment* e);
-	void removeArmorEnchEffects(Equipment* e);
-	void removeBeltEnchEffects(Equipment* e);
-	void removeBootsEnchEffects(Equipment* e);
-	void removeRingEnchEffects(Equipment* e);
+	int abilityScoreToModifier(int score);
 
 	friend class boost::serialization::access;
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
-		ar & characterName;
-		ar & characterClass;
-		ar & level;
-		ar & expPoints;
-		ar & abilityScores;
-		ar & currentHitPoints;
-		ar & maxHitPoints;
-		ar & equippedWeapon;
-		ar & equipped;
-		ar & backpack;
-		ar & armorClass;
-		ar & damageBonus;
-		ar & isAlive;
-		ar & baseAttackBonus;
-		ar & attackBonus;
-		ar & strengthModifier;
-		ar & dexterityModifier;
-		ar & intelligenceModifier;
-		ar & wisdomModifier;
-		ar & charismaModifier;
-		ar & constitutionModifier;
+		ar & _name;
+		ar & _lvl;
+		ar & _hp;
+		ar & _maxHp;
+		ar & _strength;
+		ar & _dexterity;
+		ar & _constitution;
+		ar & _intelligence;
+		ar & _wisdom;
+		ar & _charisma;
+		ar & _armor;
+		ar & _belt;
+		ar & _boots;
+		ar & _bracers;
+		ar & _helmet;
+		ar & _ring;
+		ar & _shield;
+		ar & _weapon;
+		ar & _inventory;
 	}
 
 };
+

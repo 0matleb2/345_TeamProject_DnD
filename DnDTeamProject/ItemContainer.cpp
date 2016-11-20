@@ -1,19 +1,15 @@
-//! @file
-//! @brief Implementation file for Item Container class
-//!
+#include <algorithm>
+#include <iostream>
 #include "ItemContainer.h"
 
 
 
 ItemContainer::ItemContainer() {
+
 }
 
-ItemContainer::ItemContainer(const ItemContainer& orig) {
-	int s = orig._contents.size();
-	// iterate through std::vector of original, clone and push into new std::vector.
-	for (int i = 0; i < s; i++)	{
-		_contents.push_back(orig._contents[i]->clone());
-	}
+ItemContainer::ItemContainer(int capacity) : _capacity(capacity) {
+	_contents.reserve(capacity);
 }
 
 ItemContainer::~ItemContainer() {
@@ -22,54 +18,74 @@ ItemContainer::~ItemContainer() {
 
 
 //Accessors
-Item* ItemContainer::getItem(int index) {
-	return _contents[index];
+std::vector<Item*> ItemContainer::getContents() {
+	return _contents;
 }
-
-int ItemContainer::getSize() {
-	return _contents.size();
+int ItemContainer::getCapacity() {
+	return _capacity;
 }
-
-//! returns the index of an item, if it is present in the ItemContainer, that is
-//! @return: index of item in std::vector, returns -1 if there is none to be found
-int ItemContainer::getItemIndex(Item* it) {
-	int pos = std::find(_contents.begin(), _contents.end(), it) - _contents.begin();
-	if (pos >= _contents.size())
-		return -1;
-	else return pos;
+int ItemContainer::getQuantity() {
+	return _quantity;
 }
-
 
 
 //Mutators
-void ItemContainer::addItem(Item* item) {
-	_contents.push_back(item);
+void ItemContainer::setCapacity(int capacity) {
+	_capacity = capacity;
 }
 
-Item* ItemContainer::removeItem(int index) {
-	Item* item = _contents[index];
-	_contents.erase(_contents.begin() + index);
-	return item;
+void ItemContainer::setQuantity(int quantity) {
+	_quantity = quantity;
 }
 
 
 
-void ItemContainer::printContents() {
-	std::cout << "Contents of Container (" << _contents.size() << " items):" << std::endl;
-	int indexno = 0;
-	for (int it = 0; it < _contents.size(); it++) {
-		std::cout << indexno << ") ";
-		_contents[it]->print();
-		indexno++;
+void ItemContainer::depositItem(Item& item) {
+	if (_quantity == _capacity) {
+		std::cout << "Cannot deposit item to item container. It is full!" << std::endl;
 	}
-	std::cout << std::endl;
-}
-
-void ItemContainer::rescale(int tgt_lvl) {
-	if (_contents.size() == 0)
-		return;
-	for (int i = 0; i < _contents.size(); i++) {
-		_contents[i]->rescale(tgt_lvl);
+	else if (std::find(_contents.begin(), _contents.end(), &item) != _contents.end()) {
+		std::cout << "Cannot deposit item to item container. It already contains that item!" << std::endl;
+	}
+	else {
+		_contents.push_back(&item);
+		++_quantity;
 	}
 }
 
+Item* ItemContainer::withdrawItem(Item& item) {
+	std::vector<Item*>::iterator findIterator = std::find(_contents.begin(), _contents.end(), &item);
+	if (findIterator != _contents.end()) {
+		Item* tmp = *findIterator;
+		_contents.erase(findIterator);
+		--_quantity;
+		return tmp;
+	}
+	else {
+		std::cout << "Cannot withdraw item from item container. It does not contain that item!" << std::endl;
+		return nullptr;
+	}
+}
+
+Item * ItemContainer::withdrawItem(int index) {
+	if (index < _quantity) {
+		Item* tmp = _contents[index];
+		_contents.erase(_contents.begin() + index);
+		--_quantity;
+		return tmp;
+	}
+	else {
+		std::cout << "Cannot withdraw item from item container. Index is out of bounds!" << std::endl;
+		return nullptr;
+	}
+}
+
+
+
+std::string ItemContainer::toString() {
+	std::string s;
+	for (int i = 0; i < _quantity; ++i) {
+		s += "\n" + _contents[i]->toString();
+	}
+	return s;
+}
