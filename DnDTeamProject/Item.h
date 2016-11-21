@@ -21,9 +21,7 @@ public:
 	virtual void randomBonuses() = 0;
 	virtual ItemType getItemType() = 0;
 
-	bool operator==(const Item& item) const { //Needed for std::find()
-		return _id == item._id;
-	};
+	bool operator==(const Item& item) const; //Needed for std::find()
 
 private:
 

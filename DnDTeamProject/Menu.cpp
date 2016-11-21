@@ -7,14 +7,12 @@
 
 int getUserInputInteger() {
 	while (true) {
-		std::cout << "Enter an integer: ";
 		int tmp;
 		std::cin >> tmp;
 		if (!std::cin.fail()) {
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			fflush(stdin);
-			std::cout << std::endl;
 			return tmp;
 		}
 		std::cin.clear();

@@ -52,11 +52,20 @@ void CharacterBuilder::construct() {
 
 
 void CharacterBuilder::buildIdentity() {
+	std::string characterName;
+	bool choosingRandomName = true;
 	std::cout << "What is the character's name?" << std::endl;
 	switch (menu(builderNameOptions)) {
 	case 1:
-		_character->setName(characterNames[Dice::roll("d" + std::to_string(characterNames.size()))]);
-		std::cout << "The character is named " << _character->getName() << "." << std::endl << std::endl;
+		while (choosingRandomName) {
+			characterName = characterNames[Dice::roll("d" + std::to_string((characterNames.size()))) - 1];
+			std::cout << "The character is named " << characterName << std::endl << std::endl;
+			std::cout << "Are you happy with this character name?" << std::endl;
+			if (menu(yesNoOptions) == 1) {
+				choosingRandomName = false;
+				_character->setName(characterName);
+			}
+		}
 		break;
 	case 2:
 		std::cout << "Enter a name: ";
@@ -96,7 +105,9 @@ void CharacterBuilder::buildStats() {
 
 	//Apply level ups
 	std::cout << "What level is " << _character->getName() << "?" << std::endl;
+	std::cout << "Level: ";
 	int lvl = getUserInputInteger();
+	std::cout << std::endl;
 	for (int i = 1; i < lvl; ++i) {
 		_character->levelUp();
 	}

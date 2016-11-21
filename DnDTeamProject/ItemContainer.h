@@ -6,6 +6,7 @@
 class ItemContainer {
 
 	public:
+
 		ItemContainer();
 		ItemContainer(int capacity);
 		~ItemContainer();

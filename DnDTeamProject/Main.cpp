@@ -7,10 +7,12 @@
 #include "ItemBuilder.h"
 #include "ItemArchive.h"
 #include "FileIO.h"
+#include "MapBuilder.h"
+
 
 int main(int argc, char** argv) {
 
-
+	/*
 	std::cout << "<<< CHARACTER SAVE FILE CONTENTS >>>" << std::endl << std::endl;
 	std::vector<Character*> loadedCharacters = loadCharacters();
 	for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
@@ -31,8 +33,12 @@ int main(int argc, char** argv) {
 	CharacterBuilder builder;
 	builder.construct();
 
+	*/
 
-	std::cout << "Enter any key to exit program: ";
+
+	MapBuilder mapBuilder;
+	mapBuilder.construct();
+
+	std::cout << std::endl << "Enter any key to exit program: ";
 	getchar();
-
 }

@@ -5,7 +5,7 @@
 
 
 ItemContainer::ItemContainer() {
-
+	_contents.reserve(9);
 }
 
 ItemContainer::ItemContainer(int capacity) : _capacity(capacity) {

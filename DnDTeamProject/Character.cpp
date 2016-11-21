@@ -253,3 +253,17 @@ void Character::levelUp() {
 	_maxHp += Dice::roll("1d10") + abilityScoreToModifier(_constitution);
 	_hp = _maxHp;
 }
+
+bool Character::operator==(const Character & character) const {
+	bool isIdentical = (_name == character._name &&
+		_lvl == character._lvl &&
+		_hp == character._hp &&
+		_maxHp == character._maxHp &&
+		_strength == character._strength &&
+		_dexterity == character._dexterity &&
+		_constitution == character._constitution &&
+		_intelligence == character._intelligence &&
+		_wisdom == character._wisdom &&
+		_charisma == character._charisma);
+	return isIdentical;
+}

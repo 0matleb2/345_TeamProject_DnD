@@ -33,3 +33,7 @@ std::string Item::toString() {
 	s += "Name: " + getName();
 	return getName();
 }
+
+bool Item::operator==(const Item & item) const {
+	return _id == item._id;
+}

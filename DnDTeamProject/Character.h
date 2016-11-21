@@ -13,10 +13,10 @@
 #include "Shield.h"
 #include "Weapon.h"
 #include "ItemContainer.h"
-
+#include "Observable.h"
 #include "boost/serialization/access.hpp"
 
-class Character {
+class Character : public Observable {
 
 public:
 
@@ -73,6 +73,8 @@ public:
 
 	std::string toString();
 	void levelUp();
+
+	bool operator==(const Character& character) const; //Needed for std::find()
 
 
 private:
