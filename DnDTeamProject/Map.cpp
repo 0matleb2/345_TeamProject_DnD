@@ -6,7 +6,76 @@
 #include "MapObserver.h"
 #include "Errors.h"
 
-//[$] Start of Cell nested class
+
+Map::Map() {
+}
+
+
+Map::Map(const int w, const int h) {
+
+	if (w < 3 || h < 3) {
+		fatalError("Maps smaller than 3x3 cannot be created!");
+	}
+
+	_width = w;
+	_height = h;
+
+	//Cells are instantiated in the _grid vector, it is one dimensional for simpilicity
+	_grid.reserve(w*h);
+	for (int i = 0; i < w*h; i++) {
+		_grid.push_back(Cell(i%w, i/w));
+	}
+
+	//Basic map template is set (outer walls + _entry + _exit)
+	for (unsigned int i = 0; i < _grid.size(); i++) {
+		if ((i%w == 0) || (i%w == w - 1) || (i / w == 0) || (i / w == h - 1)) {
+			_grid[i].setSprite('#');
+		}
+		else {
+			_grid[i].setSprite('.');
+		}
+	}
+	setEntry(0, h / 2);
+	setExit(w - 1, h / 2);
+
+	//Link all cells in _grid with adjacent cells
+	for (int i = 0; i < (int)_grid.size()-1; i++) {
+		//Link North
+		if (i - _width < 0) {
+			_grid[i].setNorth(nullptr);
+		}
+		else {
+			_grid[i].setNorth(&_grid[i - _width]);
+		}
+		//Link East
+		if (i%_width + 1 > (_width - 1)) {
+			_grid[i].setEast(nullptr);
+		}
+		else {
+			_grid[i].setEast(&_grid[i + 1]);
+		}
+		//Link South
+		if (i + _width > (_width*_height) - 1) {
+			_grid[i].setSouth(nullptr);
+		}
+		else {
+			_grid[i].setSouth(&_grid[i + _width]);
+		}
+		//Link West
+		if (i%_width - 1 < 0) {
+			_grid[i].setWest(nullptr);
+		}
+		else {
+			_grid[i].setWest(&_grid[i - 1]);
+		}
+	}
+}
+
+Map::~Map() {
+}
+
+
+//Cell nested class
 Map::Cell::Cell() {
 }
 
@@ -15,6 +84,7 @@ Map::Cell::Cell(int x, int y) : _north(nullptr), _east(nullptr), _south(nullptr)
 
 Map::Cell::~Cell() {
 }
+
 
 //Cell accessors
 char Map::Cell::getSprite() {
@@ -66,222 +136,102 @@ void Map::Cell::setWest(Map::Cell* cell) {
 }
 void Map::Cell::setDfsVisited(bool b) {
 	_dfsVisited = b;
-}
-//[X] End of Cell nested class
+} 
+//End of Cell nested class
 
 
-
-Map::Map() {
-}
-
-Map::Map(const int w, const int h) {
-
-	if (w < 3 || h < 3) {
-		fatalError("Maps smaller than 3x3 cannot be created!");
-	}
-
-	_width = w;
-	_height = h;
-
-	//Cells are instantiated in the grid std::vector, it is one dimensional for simpilicity
-	_grid.reserve(w*h);
-	for (int i = 0; i < w*h; i++) {
-		_grid.push_back(Cell(i%w, i / w));
-	}
-
-	//Basic map template is set (outer walls with an entry and exit)
-	for (unsigned int i = 0; i < _grid.size(); i++) {
-		if ((i%w == 0) || (i%w == w - 1) || (i / w == 0) || (i / w == h - 1)) {
-			_grid[i].setSprite('#');
-		}
-		else {
-			_grid[i].setSprite('.');
-		}
-	}
-	setEntry(0, h / 2);
-	setExit(w - 1, h / 2);
-
-	//Link all cells in _grid with adjacent cells
-	for (int i = 0; i < (int)_grid.size() - 1; i++) {
-		//Link North
-		if (i - _width < 0) {
-			_grid[i].setNorth(nullptr);
-		}
-		else {
-			_grid[i].setNorth(&_grid[i - _width]);
-		}
-		//Link East
-		if (i%_width + 1 >(_width - 1)) {
-			_grid[i].setEast(nullptr);
-		}
-		else {
-			_grid[i].setEast(&_grid[i + 1]);
-		}
-		//Link South
-		if (i + _width > (_width*_height) - 1) {
-			_grid[i].setSouth(nullptr);
-		}
-		else {
-			_grid[i].setSouth(&_grid[i + _width]);
-		}
-		//Link West
-		if (i%_width - 1 < 0) {
-			_grid[i].setWest(nullptr);
-		}
-		else {
-			_grid[i].setWest(&_grid[i - 1]);
-		}
-	}
-
-	displayGrid();
+std::string Map::getName() {
+	return _name;
 }
 
-Map::~Map()
-{
-	if (_player)
-		delete _player;
-
-	if (_npcs.size() > 0)
-	{
-		for (int i = 0; i < _npcs.size(); i++)
-		{
-			//delete _npcs[i];
-			//_npcs[i] = nullptr;
-		}
-		_npcs.clear();
-	}
-
-	if (_itemContainers.size() > 0)
-	{
-		for (int i = 0; i < _itemContainers.size(); i++)
-		{
-			//delete _itemContainers[i];
-			//_itemContainers[i] = nullptr;
-		}
-		_itemContainers.clear();
-	}
+int Map::getWidth() {
+	return _width;
 }
 
+int Map::getHeight() {
+	return _height;
+}
 
-//Map accessors
+Map::Cell* Map::getCell(int x, int y) {
+	return &_grid[y*_width + x];
+}
+
+//Accessors
 Map::Cell* Map::getEntry() {
 	return _entry;
 }
-
 Map::Cell* Map::getExit() {
 	return _exit;
 }
-
-MapCharacter* Map::getPC() {
-	return _player;
+Cursor * Map::getCursor() {
+	return _cursor;
+}
+Character* Map::getPlayerCharacter() {
+	return _playerCharacter;
+}
+std::vector<Character*> Map::getNpcCharacters() {
+	return _npcCharacters;
+}
+std::vector<Chest*> Map::getChests() {
+	return _chests;
 }
 
-MapCharacter* Map::getNPC(int x, int y)
-{
-	if (_npcs.size() < 1)
-	{
-		return nullptr;
-	}
-
-	for (int i = 0; i < _npcs.size(); i++)
-	{
-		if (_npcs[i]->getX() == x && _npcs[i]->getY() == y)
-			return _npcs[i];
-	}
-
-	return nullptr;
-}
-
-MapContainer* Map::getLoot(int x, int y)
-{
-	if (_itemContainers.size() < 1)
-	{
-		return nullptr;
-	}
-
-	for (int i = 0; i < _itemContainers.size(); i++)
-	{
-		if (_itemContainers[i]->getX() == x && _itemContainers[i]->getY() == y)
-			return _itemContainers[i];
-	}
-
-	return nullptr;
+std::string Map::getDrawSuffix() {
+	return _drawSuffix;
 }
 
 
-//Map mutators
+void Map::setName(std::string name) {
+	_name = name;
+}
+
+//Mutators
 void Map::setCell(int x, int y, char c) {
 	_grid[y*_width + x].setSprite(c);
 	notify();
 }
-
 void Map::setEntry(int x, int y) {
-	if (_entry != nullptr) {
+	if(_entry)
 		_entry->setSprite('#');
-	}
 	_grid[y*_width + x].setSprite('/');
 	_entry = &_grid[y*_width + x];
-	notify();
 }
-
 void Map::setExit(int x, int y) {
-	if (_exit != nullptr) {
+	if(_exit)
 		_exit->setSprite('#');
-	}
 	_grid[y*_width + x].setSprite('\\');
 	_exit = &_grid[y*_width + x];
-	notify();
 }
-
-void Map::addPC(Character* pc)
-{
-	if (_player)
-		delete _player;
-
-	_player = new MapCharacter(_entry->getX(), _entry->getY(), pc, 'T');
-
-	setCell(_player->getX(), _player->getY(), _player->getSymbol());
+void Map::setCursor(Cursor * cursor) {
+	_cursor = cursor;
 }
-
-void Map::addNPC(Character* npc, int x, int y, char sprite)
-{
-	if (_grid[y*_width + x].getSprite() != '.')
-	{
-		std::cout << "Failed to add npc. Cell occupied" << std::endl;
-		return;
-	}
-
-	_npcs.push_back(new MapCharacter(x, y, npc, sprite));
-
-	setCell(x, y, sprite);
+void Map::setPlayerCharacter(Character* character) {
+	_playerCharacter = character;
 }
-
-void Map::addLoot(ItemContainer* cont, int x, int y, char sprite) {
-	if (_grid[y*_width + x].getSprite() != '.')
-	{
-		std::cout << "Failed to add container. Cell Occupied" << std::endl;
-		return;
-	}
-
-	_itemContainers.push_back(new MapContainer(x, y, cont, sprite));
-
-	setCell(x, y, sprite);
-}
-
-
-
-void Map::displayGrid() {
-	int i = 0;
-	int j = 0;
-	for (i = 0; i < _height; i++) {
-		for (j = 0; j < _width; j++) {
-			std::cout << _grid[(i*_width) + j].getSprite();
-		}
-		std::cout << std::endl;
+void Map::addNpcCharacter(Character* character) {
+	if (std::find(_npcCharacters.begin(), _npcCharacters.end(), character) == _npcCharacters.end()) {
+		_npcCharacters.push_back(character);
 	}
 }
+void Map::removeNpcCharacter(Character* character) {
+	int pos = std::find(_npcCharacters.begin(), _npcCharacters.end(), character) - _npcCharacters.begin();
+	_npcCharacters.erase(_npcCharacters.begin() + pos);
+}
+void Map::addChest(Chest* container) {
+	if (std::find(_chests.begin(), _chests.end(), container) == _chests.end()) {
+		_chests.push_back(container);
+	}
+}
+void Map::removeChest(Chest* container) {
+	int pos = std::find(_chests.begin(), _chests.end(), container) - _chests.begin();
+	_chests.erase(_chests.begin() + pos);
+}
 
-//Validates the map by checking if a path exists between an entry and an exit
+void Map::setDrawSuffix(std::string drawSuffix) {
+	_drawSuffix = drawSuffix;
+}
+
+//Validates the map by checking if a path exists between an _entry and an _exit
 bool Map::validate() {
 	return validate(_entry);
 }
@@ -317,198 +267,36 @@ bool Map::validate(Cell* vertex) {
 	return false;
 }
 
-void Map::printPC() {
-	_player->print();
-}
-
-void Map::moveCharacter(MapCharacter* actor, char direction) {
-	// get current character coordinates
-	int x = actor->getX();
-	int y = actor->getY();
-
-	Map::Cell* temp = nullptr;
-
-	switch (direction) {
-
-		// up
-	case 'n':
-		temp = _grid[y*_width + x].getNorth();
-		if (temp) {
-			// if north is valid to move to
-			if (temp->getSprite() == '.' || temp->getSprite() == '\\') {
-				// change y coordinate to one north
-				actor->setY(y - 1);
-				// set char symbol at north
-				temp->setSprite(actor->getSymbol());
-				// set empty tile at previous location
-				if (_entry->getX() == x && _entry->getY() == y)
-					_grid[y*_width + x].setSprite('/');
-				else
-					_grid[y*_width + x].setSprite('.');
-			}
-		}
-		temp = nullptr;
-		notify();
-		break;
-
-		// left
-	case 'w':
-		temp = _grid[y*_width + x].getWest();
-		if (temp) {
-			// if west is valid to move to
-			if (temp->getSprite() == '.' || temp->getSprite() == '\\') {
-				// change x coordinate to one west
-				actor->setX(x - 1);
-				// set char symbol at west
-				temp->setSprite(actor->getSymbol());
-				// set empty tile at previous location
-				if (_entry->getX() == x && _entry->getY() == y)
-					_grid[y*_width + x].setSprite('/');
-				else
-					_grid[y*_width + x].setSprite('.');
-			}
-		}
-		temp = nullptr;
-		notify();
-		break;
-
-		// right
-	case 'e':
-		temp = _grid[y*_width + x].getEast();
-		if (temp) {
-			// if east is valid to move to
-			if (temp->getSprite() == '.' || temp->getSprite() == '\\') {
-				// change x coordinate to one east
-				actor->setX(x + 1);
-				// set char symbol at east
-				temp->setSprite(actor->getSymbol());
-				// set empty tile at previous location
-				if (_entry->getX() == x && _entry->getY() == y)
-					_grid[y*_width + x].setSprite('/');
-				else
-					_grid[y*_width + x].setSprite('.');
-			}
-		}
-		temp = nullptr;
-		notify();
-		break;
-
-		// down
-	case 's':
-		temp = _grid[y*_width + x].getSouth();
-		if (temp) {
-			// if north is valid to move to
-			if (temp->getSprite() == '.' || temp->getSprite() == '\\') {
-				// change y coordinate to one north
-				actor->setY(y + 1);
-				// set char symbol at north
-				temp->setSprite(actor->getSymbol());
-				// set empty tile at previous location
-				if (_entry->getX() == x && _entry->getY() == y)
-					_grid[y*_width + x].setSprite('/');
-				else
-					_grid[y*_width + x].setSprite('.');
-			}
-		}
-		temp = nullptr;
-		notify();
-		break;
-	default:
-		break;
+void Map::draw() {
+	std::vector<char> drawBuffer;
+	for (int i = 0, n = _grid.size(); i < n; ++i) {
+		drawBuffer.push_back(_grid[i].getSprite());
 	}
-}
-
-void Map::examine(char direction) {
-
-	int x = getPC()->getX();
-	int y = getPC()->getY();
-
-	switch (direction) {
-	case 'n':
-		examine(x, y - 1);
-		break;
-	case 'w':
-		examine(x - 1, y);
-		break;
-	case 'e':
-		examine(x + 1, y);
-		break;
-	case 's':
-		examine(x, y + 1);
-		break;
-	default:
-		break;
+	if (_playerCharacter) {
+		drawBuffer[_playerCharacter->getY() * _width + _playerCharacter->getX()] = '@';
 	}
-
-	std::cout << "Return to examine menu" << std::endl;
-	system("PAUSE");
-	notify();
-}
-
-void Map::examine(int x, int y) {
-	if (x < 0 || y < 0 || x >= _width || y >= _height) {
-		std::cout << "Cannot examine. Out of Bounds." << std::endl;
-		return;
-	}
-
-	char mapSprite = _grid[y * _width + x].getSprite();
-	if (mapSprite == '.') {
-		std::cout << "There is nothing here" << std::endl;
-		return;
-	}
-	if (mapSprite == '#') {
-		std::cout << "This is a normal-looking wall." << std::endl;
-		return;
-	}
-	if (mapSprite == '/') {
-		std::cout << "This is the entrance." << std::endl;
-		return;
-	}
-	if (mapSprite == '\\') {
-		std::cout << "This is the _exit." << std::endl;
-		return;
-	}
-
-	//check npc list for possible match
-	if (_npcs.size() > 0) {
-		for (int i = 0; i < _npcs.size(); i++) {
-			if (_npcs[i]->getX() == x && _npcs[i]->getY() == y)	{
-				_npcs[i]->print();
-				return;
-			}
+	if (_npcCharacters.size() > 0) {
+		for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {
+			drawBuffer[_npcCharacters[i]->getY() * _width + _npcCharacters[i]->getX()] = '&';
 		}
 	}
-
-	// check container list for possible match
-	if (_itemContainers.size() > 0)	{
-		for (int i = 0; i < _itemContainers.size(); i++) {
-			if (_itemContainers[i]->getX() == x && _itemContainers[i]->getY() == y)	{
-				_itemContainers[i]->print();
-				return;
-			}
+	if (_chests.size() > 0) {
+		for (int i = 0, n = _chests.size(); i < n; ++i) {
+			drawBuffer[_chests[i]->getY() * _width + _chests[i]->getX()] = 'B';
 		}
 	}
-
-	//no match found
-	std::cout << "object unknown" << std::endl;
-}
-
-bool Map::exitReached() {
-	if (_player->getX() == _exit->getX() && _player->getY() == _exit->getY())
-		return true;
-
-	return false;
-}
-
-void Map::rescale(int targetLvl) {
-	if (_npcs.size() > 0) {
-		for (int i = 0; i < _npcs.size(); i++)
-			_npcs[i]->rescale(targetLvl);
+	if (_cursor) {
+		drawBuffer[_cursor->getY() * _width + _cursor->getX()] = '_';
 	}
 
-	if (_itemContainers.size() > 0)
-	{
-		for (int i = 0; i < _itemContainers.size(); i++)
-			_itemContainers[i]->rescale(targetLvl);
+	system("CLS");
+
+	for (int i = 0; i < _height; ++i) {
+		for (int j = 0; j < _width; ++j) {
+			std::cout << drawBuffer[i*_width + j];
+		}
+		std::cout << std::endl;
 	}
+	std::cout << std::endl << _drawSuffix << std::endl;
 }
+

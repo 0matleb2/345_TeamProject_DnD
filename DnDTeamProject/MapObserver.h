@@ -1,20 +1,20 @@
 #pragma once
 #include "Observer.h"
-#include "Map.h"
 
 
 
 class MapObserver: public Observer {
 
-public:
+	public:
 
-	MapObserver(Map* model);
-	~MapObserver();
+		MapObserver(Map* model);
+		~MapObserver();
 
-	void update();
+		void update();
 
-private:
+	private:
 
-	Map* _subject;
-};
+		Map* _model;
+
+	};
 

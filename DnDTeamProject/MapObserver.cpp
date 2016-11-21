@@ -3,11 +3,9 @@
 
 
 
-MapObserver::MapObserver(Map* subject) : Observer() {
-	
-	_subject = subject;
-	_subject->attach(this);
-	
+MapObserver::MapObserver(Map* model) : Observer() {
+	_model = model;
+	_model->attach(this);
 }
 
 MapObserver::~MapObserver() {
@@ -15,6 +13,6 @@ MapObserver::~MapObserver() {
 }
 
 void MapObserver::update() {
-	_subject->displayGrid();
+	_model->draw();
 }
 

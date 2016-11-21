@@ -1,24 +1,22 @@
 #pragma once
-
 #include <vector>
+
 #include "Observer.h"
-
-
 
 class Observable {
 
 	public:
 
 		Observable();
-		virtual ~Observable();
+		~Observable();
 
-		virtual void attach(Observer* o);
-		virtual void detach(Observer* o);
-		virtual void notify();
+		void attach(Observer* observer);
+		void detach(Observer* observer);
+		void notify();
 
 	private:
-
 		std::vector<Observer*> _views;
 
+	
 };
 

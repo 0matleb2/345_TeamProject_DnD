@@ -1,40 +1,48 @@
-//! @file
-//! @brief Header file for Weapon class
-//!
-//! This class handles weapons. Weapons have all the same attributes that standard equipment does,
-//! as well as a _subtype for weapon category, a dice object representing damage, and a value
-//! representing it's _range. Besides that, it functions just as any other item.
 #pragma once
-
 #include "Item.h"
+#include "Types.h"
+
+
 
 class Weapon : public Item {
+
 public:
 
 	Weapon();
-	Weapon(std::string nm, ItemType tp, std::vector<Enchant*> nv, int rng, WeaponType st);
-	Weapon(const Weapon& orig);
+	Weapon(WeaponType weaponType);
 	~Weapon();
 
-	int getRange();
-	WeaponType getSubtype();
+	WeaponType getWeaponType();
+	int getAttackBonus();
+	int getDamageBonus();
+	std::string getDamage();
 
-	void setRange(int);
-	void setSubtype(WeaponType);
+	void setWeaponType(WeaponType weaponType);
+	void setAttackBonus(int attackBonus);
+	void setDamageBonus(int damageBonus);
+	void setDamage(std::string damage);
 
-	Weapon* clone();
-	void print();
+	void randomBonuses();
+	ItemType getItemType();
+
+	std::string toString();
 
 private:
 
-	int _range;
-	WeaponType _subtype;
+	WeaponType _weaponType;
+	int _attackBonus;
+	int _damageBonus;
+	std::string _damage;
+
 
 	friend class boost::serialization::access;
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
 		ar & boost::serialization::base_object<Item>(*this);
-		ar & _range;
-		ar & _subtype;
+		ar & _weaponType;
+		ar & _attackBonus;
+		ar & _damageBonus;
+		ar & _damage;
 	}
+
 };
 
