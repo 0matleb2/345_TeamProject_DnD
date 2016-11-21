@@ -231,6 +231,20 @@ void Map::setDrawSuffix(std::string drawSuffix) {
 	_drawSuffix = drawSuffix;
 }
 
+bool Map::isCellOccupied(int x, int y) {
+	if (_playerCharacter && _playerCharacter->getX() == x && _playerCharacter->getY() == y)
+		return true;
+	for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {
+		if (_npcCharacters[i]->getX() == x && _npcCharacters[i]->getY() == y)
+			return true;
+	}
+	for (int i = 0, n = _chests.size(); i < n; ++i) {
+		if (_chests[i]->getX() == x && _chests[i]->getY() == y)
+			return true;
+	}
+	return false;
+}
+
 //Validates the map by checking if a path exists between an _entry and an _exit
 bool Map::validate() {
 	return validate(_entry);

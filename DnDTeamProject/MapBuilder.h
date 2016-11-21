@@ -20,11 +20,7 @@ private:
 
 	void buildDimensions();
 	void buildName();
-	void buildEntrance();
-	void buildExit();
 	void buildLayout();
-	void buildNPCs();
-	void buildChests();
 
 
 

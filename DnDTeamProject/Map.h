@@ -86,6 +86,7 @@ public:
 	void addChest(Chest*);
 	void removeChest(Chest*);
 	void setDrawSuffix(std::string drawSuffix);
+	bool isCellOccupied(int x, int y);
 
 	bool validate();
 	void draw();

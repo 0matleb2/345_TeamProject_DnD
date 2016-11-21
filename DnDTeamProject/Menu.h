@@ -79,3 +79,10 @@ static std::vector<std::string> yesNoOptions = {
 	"Yes",
 	"No"
 };
+
+static std::vector<std::string> mapBuilderChestOptions{
+	"Add a saved item",
+	"Add a new item",
+	"Remove an item",
+	"Finished filling chest"
+};
