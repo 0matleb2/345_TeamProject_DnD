@@ -25,32 +25,32 @@ void MapBuilder::construct() {
 	buildDimensions();
 	buildName();
 	buildLayout();
+	saveMap(_map);
 }
 
 void MapBuilder::buildDimensions() {
-	std::cout << "What are the dimensions of the map?" << std::endl;
-	std::cout << "Width: ";
+	std::cout << "[?] What are the dimensions of the map?" << std::endl;
+	std::cout << "   Width: ";
 	int width = getUserInputInteger();
-	std::cout << "Height: ";
+	std::cout << "   Height: ";
 	int height = getUserInputInteger();
 	std::cout << std::endl;
 	_map = new Map(width, height);
 	Cursor* editorCursor = new Cursor();
 	CursorObserver* cursorObserver = new CursorObserver(editorCursor, _map);
 	_map->setCursor(editorCursor);
+	system("cls");
 }
 
 void MapBuilder::buildName() {
 	std::string mapName;
 	bool choosingRandomName = true;
-	std::cout << "What is the map called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the map called?")) {
 	case 1:
 		while (choosingRandomName) {
 			mapName = dungeonNames[Dice::roll("d"+ std::to_string((dungeonNames.size()))) - 1];
 			std::cout << "The map is called " << mapName << std::endl << std::endl;
-			std::cout << "Are you happy with this map name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this map name?") == 1) {
 				choosingRandomName = false;
 				_map->setName(mapName);
 			}
@@ -90,29 +90,29 @@ void MapBuilder::buildLayout() {
 		switch (keypress) {
 		case 'W':
 		case 'w':
-		case 72: // Arrow key UP
+		case 72: //Arrow key UP
 			if (cursorY > 0)
 				_map->getCursor()->setY(cursorY - 1);
 			break;
 		case 'A':
 		case 'a':
-		case 75: // Arrow key LEFT
+		case 75: //Arrow key LEFT
 			if (cursorX > 0)
 				_map->getCursor()->setX(cursorX - 1);
 			break;
 		case 'S':
 		case 's':
-		case 80: // Arrow key DOWN
+		case 80: //Arrow key DOWN
 			if (cursorY < (_map->getHeight() - 1))
 				_map->getCursor()->setY(cursorY + 1);
 			break;
 		case 'D':
 		case 'd':
-		case 77: // Arrow key RIGHT
+		case 77: //Arrow key RIGHT
 			if (cursorX < (_map->getWidth() - 1))
 				_map->getCursor()->setX(cursorX + 1);
 			break;
-		case '0':
+		case '0': //Insert empty space
 			if ((_map->getCell(cursorX, cursorY)->getSprite() != '/') && (_map->getCell(cursorX, cursorY)->getSprite() != '\\') &&
 				!(cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -120,7 +120,7 @@ void MapBuilder::buildLayout() {
 				_map->setCell(cursorX, cursorY, '.');
 			}
 			break;
-		case '1':
+		case '1': //Insert wall
 			if ((_map->getCell(cursorX, cursorY)->getSprite() != '/') && (_map->getCell(cursorX, cursorY)->getSprite() != '\\') &&
 				!(cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -128,7 +128,7 @@ void MapBuilder::buildLayout() {
 				_map->setCell(cursorX, cursorY, '#');
 			}
 			break;
-		case '2':
+		case '2': //Insert entrance
 			if ((cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				(_map->getCell(cursorX, cursorY)->getSprite() == '#') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -137,7 +137,7 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '3':
+		case '3': //Insert exit
 			if ((cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				(_map->getCell(cursorX, cursorY)->getSprite() == '#') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -146,27 +146,34 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '4':
+		case '4': //Insert saved character
 			if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
 
 				std::vector<Character*> loadedCharacters = loadCharacters();
 				std::vector<std::string> loadedCharactersMenuOptions;
-				for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
-					loadedCharactersMenuOptions.push_back(loadedCharacters[i]->getName() + ", Level: " + std::to_string(loadedCharacters[i]->getLvl()));
+				if (loadedCharacters.size() > 0) {
+					for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
+						loadedCharactersMenuOptions.push_back(loadedCharacters[i]->getName() + ", Level: " + std::to_string(loadedCharacters[i]->getLvl()));
+					}
+					Character* placedCharacter = loadedCharacters[menu(loadedCharactersMenuOptions, "Which character do you want to place here?") - 1];
+					placedCharacter->setX(cursorX);
+					placedCharacter->setY(cursorY);
+					_map->addNpcCharacter(placedCharacter);
+					_map->draw();
 				}
-				std::cout << "Which character do you want to place here?" << std::endl;
-				Character* placedCharacter = loadedCharacters[menu(loadedCharactersMenuOptions) - 1];
-				placedCharacter->setX(cursorX);
-				placedCharacter->setY(cursorY);
-				_map->addNpcCharacter(placedCharacter);
-				_map->draw();
+				else {
+					std::string drawSuffix = _map->getDrawSuffix();
+					_map->setDrawSuffix(drawSuffix + "\nThere are no saved characters!");
+					_map->draw();
+					_map->setDrawSuffix(drawSuffix);
+				}
 			}
 			break;
-		case '5':
+		case '5': //Insert new character
 			if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
-
+				system("cls");
 				CharacterBuilder characterBuilder;
 				characterBuilder.construct();
 				Character* placedCharacter = characterBuilder.getCharacter();
@@ -176,7 +183,7 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '6':
+		case '6': //Insert chest
 			if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
 
@@ -184,33 +191,39 @@ void MapBuilder::buildLayout() {
 
 				bool fillingChest = true;
 				while (fillingChest) {
+					_map->draw();
 					std::vector<Item*> loadedItems, chestItems;
 					std::vector<std::string> loadedItemsMenuOptions, chestItemsMenuOptions;
 					ItemBuilder itemBuilder;
-					std::cout << "Modifying chest contents..." << std::endl;
-					switch (menu(mapBuilderChestOptions)) {
+					switch (menu(mapBuilderChestOptions, "Modifying chest contents...")) {
 					case 1: //Add a saved item
-						std::cout << "Which item do you want to add?" << std::endl;
+						_map->draw();
 						loadedItems = loadItems().getItemArchive();
-						for (int i = 0, n = loadedItems.size(); i < n; ++i) {
-							loadedItemsMenuOptions.push_back(loadedItems[i]->toString());
+						if (loadedItems.size() > 0) {
+							for (int i = 0, n = loadedItems.size(); i < n; ++i) {
+								loadedItemsMenuOptions.push_back(loadedItems[i]->toString());
+							}
+							placedChest->depositItem(*loadedItems[menu(loadedItemsMenuOptions, "Which item do you want to add?") - 1]);
 						}
-						placedChest->depositItem(*loadedItems[menu(loadedItemsMenuOptions) - 1]);
 						break;
 					case 2: //Add a new item
 						itemBuilder.construct();
 						placedChest->depositItem(*itemBuilder.getItem());
 						break;
 					case 3: //Withdraw an item
+						_map->draw();
 						if (placedChest->getContents().size() > 0) {
-							std::cout << "Which item do you want to add?" << std::endl;
 							for (int i = 0, n = placedChest->getContents().size(); i < n; ++i) {
 								chestItemsMenuOptions.push_back(placedChest->getContents()[i]->toString());
 							}
-							placedChest->withdrawItem(menu(chestItemsMenuOptions) - 1);
+							chestItemsMenuOptions.push_back("Cancel");
+							int choice = menu(chestItemsMenuOptions, "Which item do you want to remove?");
+							if (choice != chestItemsMenuOptions.size())
+								placedChest->withdrawItem( - 1);
 						}
 						break;
 					case 4:
+						_map->draw();
 						_map->addChest(placedChest);
 						fillingChest = false;
 						break;
@@ -219,8 +232,17 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '\r':
-			editingLayout = false;
+		case '\r': //Finished
+			if (_map->validate()) {
+				editingLayout = false;
+				system("cls");
+			}
+			else {
+				std::string drawSuffix = _map->getDrawSuffix();
+				_map->setDrawSuffix(drawSuffix + "\nMap is invalid! There must be a clear path from the entrance to the exit.");
+				_map->draw();
+				_map->setDrawSuffix(drawSuffix);
+			}
 			break;
 		}
 	}

@@ -8,6 +8,7 @@
 #include "ItemArchive.h"
 #include "FileIO.h"
 #include "MapBuilder.h"
+#include "CampaignBuilder.h"
 
 
 int main(int argc, char** argv) {
@@ -35,10 +36,12 @@ int main(int argc, char** argv) {
 
 	*/
 
+	//MapBuilder mapBuilder;
+	//mapBuilder.construct();
 
-	MapBuilder mapBuilder;
-	mapBuilder.construct();
+	CampaignBuilder campaignBuilder;
+	campaignBuilder.construct();
 
-	std::cout << std::endl << "Enter any key to exit program: ";
+	std::cout << std::endl << "End of program." << std::endl << "Enter any key to exit program: ";
 	getchar();
 }

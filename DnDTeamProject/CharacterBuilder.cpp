@@ -54,14 +54,12 @@ void CharacterBuilder::construct() {
 void CharacterBuilder::buildIdentity() {
 	std::string characterName;
 	bool choosingRandomName = true;
-	std::cout << "What is the character's name?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the character's name?")) {
 	case 1:
 		while (choosingRandomName) {
 			characterName = characterNames[Dice::roll("d" + std::to_string((characterNames.size()))) - 1];
 			std::cout << "The character is named " << characterName << std::endl << std::endl;
-			std::cout << "Are you happy with this character name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this character name?") == 1) {
 				choosingRandomName = false;
 				_character->setName(characterName);
 			}
@@ -78,8 +76,7 @@ void CharacterBuilder::buildIdentity() {
 
 
 void CharacterBuilder::buildStats() {
-	std::cout << "Which attributes does " << _character->getName() << " favor most?" << std::endl;
-	switch (menu(characterBuilderStatOptions)) {
+	switch (menu(characterBuilderStatOptions, "Which attributes does " + _character->getName() + " favor most?")) {
 	case 1:
 		rollStats();
 		break;
@@ -104,8 +101,8 @@ void CharacterBuilder::buildStats() {
 	}
 
 	//Apply level ups
-	std::cout << "What level is " << _character->getName() << "?" << std::endl;
-	std::cout << "Level: ";
+	std::cout << "[?] What level is " << _character->getName() << "?" << std::endl;
+	std::cout << "   Level: ";
 	int lvl = getUserInputInteger();
 	std::cout << std::endl;
 	for (int i = 1; i < lvl; ++i) {
@@ -118,7 +115,6 @@ void CharacterBuilder::buildStats() {
 void CharacterBuilder::buildEquippedItems() {
 	bool equippingItems = true;
 	while (equippingItems) {
-		std::cout << "Equip " << _character->getName() << " with some items." << std::endl;
 		std::vector<std::string> equippedItemsMenuOptions;
 		equippedItemsMenuOptions.push_back("Armor:\t\t" + (_character->getArmor() ? _character->getArmor()->toString() : ""));
 		equippedItemsMenuOptions.push_back("Belt:\t\t" + (_character->getBelt() ? _character->getBelt()->toString() : ""));
@@ -136,7 +132,7 @@ void CharacterBuilder::buildEquippedItems() {
 		std::vector<Item*> loadedArmor, loadedBelts, loadedBoots, loadedBracers, loadedHelmets, loadedRings, loadedShields, loadedWeapons;
 		std::vector<std::string> loadedArmorOptionsMenu, loadedBeltsOptionsMenu, loadedBootsOptionsMenu, loadedBracersOptionsMenu,
 			loadedHelmetsOptionsMenu, loadedRingsOptionsMenu, loadedShieldsOptionsMenu, loadedWeaponsOptionsMenu;
-		switch (menu(equippedItemsMenuOptions)) {
+		switch (menu(equippedItemsMenuOptions, "Equip " + _character->getName() + " with some items.")) {
 		case 1: //Armor
 			for (int i = 0, n = loadedItems.size(); i < n; ++i) {
 				if (loadedItems[i]->getItemType() == ItemType::ARMOR)
@@ -146,8 +142,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedArmor.size(); i < n; ++i) {
 					loadedArmorOptionsMenu.push_back(loadedArmor[i]->toString());
 				}
-				std::cout << "Which armor do you want to equip?" << std::endl;
-				_character->setArmor(dynamic_cast<Armor*>(loadedArmor[menu(loadedArmorOptionsMenu) - 1]));
+				_character->setArmor(dynamic_cast<Armor*>(loadedArmor[menu(loadedArmorOptionsMenu, "Which armor do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved armors." << std::endl << std::endl;
@@ -162,8 +157,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedBelts.size(); i < n; ++i) {
 					loadedBeltsOptionsMenu.push_back(loadedBelts[i]->toString());
 				}
-				std::cout << "Which belt do you want to equip?" << std::endl;
-				_character->setBelt(dynamic_cast<Belt*>(loadedBelts[menu(loadedBeltsOptionsMenu) - 1]));
+				_character->setBelt(dynamic_cast<Belt*>(loadedBelts[menu(loadedBeltsOptionsMenu, "Which belt do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved belts." << std::endl << std::endl;
@@ -178,8 +172,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedBoots.size(); i < n; ++i) {
 					loadedBootsOptionsMenu.push_back(loadedBoots[i]->toString());
 				}
-				std::cout << "Which boots do you want to equip?" << std::endl;
-				_character->setBoots(dynamic_cast<Boots*>(loadedBoots[menu(loadedBootsOptionsMenu) - 1]));
+				_character->setBoots(dynamic_cast<Boots*>(loadedBoots[menu(loadedBootsOptionsMenu, "Which boots do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved boots." << std::endl << std::endl;
@@ -194,8 +187,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedBracers.size(); i < n; ++i) {
 					loadedBracersOptionsMenu.push_back(loadedBracers[i]->toString());
 				}
-				std::cout << "Which bracers do you want to equip?" << std::endl;
-				_character->setBracers(dynamic_cast<Bracers*>(loadedBracers[menu(loadedBracersOptionsMenu) - 1]));
+				_character->setBracers(dynamic_cast<Bracers*>(loadedBracers[menu(loadedBracersOptionsMenu, "Which bracers do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved bracers." << std::endl << std::endl;
@@ -210,8 +202,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedHelmets.size(); i < n; ++i) {
 					loadedHelmetsOptionsMenu.push_back(loadedHelmets[i]->toString());
 				}
-				std::cout << "Which helmet do you want to equip?" << std::endl;
-				_character->setHelmet(dynamic_cast<Helmet*>(loadedHelmets[menu(loadedHelmetsOptionsMenu) - 1]));
+				_character->setHelmet(dynamic_cast<Helmet*>(loadedHelmets[menu(loadedHelmetsOptionsMenu, "Which helmet do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved helmets." << std::endl << std::endl;
@@ -226,8 +217,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedRings.size(); i < n; ++i) {
 					loadedRingsOptionsMenu.push_back(loadedRings[i]->toString());
 				}
-				std::cout << "Which ring do you want to equip?" << std::endl;
-				_character->setRing(dynamic_cast<Ring*>(loadedRings[menu(loadedRingsOptionsMenu) - 1]));
+				_character->setRing(dynamic_cast<Ring*>(loadedRings[menu(loadedRingsOptionsMenu, "Which ring do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved rings." << std::endl << std::endl;
@@ -242,8 +232,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedShields.size(); i < n; ++i) {
 					loadedShieldsOptionsMenu.push_back(loadedShields[i]->toString());
 				}
-				std::cout << "Which shield do you want to equip?" << std::endl;
-				_character->setShield(dynamic_cast<Shield*>(loadedShields[menu(loadedShieldsOptionsMenu) - 1]));
+				_character->setShield(dynamic_cast<Shield*>(loadedShields[menu(loadedShieldsOptionsMenu, "Which shield do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved shields." << std::endl << std::endl;
@@ -258,8 +247,7 @@ void CharacterBuilder::buildEquippedItems() {
 				for (int i = 0, n = loadedWeapons.size(); i < n; ++i) {
 					loadedWeaponsOptionsMenu.push_back(loadedWeapons[i]->toString());
 				}
-				std::cout << "Which Weapon do you want to equip?" << std::endl;
-				_character->setWeapon(dynamic_cast<Weapon*>(loadedWeapons[menu(loadedWeaponsOptionsMenu) - 1]));
+				_character->setWeapon(dynamic_cast<Weapon*>(loadedWeapons[menu(loadedWeaponsOptionsMenu, "Which weapon do you want to equip?") - 1]));
 			}
 			else {
 				std::cout << "There are no saved weapons." << std::endl << std::endl;
@@ -279,21 +267,18 @@ void CharacterBuilder::buildEquippedItems() {
 void CharacterBuilder::buildInventory() {
 	bool storingItems = true;
 	while (storingItems) {
-		std::cout << "Store some items in " << _character->getName() << "'s inventory." << std::endl;
-
 		ItemBuilder itemBuilder;
 		std::vector<Item*> loadedItems = loadItems().getItemArchive();
 		std::vector<Item*> inventoryItems = _character->getInventory()->getContents();
 		std::vector<std::string> loadedItemsOptionsMenu;
 		std::vector<std::string> inventoryItemsOptionsMenu;
-		switch (menu(characterBuilderInventoryOptions)) {
+		switch (menu(characterBuilderInventoryOptions, "Store some items in " + _character->getName() + "'s inventory.")) {
 		case 1:
 			if (loadedItems.size() > 0) {
-				std::cout << "Which item do you want to store in " << _character->getName() << "'s inventory?" << std::endl;
 				for (int i = 0, n = loadedItems.size(); i < n; ++i) {
 					loadedItemsOptionsMenu.push_back(loadedItems[i]->toString());
 				}
-				_character->getInventory()->depositItem(*loadedItems[menu(loadedItemsOptionsMenu) - 1]);
+				_character->getInventory()->depositItem(*loadedItems[menu(loadedItemsOptionsMenu, "Which item do you want to store in " + _character->getName() + "'s inventory?") - 1]);
 			}
 			else {
 				std::cout << "There are no saved items." << std::endl << std::endl;
@@ -301,11 +286,10 @@ void CharacterBuilder::buildInventory() {
 			break;
 		case 2:
 			if (inventoryItems.size() > 0) {
-				std::cout << "Which item do you want to remove from " << _character->getName() << "'s inventory?" << std::endl;
 				for (int i = 0, n = inventoryItems.size(); i < n; ++i) {
 					inventoryItemsOptionsMenu.push_back(inventoryItems[i]->toString());
 				}
-				_character->getInventory()->withdrawItem(menu(inventoryItemsOptionsMenu) - 1);
+				_character->getInventory()->withdrawItem(menu(inventoryItemsOptionsMenu, "Which item do you want to remove from " + _character->getName() + "'s inventory?") - 1);
 			}
 			else {
 				std::cout << "There are no items in " << _character->getName() << "'s inventory." << std::endl << std::endl;
@@ -325,8 +309,7 @@ void CharacterBuilder::review() {
 	bool reviewingCharacter = true;
 	while (reviewingCharacter) {
 		std::cout << _character->toString() << std::endl;
-		std::cout << "Do you wish to make any changes to " << _character->getName() << "?" << std::endl;
-		switch (menu(characterBuilderReviewOptions)) {
+		switch (menu(characterBuilderReviewOptions, "Do you wish to make any changes to " + _character->getName() + "?")) {
 		case 1:
 			buildIdentity();
 			break;
@@ -377,11 +360,10 @@ void CharacterBuilder::rollStats(std::string firstPriority, std::string secondPr
 		std::cout << "Strength:\t" << stats[0] << "\tDexterity:\t" << stats[1] << "\nConstitution:\t" << stats[2]
 			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with these stats?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with these stats?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -418,11 +400,10 @@ void CharacterBuilder::rollStats() {
 		std::cout << "Strength:\t" << stats[0] << "\tDexterity:\t" << stats[1] << "\nConstitution:\t" << stats[2]
 			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with these stats?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with these stats?")) {
 			case 1:
 				rolling = false;
 				break;

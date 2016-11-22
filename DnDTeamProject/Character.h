@@ -109,6 +109,8 @@ private:
 
 	friend class boost::serialization::access;
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {
+		ar & _x;
+		ar & _y;
 		ar & _name;
 		ar & _lvl;
 		ar & _hp;
@@ -129,6 +131,5 @@ private:
 		ar & _weapon;
 		ar & _inventory;
 	}
-
 };
 
