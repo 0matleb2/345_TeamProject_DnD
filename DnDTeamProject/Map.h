@@ -124,9 +124,16 @@ public:
 
 	// find smallest f value in a given vector
 	int smallestF(std::vector<SearchCell>* v);
+
+	// validation method using A* pathfinding alg
+	bool validateA();
 	
 	//move npc 1 square towards target
 	void advance(MapCharacter* actor, Cell* target);
+
+	// for debugging
+	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
+	void printCellNeighbors(int x, int y);
 
 private:
 

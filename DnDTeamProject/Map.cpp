@@ -631,6 +631,132 @@ void Map::rescale(int targetLvl) {
 	}
 }
 
+bool Map::validateA()
+{
+	std::vector<SearchCell> closed = std::vector<SearchCell>();
+	std::vector<SearchCell> open = std::vector<SearchCell>();
+
+	SearchCell initial = SearchCell(_entry, 0, _entry->calcH(_exit));
+
+	open.push_back(initial);
+
+	//printVectorValidate(&open, true);
+
+	bool found = false;
+
+	// will loop until path found or all options exausted
+	while (open.size() != 0)
+	{
+		//std::cout << "start loop" << std::endl;
+		
+		int current = smallestF(&open);
+
+		SearchCell temp = open[current];
+		closed.push_back(temp);
+		open.erase(open.begin() + current);
+
+		//printVectorValidate(&open, true);
+		//printVectorValidate(&closed, false);
+
+		// last cell pushed is exit
+		if (closed.back().getCell()->sameCell(_exit))
+		{
+			//done, exit loop
+			open.clear();
+			found = true;
+		}
+		else
+		{
+			SearchCell tmp;
+			
+			// north cell exists
+			if (closed.back().getCell()->getNorth())
+			{
+				// not already in closed list
+				if (!closed.back().getCell()->getNorth()->isIn(closed))
+				{
+					// not a wall
+					if (closed.back().getCell()->getNorth()->getSprite() != '#')
+					{
+						tmp = SearchCell(closed.back().getCell()->getNorth(), &closed.back(),
+							closed.back().getG(), closed.back().getCell()->calcH(_exit));
+
+						open.push_back(tmp);
+						
+					}
+				}
+			}
+
+			// repeat for all other directions
+			// west cell exists
+			if (closed.back().getCell()->getWest())
+			{
+				// not already in closed list
+				if (!closed.back().getCell()->getWest()->isIn(closed))
+				{
+					// not a wall
+					if (closed.back().getCell()->getWest()->getSprite() != '#')
+					{
+						tmp = SearchCell(closed.back().getCell()->getWest(), &closed.back(),
+							closed.back().getG(), closed.back().getCell()->calcH(_exit));
+
+						open.push_back(tmp);
+					}
+				}
+			}
+
+			// east cell exists
+			if (closed.back().getCell()->getEast())
+			{
+				// not already in closed list
+				if (!closed.back().getCell()->getEast()->isIn(closed))
+				{
+					// not a wall
+					if (closed.back().getCell()->getEast()->getSprite() != '#')
+					{
+						tmp = SearchCell(closed.back().getCell()->getEast(), &closed.back(),
+							closed.back().getG(), closed.back().getCell()->calcH(_exit));
+
+						open.push_back(tmp);
+					}
+				}
+			}
+
+			// south cell exists
+			if (closed.back().getCell()->getSouth())
+			{
+				// not already in closed list
+				if (!closed.back().getCell()->getSouth()->isIn(closed))
+				{
+					// not a wall
+					if (closed.back().getCell()->getSouth()->getSprite() != '#')
+					{
+						tmp = SearchCell(closed.back().getCell()->getSouth(), &closed.back(),
+							closed.back().getG(), closed.back().getCell()->calcH(_exit));
+
+						// push into open list
+						open.push_back(tmp);
+					}
+				}
+			}
+
+			//printVectorValidate(&open, true);
+
+			//std::cout << "End loop. open size: " << open.size() << std::endl;
+		}
+
+	}
+
+	if (found)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Map::advance(MapCharacter* actor, Cell* target)
 {
 	std::vector<SearchCell> closed = std::vector<SearchCell>();
@@ -663,5 +789,36 @@ int Map::smallestF(std::vector<Map::SearchCell>* v)
 			indexSmall = i;
 	}
 
+	//std::cout << "smallest F found!" << std::endl;
+
 	return indexSmall;
+}
+
+void Map::printVectorValidate(std::vector<SearchCell>* v, bool isopen)
+{
+	
+	if (isopen)
+		std::cout << "OPEN vector:" << std::endl;
+	else
+		std::cout << "CLOSED vector" << std::endl;
+
+	if (v->size() == 0)
+		std::cout << "Empty" << std::endl;
+	else
+	{
+		for (int i = 0; i < v->size(); i++)
+		{
+			std::cout << "Coords: x - " << v->at(i).getCell()->getX()
+				<< " y - " << v->at(i).getCell()->getY() << std::endl;
+		}
+	}
+}
+
+void Map::printCellNeighbors(int x, int y)
+{
+	Cell* temp = getCell(x, y);
+
+	std::cout << "Cell: x - " << temp->getX() << " y - " << temp->getY() << std::endl;
+
+	std::cout << "North: x -" << temp->getNorth()->getX() << " y - " << temp->getNorth()->getY() << std::endl;
 }

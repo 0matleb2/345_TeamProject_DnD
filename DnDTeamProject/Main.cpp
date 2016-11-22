@@ -4,6 +4,7 @@
 #include "Weapon.h"
 #include "Equipment.h"
 #include "Character.h"
+#include "Map.h"
 
 
 int main(int argc, char** argv) {
@@ -19,6 +20,24 @@ int main(int argc, char** argv) {
 	*/
 
 	std::cout << "Test" << std::endl;
+
+	Map m1 = Map(5, 5);
+	
+	m1.setCell(2, 2, '#');
+	//m1.setCell(2, 1, '#');
+	m1.setCell(2, 3, '#');
+
+	m1.displayGrid();
+
+	system("PAUSE");
+	
+	if (m1.validateA())
+		std::cout << "Valid map." << std::endl;
+	else
+		std::cout << "Invalid Map" << std::endl;
+		
+
+	//m1.printCellNeighbors(3, 3);
 
 	system("PAUSE");
 

@@ -108,7 +108,7 @@
       <AdditionalIncludeDirectories>C:\boost_1_62_0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\boost_1_62_0\stage\lib</AdditionalLibraryDirectories>
     </Link>
