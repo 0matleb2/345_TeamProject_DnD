@@ -7,7 +7,7 @@
 extern int getUserInputInteger();
 extern std::string getUserInputString();
 
-extern int menu(std::vector<std::string> options);
+extern int menu(std::vector<std::string> options, std::string title = "");
 
 
 
@@ -19,7 +19,7 @@ static std::vector<std::string> builderNameOptions = {
 static std::vector<std::string> characterBuilderStatOptions = {
 	"Generalist:\tNo preference",
 	"Bully:\t\tStrength\t> Constitution\t> Dexterity",
-	"Warrior:\t\tStrength\t> Dexterity\t> Constitution",
+	"Warrior:\tStrength\t> Dexterity\t> Constitution",
 	"Berserker:\tDexterity\t> Strength\t> Constitution",
 	"Nimble:\t\tDexterity\t> Constitution\t> Strength",
 	"Tank:\t\tConstitution\t> Dexterity\t> Strength",

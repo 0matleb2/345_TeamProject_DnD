@@ -30,14 +30,12 @@ void CampaignBuilder::construct() {
 void CampaignBuilder::buildName() {
 	std::string mapName;
 	bool choosingRandomName = true;
-	std::cout << "What is the campaign called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the campaign called?")) {
 	case 1:
 		while (choosingRandomName) {
 			mapName = campaignNames[Dice::roll("d" + std::to_string((campaignNames.size()))) - 1];
 			std::cout << "The campaign is called " << mapName << std::endl << std::endl;
-			std::cout << "Are you happy with this campaign name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this campaign name?") == 1) {
 				choosingRandomName = false;
 				_campaign->setName(mapName);
 			}
@@ -54,11 +52,10 @@ void CampaignBuilder::buildName() {
 void CampaignBuilder::buildCampaign() {
 	bool buildingCampaign = true;
 	while (buildingCampaign) {
-		std::cout << "Add some maps to the campagin." << std:: endl;
 		std::vector<Map*> loadedMaps, campaignMaps;
 		std::vector<std::string> loadedMapMenuOptions, campaignMapMenuOptions;
 		MapBuilder mapBuilder;
-		switch (menu(campaignBuilderOptions)) {
+		switch (menu(campaignBuilderOptions, "Add some maps to the campagin.")) {
 		case 1: //Add a saved map
 			loadedMaps = loadMaps();
 			if (loadedMaps.size() > 0) {
@@ -76,11 +73,10 @@ void CampaignBuilder::buildCampaign() {
 		case 3: //Remove a map
 			campaignMaps = _campaign->getCampaign();
 			if (campaignMaps.size() > 0) {
-				std::cout << "Which map do you want to remove?" << std::endl;
 				for (int i = 0, n = campaignMaps.size(); i < n; ++i) {
 					campaignMapMenuOptions.push_back(campaignMaps[i]->getName() + '\n' + campaignMaps[i]->drawToString());
 				}
-				_campaign->removeMap(menu(campaignMapMenuOptions) - 1);
+				_campaign->removeMap(menu(campaignMapMenuOptions, "Which map do you want to remove?") - 1);
 			}
 			break;
 		case 4: //Finished

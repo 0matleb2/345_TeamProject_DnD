@@ -36,10 +36,11 @@ std::string getUserInputString() {
 
 
 int menu(std::vector<std::string> options, std::string title) {
-	system("cls");
-	std::cout << "[?] " << title << std::endl;
+	if (title != "") {
+		std::cout << "[?] " << title << std::endl;
+	}
 	for (int i = 0, n = options.size(); i < n; ++i) {
-		std::cout << "  [" << i + 1 << "]\t" << options[i] << std::endl;
+		std::cout << "   [" << i + 1 << "]\t" << options[i] << std::endl;
 	}
 	while (true) {
 		std::cout << "Choose an option: ";
@@ -47,6 +48,7 @@ int menu(std::vector<std::string> options, std::string title) {
 		try {
 			int intChoice = std::stoi(choice);
 			if (intChoice >= 1 && intChoice <= options.size()) {
+				system("cls");
 				return intChoice;
 			}
 			else {
@@ -58,9 +60,11 @@ int menu(std::vector<std::string> options, std::string title) {
 		}
 		if (options[0].substr(0, 3) == "Yes") {
 			if (choice == "y" || choice == "Y") {
+				system("cls");
 				return 1;
 			}
 			if (choice == "n" || choice == "N") {
+				system("cls");
 				return 2;
 			}
 		}

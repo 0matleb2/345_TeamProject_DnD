@@ -31,8 +31,7 @@ void ItemBuilder::setItem(Item * item) {
 
 void ItemBuilder::construct() {
 	std::cout << "Creating a new item..." << std::endl << std::endl;
-	std::cout << "What type of item do you want to create?" << std::endl;
-	switch (menu(itemBuilderTypeOptions)) {
+	switch (menu(itemBuilderTypeOptions, "What type of item do you want to create?")) {
 	case 1:
 		buildArmor();
 		break;
@@ -72,8 +71,7 @@ void ItemBuilder::buildIdentity() {
 void ItemBuilder::buildArmor() {
 	//Build armor type
 	Armor* armor = &Armor();
-	std::cout << "What type of armor do you want to create?" << std::endl;
-	switch (menu(itemBuilderArmorTypeOptions)) {
+	switch (menu(itemBuilderArmorTypeOptions, "What type of armor do you want to create?")) {
 	case 1:
 		armor = new Armor(ArmorType::PADDED);
 		break;
@@ -108,11 +106,10 @@ void ItemBuilder::buildArmor() {
 		armor->randomBonuses();
 		std::cout << "Armor class bonus:\t" << armor->getArmorClassBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -129,14 +126,12 @@ void ItemBuilder::buildArmor() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What is the armor called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the armor called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = armorNames[Dice::roll("d100") - 1];
 			std::cout << "The armor is called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				armor->setName(itemName);
 			}
@@ -163,11 +158,10 @@ void ItemBuilder::buildBelt() {
 		std::cout << "Strength bonus:\t\t" << belt->getStrengthBonus() << std::endl
 			<< "Constitution bonus:\t" << belt->getConstitutionBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -184,14 +178,12 @@ void ItemBuilder::buildBelt() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What is the belt called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the belt called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = beltNames[Dice::roll("d100") - 1];
 			std::cout << "The belt is called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				belt->setName(itemName);
 			}
@@ -218,11 +210,10 @@ void ItemBuilder::buildBoots() {
 		std::cout << "Armor class bonus:\t" << boots->getArmorClass() << std::endl
 			<< "Dexterity bonus:\t" << boots->getDexterityBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -239,14 +230,12 @@ void ItemBuilder::buildBoots() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What are the boots called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What are the boots called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = bootNames[Dice::roll("d100") - 1];
 			std::cout << "The boots are called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				boots->setName(itemName);
 			}
@@ -273,11 +262,10 @@ void ItemBuilder::buildBracers() {
 		std::cout << "Armor class bonus:\t" << bracers->getArmorClass() << std::endl
 			<< "Strength bonus:\t" << bracers->getStrengthBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -294,14 +282,12 @@ void ItemBuilder::buildBracers() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What are the bracers called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What are the bracers called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = bracerNames[Dice::roll("d100") - 1];
 			std::cout << "The bracers are called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				bracers->setName(itemName);
 			}
@@ -329,11 +315,10 @@ void ItemBuilder::buildHelmet() {
 			<< "Intelligence bonus:\t" << helmet->getIntelligenceBonus() << std::endl 
 			<< "Wisdom bonus:\t" << helmet->getWisdomBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -350,14 +335,12 @@ void ItemBuilder::buildHelmet() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What is the helmet called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the helmet called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = helmetNames[Dice::roll("d100") - 1];
 			std::cout << "The helmet is called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				helmet->setName(itemName);
 			}
@@ -387,11 +370,10 @@ void ItemBuilder::buildRing() {
 			<< "Wisdom bonus:\t" << ring->getWisdomBonus() << std::endl
 			<< "Charisma bonus:\t" << ring->getCharismaBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -408,14 +390,12 @@ void ItemBuilder::buildRing() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What is the ring called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the ring called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = ringNames[Dice::roll("d100") - 1];
 			std::cout << "The ring is called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				ring->setName(itemName);
 			}
@@ -434,8 +414,7 @@ void ItemBuilder::buildRing() {
 void ItemBuilder::buildShield() {
 	//Build armor type
 	Shield* shield = &Shield();
-	std::cout << "What type of shield do you want to create?" << std::endl;
-	switch (menu(itemBuilderShieldTypeOptions)) {
+	switch (menu(itemBuilderShieldTypeOptions, "What type of shield do you want to create?")) {
 	case 1:
 		shield = new Shield(ShieldType::BUCKLER);
 		break;
@@ -455,11 +434,10 @@ void ItemBuilder::buildShield() {
 		shield->randomBonuses();
 		std::cout << "Armor class bonus:\t" << shield->getArmorClassBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -476,14 +454,12 @@ void ItemBuilder::buildShield() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What is the shield called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the shield called?")) {
 	case 1:
 		while (choosingRandomName) {
 			itemName = shieldNames[Dice::roll("d100") - 1];
 			std::cout << "The shield is called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				shield->setName(itemName);
 			}
@@ -502,8 +478,7 @@ void ItemBuilder::buildShield() {
 void ItemBuilder::buildWeapon() {
 	//Build armor type
 	Weapon* weapon = &Weapon();
-	std::cout << "What type of weapon do you want to create?" << std::endl;
-	switch (menu(itemBuilderWeaponTypeOptions)) {
+	switch (menu(itemBuilderWeaponTypeOptions, "What type of weapon do you want to create?")) {
 	case 1:
 		weapon = new Weapon(WeaponType::LONGSWORD);
 		break;
@@ -521,11 +496,10 @@ void ItemBuilder::buildWeapon() {
 		std::cout << "Attack bonus:\t" << weapon->getAttackBonus() << std::endl
 			<< "Damage bonus:\t" << weapon->getDamageBonus() << std::endl << std::endl;
 		if (rerolls > 0) {
-			std::cout << "Are you happy with this bonus roll?" << std::endl;
 			std::vector<std::string> rerollOptions;
 			rerollOptions.push_back("Yes");
 			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
-			switch (menu(rerollOptions)) {
+			switch (menu(rerollOptions, "Are you happy with this bonus roll?")) {
 			case 1:
 				rolling = false;
 				break;
@@ -542,8 +516,7 @@ void ItemBuilder::buildWeapon() {
 	//Build name
 	std::string itemName;
 	bool choosingRandomName = true;
-	std::cout << "What is the weapon called?" << std::endl;
-	switch (menu(builderNameOptions)) {
+	switch (menu(builderNameOptions, "What is the weapon called?")) {
 	case 1:
 		while (choosingRandomName) {
 			if (weapon->getWeaponType() == WeaponType::LONGSWORD) {
@@ -553,8 +526,7 @@ void ItemBuilder::buildWeapon() {
 				itemName = longbowNames[Dice::roll("d100") - 1];
 			}
 			std::cout << "The weapon is called " << itemName << std::endl << std::endl;
-			std::cout << "Are you happy with this item name?" << std::endl;
-			if (menu(yesNoOptions) == 1) {
+			if (menu(yesNoOptions, "Are you happy with this item name?") == 1) {
 				choosingRandomName = false;
 				weapon->setName(itemName);
 			}
