@@ -1,12 +1,10 @@
 #pragma once
 #include <vector>
+#include <boost/serialization/vector.hpp>
 #include "Observable.h"
 #include "Character.h"
 #include "Chest.h"
 #include "Cursor.h"
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
 
 class Observer;
 
@@ -58,6 +56,8 @@ public:
 			template<class Archive>
 			void serialize(Archive & ar, const unsigned int version) {
 				ar & _sprite;
+				ar & _x;
+				ar & _y;
 			}
 
 	};
@@ -90,6 +90,7 @@ public:
 
 	bool validate();
 	void draw();
+	std::string drawToString();
 
 
 private:
@@ -101,8 +102,8 @@ private:
 	Cell* _entry;
 	Cell* _exit;
 
-	Cursor* _cursor;
-	Character* _playerCharacter;
+	Cursor* _cursor = nullptr;
+	Character* _playerCharacter = nullptr;
 	std::vector<Character*> _npcCharacters;
 	std::vector<Chest*> _chests;
 
@@ -115,10 +116,13 @@ private:
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
+		ar & _name;
 		ar & _grid;
 		ar & _width;
 		ar & _height;
 		ar & _entry;
 		ar & _exit;
+		ar & _npcCharacters;
+		ar & _chests;
 	}
 };

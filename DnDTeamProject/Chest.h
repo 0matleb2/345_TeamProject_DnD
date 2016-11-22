@@ -22,5 +22,13 @@ private:
 	int _x;
 	int _y;
 
+
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version) {
+		ar & boost::serialization::base_object<ItemContainer>(*this);
+		ar & _x;
+		ar & _y;
+	}
 };
 

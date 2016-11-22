@@ -25,6 +25,7 @@ void MapBuilder::construct() {
 	buildDimensions();
 	buildName();
 	buildLayout();
+	saveMap(_map);
 }
 
 void MapBuilder::buildDimensions() {
@@ -90,29 +91,29 @@ void MapBuilder::buildLayout() {
 		switch (keypress) {
 		case 'W':
 		case 'w':
-		case 72: // Arrow key UP
+		case 72: //Arrow key UP
 			if (cursorY > 0)
 				_map->getCursor()->setY(cursorY - 1);
 			break;
 		case 'A':
 		case 'a':
-		case 75: // Arrow key LEFT
+		case 75: //Arrow key LEFT
 			if (cursorX > 0)
 				_map->getCursor()->setX(cursorX - 1);
 			break;
 		case 'S':
 		case 's':
-		case 80: // Arrow key DOWN
+		case 80: //Arrow key DOWN
 			if (cursorY < (_map->getHeight() - 1))
 				_map->getCursor()->setY(cursorY + 1);
 			break;
 		case 'D':
 		case 'd':
-		case 77: // Arrow key RIGHT
+		case 77: //Arrow key RIGHT
 			if (cursorX < (_map->getWidth() - 1))
 				_map->getCursor()->setX(cursorX + 1);
 			break;
-		case '0':
+		case '0': //Insert empty space
 			if ((_map->getCell(cursorX, cursorY)->getSprite() != '/') && (_map->getCell(cursorX, cursorY)->getSprite() != '\\') &&
 				!(cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -120,7 +121,7 @@ void MapBuilder::buildLayout() {
 				_map->setCell(cursorX, cursorY, '.');
 			}
 			break;
-		case '1':
+		case '1': //Insert wall
 			if ((_map->getCell(cursorX, cursorY)->getSprite() != '/') && (_map->getCell(cursorX, cursorY)->getSprite() != '\\') &&
 				!(cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -128,7 +129,7 @@ void MapBuilder::buildLayout() {
 				_map->setCell(cursorX, cursorY, '#');
 			}
 			break;
-		case '2':
+		case '2': //Insert entrance
 			if ((cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				(_map->getCell(cursorX, cursorY)->getSprite() == '#') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -137,7 +138,7 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '3':
+		case '3': //Insert exit
 			if ((cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 				(_map->getCell(cursorX, cursorY)->getSprite() == '#') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
@@ -146,24 +147,32 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '4':
+		case '4': //Insert saved character
 			if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
 
 				std::vector<Character*> loadedCharacters = loadCharacters();
 				std::vector<std::string> loadedCharactersMenuOptions;
-				for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
-					loadedCharactersMenuOptions.push_back(loadedCharacters[i]->getName() + ", Level: " + std::to_string(loadedCharacters[i]->getLvl()));
+				if (loadedCharacters.size() > 0) {
+					for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
+						loadedCharactersMenuOptions.push_back(loadedCharacters[i]->getName() + ", Level: " + std::to_string(loadedCharacters[i]->getLvl()));
+					}
+					std::cout << "Which character do you want to place here?" << std::endl;
+					Character* placedCharacter = loadedCharacters[menu(loadedCharactersMenuOptions) - 1];
+					placedCharacter->setX(cursorX);
+					placedCharacter->setY(cursorY);
+					_map->addNpcCharacter(placedCharacter);
+					_map->draw();
 				}
-				std::cout << "Which character do you want to place here?" << std::endl;
-				Character* placedCharacter = loadedCharacters[menu(loadedCharactersMenuOptions) - 1];
-				placedCharacter->setX(cursorX);
-				placedCharacter->setY(cursorY);
-				_map->addNpcCharacter(placedCharacter);
-				_map->draw();
+				else {
+					std::string drawSuffix = _map->getDrawSuffix();
+					_map->setDrawSuffix(drawSuffix + "\nThere are no saved characters!");
+					_map->draw();
+					_map->setDrawSuffix(drawSuffix);
+				}
 			}
 			break;
-		case '5':
+		case '5': //Insert new character
 			if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
 
@@ -176,7 +185,7 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '6':
+		case '6': //Insert chest
 			if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 				!(_map->isCellOccupied(cursorX, cursorY))) {
 
@@ -190,12 +199,14 @@ void MapBuilder::buildLayout() {
 					std::cout << "Modifying chest contents..." << std::endl;
 					switch (menu(mapBuilderChestOptions)) {
 					case 1: //Add a saved item
-						std::cout << "Which item do you want to add?" << std::endl;
 						loadedItems = loadItems().getItemArchive();
-						for (int i = 0, n = loadedItems.size(); i < n; ++i) {
-							loadedItemsMenuOptions.push_back(loadedItems[i]->toString());
+						if (loadedItems.size() > 0) {
+							std::cout << "Which item do you want to add?" << std::endl;
+							for (int i = 0, n = loadedItems.size(); i < n; ++i) {
+								loadedItemsMenuOptions.push_back(loadedItems[i]->toString());
+							}
+							placedChest->depositItem(*loadedItems[menu(loadedItemsMenuOptions) - 1]);
 						}
-						placedChest->depositItem(*loadedItems[menu(loadedItemsMenuOptions) - 1]);
 						break;
 					case 2: //Add a new item
 						itemBuilder.construct();
@@ -219,8 +230,16 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
-		case '\r':
-			editingLayout = false;
+		case '\r': //Finished
+			if (_map->validate()) {
+				editingLayout = false;
+			}
+			else {
+				std::string drawSuffix = _map->getDrawSuffix();
+				_map->setDrawSuffix(drawSuffix + "\nMap is invalid! There must be a clear path from the entrance to the exit.");
+				_map->draw();
+				_map->setDrawSuffix(drawSuffix);
+			}
 			break;
 		}
 	}

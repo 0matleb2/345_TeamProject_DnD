@@ -314,3 +314,33 @@ void Map::draw() {
 	std::cout << std::endl << _drawSuffix << std::endl;
 }
 
+std::string Map::drawToString() {
+	std::vector<char> drawBuffer;
+	for (int i = 0, n = _grid.size(); i < n; ++i) {
+		drawBuffer.push_back(_grid[i].getSprite());
+	}
+	if (_playerCharacter) {
+		drawBuffer[_playerCharacter->getY() * _width + _playerCharacter->getX()] = '@';
+	}
+	if (_npcCharacters.size() > 0) {
+		for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {
+			drawBuffer[_npcCharacters[i]->getY() * _width + _npcCharacters[i]->getX()] = '&';
+		}
+	}
+	if (_chests.size() > 0) {
+		for (int i = 0, n = _chests.size(); i < n; ++i) {
+			drawBuffer[_chests[i]->getY() * _width + _chests[i]->getX()] = 'B';
+		}
+	}
+
+	std::string stringOutput;
+	for (int i = 0, n = drawBuffer.size(); i < n; ++i) {
+		if (i % _width == 0)
+			stringOutput += '\t';
+		stringOutput += drawBuffer[i];
+		if (i % _width == _width - 1)
+			stringOutput += '\n';
+	}
+	return stringOutput;
+}
+

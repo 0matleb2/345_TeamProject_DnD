@@ -35,9 +35,11 @@ std::string getUserInputString() {
 
 
 
-int menu(std::vector<std::string> options) {
+int menu(std::vector<std::string> options, std::string title) {
+	system("cls");
+	std::cout << "[?] " << title << std::endl;
 	for (int i = 0, n = options.size(); i < n; ++i) {
-		std::cout << "  [" << i + 1 << "]  " << options[i] << std::endl;
+		std::cout << "  [" << i + 1 << "]\t" << options[i] << std::endl;
 	}
 	while (true) {
 		std::cout << "Choose an option: ";

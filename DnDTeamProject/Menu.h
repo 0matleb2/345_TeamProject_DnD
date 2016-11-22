@@ -86,3 +86,10 @@ static std::vector<std::string> mapBuilderChestOptions{
 	"Remove an item",
 	"Finished filling chest"
 };
+
+static std::vector<std::string> campaignBuilderOptions{
+	"Add a saved map",
+	"Add a new map",
+	"Remove a map",
+	"Finished building campaign"
+};
