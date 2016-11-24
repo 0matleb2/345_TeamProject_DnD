@@ -5,6 +5,7 @@
 
 
 Bracers::Bracers() : _armorClass(0), _strengthBonus(0) {
+	_itemType = ItemType::BRACERS;
 	setName(bracerNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -43,10 +44,6 @@ void Bracers::randomBonuses() {
 	}
 	setArmorClass(statBonuses[0]);
 	setStrengthBonus(statBonuses[1]);
-}
-
-ItemType Bracers::getItemType() {
-	return ItemType::BRACERS;
 }
 
 std::string Bracers::toString() {

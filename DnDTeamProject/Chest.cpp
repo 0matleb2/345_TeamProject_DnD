@@ -27,3 +27,15 @@ void Chest::setX(int x) {
 void Chest::setY(int y) {
 	_y = y;
 }
+
+std::string Chest::toString() {
+	return "[CHEST]\n" + ItemContainer::toString();
+}
+
+bool Chest::operator==(const Chest & chest) const {
+	return _x == chest._x &&
+		_y == chest._y &&
+		_contents == chest._contents &&
+		_capacity == chest._capacity &&
+		_quantity == chest._quantity;
+}

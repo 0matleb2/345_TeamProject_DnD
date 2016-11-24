@@ -7,16 +7,21 @@
 class Campaign {
 
 public:
+
 	Campaign();
 	~Campaign();
 
 	std::string getName();
-	std::vector<Map*> getCampaign();
+	std::vector<Map*>& getCampaign();
 
 	void setName(std::string name);
 	void setCampaign(std::vector<Map*> campaign);
 	void addMap(Map*);
 	void removeMap(int index);
+
+	std::string toString();
+
+	bool operator ==(const Campaign& campaign) const;
 
 private:
 

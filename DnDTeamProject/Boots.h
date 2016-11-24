@@ -20,7 +20,6 @@ public:
 	void randomBonuses();
 
 	std::string toString();
-	ItemType getItemType();
 
 private:
 

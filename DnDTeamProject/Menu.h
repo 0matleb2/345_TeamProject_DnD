@@ -80,16 +80,40 @@ static std::vector<std::string> yesNoOptions = {
 	"No"
 };
 
-static std::vector<std::string> mapBuilderChestOptions{
+static std::vector<std::string> mapBuilderChestOptions {
 	"Add a saved item",
 	"Add a new item",
 	"Remove an item",
 	"Finished filling chest"
 };
 
-static std::vector<std::string> campaignBuilderOptions{
+static std::vector<std::string> campaignBuilderOptions {
 	"Add a saved map",
 	"Add a new map",
 	"Remove a map",
 	"Finished building campaign"
+};
+
+static std::vector<std::string> campaignEditorOptions{
+	"Change name",
+	"Add a new map",
+	"Add a saved map",
+	"Edit a map",
+	"Remove a map",
+	"View campaign",
+	"Finished editing"
+};
+
+static std::vector<std::string> characterEditorMenuOptions{
+	"Name",
+	"Level",
+	"Worn items",
+	"Inventory",
+	"Finished editing"
+};
+
+static std::vector<std::string> mapEditorMenuOptions{
+	"Name",
+	"Layout",
+	"Finished editing"
 };

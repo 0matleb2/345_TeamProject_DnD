@@ -5,6 +5,7 @@
 
 
 Belt::Belt() : _strengthBonus(0), _constitutionBonus(0) {
+	_itemType = ItemType::BELT;
 	setName(beltNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -44,10 +45,6 @@ void Belt::randomBonuses() {
 	}
 	setConstitutionBonus(statBonuses[0]);
 	setStrengthBonus(statBonuses[1]);
-}
-
-ItemType Belt::getItemType() {
-	return ItemType::BELT;
 }
 
 

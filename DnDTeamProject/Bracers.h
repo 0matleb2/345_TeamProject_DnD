@@ -18,7 +18,6 @@ public:
 	void setStrengthBonus(int strengthBonus);
 
 	void randomBonuses();
-	ItemType getItemType();
 
 	std::string toString();
 

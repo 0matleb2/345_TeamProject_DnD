@@ -23,7 +23,6 @@ public:
 	void setDamage(std::string damage);
 
 	void randomBonuses();
-	ItemType getItemType();
 
 	std::string toString();
 

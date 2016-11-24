@@ -5,6 +5,7 @@
 
 
 Ring::Ring() : _armorClass(0), _strengthBonus(0), _constitutionBonus(0), _wisdomBonus(0), _charismaBonus(0) {
+	_itemType = ItemType::RING;
 	setName(ringNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -64,10 +65,6 @@ void Ring::randomBonuses() {
 	setConstitutionBonus(statBonuses[2]);
 	setWisdomBonus(statBonuses[3]);
 	setCharismaBonus(statBonuses[4]);
-}
-
-ItemType Ring::getItemType() {
-	return ItemType::RING;
 }
 
 std::string Ring::toString() {
