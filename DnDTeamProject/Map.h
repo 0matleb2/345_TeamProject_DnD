@@ -49,15 +49,15 @@ public:
 		//used for A* alg
 		int calcH(Cell* c2);
 		bool isIn(std::vector<SearchCell*> v);
-
-	private:
-		char _sprite;
-		int _x;
-		int _y;
-		Cell* _north;
-		Cell* _east;
-		Cell* _south;
-		Cell* _west;
+		
+		private:
+			char _sprite;
+			int _x;
+			int _y;
+			Cell* _north;
+			Cell* _east;
+			Cell* _south;
+			Cell* _west;
 
 		bool _dfsVisited; //Used by Map::validate()
 
@@ -108,8 +108,8 @@ public:
 	Cell* getExit();
 	Cursor* getCursor();
 	Character* getPlayerCharacter();
-	std::vector<Character*> getNpcCharacters();
-	std::vector<Chest*> getChests();
+	std::vector<Character*>& getNpcCharacters();
+	std::vector<Chest*>& getChests();
 	std::string getDrawSuffix();
 	
 
@@ -127,33 +127,9 @@ public:
 	bool isCellOccupied(int x, int y);
 
 	bool validate();
+	void linkGridCells();
 	void draw();
 	std::string drawToString();
-
-	// related to pathfinding
-
-	// find smallest f value in a given vector
-	int smallestF(std::vector<SearchCell*>* v);
-
-	// validation method using A* pathfinding alg
-	bool validateA();
-
-	// return a path from point A to B, if it exists
-	std::vector<SearchCell*> findPath(Cell* start, Cell* end);
-
-	// determine if one cell is within a certain range of another
-	bool inRange(Cell* actor, Cell* target, int range);
-
-	// return next cell to move to, given a valid (non-empty) path
-	Cell* nextMove(Cell* start, Cell* end);
-
-	// print out a path
-	void printPath(std::vector<SearchCell*>* path);
-
-
-	// for debugging
-	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
-	void printCellNeighbors(int x, int y);
 
 
 private:
