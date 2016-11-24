@@ -17,6 +17,11 @@
 
 int main(int argc, char** argv) {
 
+	//Make first campaign, needs to be updated to include editing stuff from CampaignEditor
+	CampaignBuilder campaignBuilder;
+	campaignBuilder.construct();
+
+	//The good stuff
 	CampaignEditor campaignEditor;
 	campaignEditor.loadCampaign();
 	campaignEditor.editCampaign();

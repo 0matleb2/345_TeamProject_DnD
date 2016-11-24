@@ -317,7 +317,7 @@ void MapEditor::editMap() {
 					}
 					break;
 				case '\r': //Finished
-					if (_map->validate()) {
+					if (_map->validateA()) {
 						editingLayout = false;
 						delete editorCursor;
 						delete cursorObserver;
