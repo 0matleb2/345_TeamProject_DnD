@@ -1,14 +1,15 @@
 #include "Armor.h"
 #include "Dice.h"
 #include "Names.h"
-
+#include "Types.h"
 
 
 Armor::Armor() : _armorClass(0), _armorClassBonus(0) {
-
+	_itemType = ItemType::ARMOR;
 }
 
 Armor::Armor(ArmorType armorType) : Armor() {
+	_itemType = ItemType::ARMOR;
 	_armorType = armorType;
 	setName(armorNames[Dice::roll("1d100-1")]);
 	randomBonuses();
@@ -81,10 +82,6 @@ void Armor::setArmorClassBonus(int armorClassBonus) {
 //Randoms a magical bonus modifier of between 1 and 5 for the item and applies the bonus, split randomly into the item's stat bonuses 
 void Armor::randomBonuses() {
 	setArmorClassBonus(Dice::roll("1d5"));
-}
-
-ItemType Armor::getItemType() {
-	return ItemType::ARMOR;
 }
 
 

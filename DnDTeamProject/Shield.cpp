@@ -4,10 +4,12 @@
 
 
 Shield::Shield() : _armorClass(0), _armorClassBonus(0) {
+	_itemType = ItemType::SHIELD;
 
 }
 
 Shield::Shield(ShieldType shieldType) : Shield() {
+	_itemType = ItemType::SHIELD;
 	_shieldType = shieldType;
 	setName(shieldNames[Dice::roll("1d100-1")]);
 	randomBonuses();
@@ -61,10 +63,6 @@ void Shield::setShieldType(ShieldType shieldType) {
 
 void Shield::randomBonuses() {
 	setArmorClassBonus(Dice::roll("1d5"));
-}
-
-ItemType Shield::getItemType() {
-	return ItemType::SHIELD;
 }
 
 std::string Shield::toString() {

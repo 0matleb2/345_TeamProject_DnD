@@ -38,37 +38,7 @@ Map::Map(const int w, const int h) {
 	setEntry(0, h / 2);
 	setExit(w - 1, h / 2);
 
-	//Link all cells in _grid with adjacent cells
-	for (int i = 0; i < (int)_grid.size()-1; i++) {
-		//Link North
-		if (i - _width < 0) {
-			_grid[i].setNorth(nullptr);
-		}
-		else {
-			_grid[i].setNorth(&_grid[i - _width]);
-		}
-		//Link East
-		if (i%_width + 1 > (_width - 1)) {
-			_grid[i].setEast(nullptr);
-		}
-		else {
-			_grid[i].setEast(&_grid[i + 1]);
-		}
-		//Link South
-		if (i + _width > (_width*_height) - 1) {
-			_grid[i].setSouth(nullptr);
-		}
-		else {
-			_grid[i].setSouth(&_grid[i + _width]);
-		}
-		//Link West
-		if (i%_width - 1 < 0) {
-			_grid[i].setWest(nullptr);
-		}
-		else {
-			_grid[i].setWest(&_grid[i - 1]);
-		}
-	}
+	linkGridCells();
 }
 
 Map::~Map() {
@@ -136,7 +106,13 @@ void Map::Cell::setWest(Map::Cell* cell) {
 }
 void Map::Cell::setDfsVisited(bool b) {
 	_dfsVisited = b;
-} 
+}
+
+bool Map::Cell::operator==(const Cell & cell) const {
+	return _sprite == cell._sprite &&
+		_x == cell._x &&
+		_y == cell._y;
+}
 //End of Cell nested class
 
 
@@ -169,10 +145,10 @@ Cursor * Map::getCursor() {
 Character* Map::getPlayerCharacter() {
 	return _playerCharacter;
 }
-std::vector<Character*> Map::getNpcCharacters() {
+std::vector<Character*>& Map::getNpcCharacters() {
 	return _npcCharacters;
 }
-std::vector<Chest*> Map::getChests() {
+std::vector<Chest*>& Map::getChests() {
 	return _chests;
 }
 
@@ -249,7 +225,42 @@ bool Map::isCellOccupied(int x, int y) {
 bool Map::validate() {
 	return validate(_entry);
 }
+void Map::linkGridCells() {
+	for (int i = 0; i < (int)_grid.size() - 1; i++) {
+		//Link North
+		if (i - _width < 0) {
+			_grid[i].setNorth(nullptr);
+		}
+		else {
+			_grid[i].setNorth(&_grid[i - _width]);
+		}
+		//Link East
+		if (i%_width + 1 >(_width - 1)) {
+			_grid[i].setEast(nullptr);
+		}
+		else {
+			_grid[i].setEast(&_grid[i + 1]);
+		}
+		//Link South
+		if (i + _width > (_width*_height) - 1) {
+			_grid[i].setSouth(nullptr);
+		}
+		else {
+			_grid[i].setSouth(&_grid[i + _width]);
+		}
+		//Link West
+		if (i%_width - 1 < 0) {
+			_grid[i].setWest(nullptr);
+		}
+		else {
+			_grid[i].setWest(&_grid[i - 1]);
+		}
+	}
+}
 bool Map::validate(Cell* vertex) {
+	for (int i = 0, n = _grid.size(); i < n; ++i) {
+		_grid[i].setDfsVisited(false);
+	}
 	if (!_entry || !_exit) {
 		return false;
 	}
@@ -342,5 +353,16 @@ std::string Map::drawToString() {
 			stringOutput += '\n';
 	}
 	return stringOutput;
+}
+
+bool Map::operator==(const Map & map) const {
+	return _name == map._name &&
+		_grid == map._grid &&
+		_width == map._width &&
+		_height == map._height &&
+		_entry == map._entry &&
+		_exit == map._exit &&
+		_npcCharacters == map._npcCharacters &&
+		_chests == map._chests;
 }
 

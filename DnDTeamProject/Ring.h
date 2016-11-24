@@ -23,7 +23,6 @@ public:
 	void setCharismaBonus(int charismaBonus);
 
 	void randomBonuses();
-	ItemType getItemType();
 
 	std::string toString();
 

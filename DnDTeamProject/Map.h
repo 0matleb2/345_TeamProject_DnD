@@ -41,6 +41,8 @@ public:
 			void setWest(Cell* cell);
 			void setDfsVisited(bool b);
 
+			bool operator ==(const Cell& cell) const;
+
 		private:
 			char _sprite;
 			int _x;
@@ -70,8 +72,8 @@ public:
 	Cell* getExit();
 	Cursor* getCursor();
 	Character* getPlayerCharacter();
-	std::vector<Character*> getNpcCharacters();
-	std::vector<Chest*> getChests();
+	std::vector<Character*>& getNpcCharacters();
+	std::vector<Chest*>& getChests();
 	std::string getDrawSuffix();
 	
 
@@ -89,8 +91,11 @@ public:
 	bool isCellOccupied(int x, int y);
 
 	bool validate();
+	void linkGridCells();
 	void draw();
 	std::string drawToString();
+
+	bool operator ==(const Map& map) const;
 
 
 private:

@@ -3,6 +3,8 @@
 #include "Item.h"
 #include "boost/serialization/vector.hpp"
 
+
+
 class ItemContainer {
 
 	public:
@@ -27,7 +29,9 @@ class ItemContainer {
 
 		std::string toString();
 
-	private:
+		bool operator==(const ItemContainer& itemContainer) const;
+
+	protected:
 
 		std::vector<Item*> _contents;
 		int _capacity;

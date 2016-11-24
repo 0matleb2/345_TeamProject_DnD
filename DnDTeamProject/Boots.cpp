@@ -5,6 +5,7 @@
 
 
 Boots::Boots() : _armorClass(0), _dexterityBonus(0) {
+	_itemType = ItemType::BOOTS;
 	setName(bootNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -54,8 +55,4 @@ std::string Boots::toString() {
 	if (getDexterityBonus() != 0)
 		s += ", Dexterity bonus: " + std::to_string(getDexterityBonus());
 	return s;
-}
-
-ItemType Boots::getItemType() {
-	return ItemType::BOOTS;
 }

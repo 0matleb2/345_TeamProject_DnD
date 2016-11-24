@@ -5,10 +5,11 @@
 
 
 Weapon::Weapon() : _attackBonus(0), _damageBonus(0) {
-
+	_itemType = ItemType::WEAPON;
 }
 
 Weapon::Weapon(WeaponType weaponType) : Weapon() {
+	_itemType = ItemType::WEAPON;
 	switch (weaponType) {
 	case WeaponType::LONGSWORD:
 		setName(longswordNames[Dice::roll("1d100-1")]);
@@ -75,10 +76,6 @@ void Weapon::randomBonuses() {
 	}
 	setAttackBonus(statBonuses[0]);
 	setDamageBonus(statBonuses[1]);
-}
-
-ItemType Weapon::getItemType() {
-	return ItemType::WEAPON;
 }
 
 
