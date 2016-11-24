@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "boost/archive/text_oarchive.hpp"
 #include "boost/archive/text_iarchive.hpp"
 #include "Character.h"
@@ -9,38 +10,17 @@
 #include "FileIO.h"
 #include "MapBuilder.h"
 #include "CampaignBuilder.h"
+#include "CampaignEditor.h"
+#include "MapEditor.h"
+#include "CharacterEditor.h"
 
 
 int main(int argc, char** argv) {
 
-	/*
-	std::cout << "<<< CHARACTER SAVE FILE CONTENTS >>>" << std::endl << std::endl;
-	std::vector<Character*> loadedCharacters = loadCharacters();
-	for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
-		std::cout << loadedCharacters[i]->toString() << std::endl;
-		std::cout << "##############################################################################" << std::endl << std::endl;
-	}
+	CampaignEditor campaignEditor;
+	campaignEditor.loadCampaign();
+	campaignEditor.editCampaign();
 
-
-	std::vector<Item*> loadedItems = loadItems().getItemArchive();
-	std::cout << "<<< ITEM SAVE FILE CONTENTS >>>" << std::endl << std::endl;
-	for (int i = 0, n = loadedItems.size(); i < n; ++i) {
-		std::cout << loadedItems[i]->toString() << std::endl << std::endl;
-
-	}
-	std::cout << "##############################################################################" << std::endl << std::endl << std::endl;
-
-
-	CharacterBuilder builder;
-	builder.construct();
-
-	*/
-
-	//MapBuilder mapBuilder;
-	//mapBuilder.construct();
-
-	CampaignBuilder campaignBuilder;
-	campaignBuilder.construct();
 
 	std::cout << std::endl << "End of program." << std::endl << "Enter any key to exit program: ";
 	getchar();

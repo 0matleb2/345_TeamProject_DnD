@@ -84,8 +84,16 @@ Item * ItemContainer::withdrawItem(int index) {
 
 std::string ItemContainer::toString() {
 	std::string s;
-	for (int i = 0; i < _quantity; ++i) {
+	if (_contents.size() > 0)
+		s += _contents[0]->toString();
+	for (int i = 1; i < _quantity; ++i) {
 		s += "\n" + _contents[i]->toString();
 	}
 	return s;
+}
+
+bool ItemContainer::operator==(const ItemContainer & itemContainer) const {
+	return _contents == itemContainer._contents &&
+		_capacity == itemContainer._capacity &&
+		_quantity == itemContainer._quantity;
 }

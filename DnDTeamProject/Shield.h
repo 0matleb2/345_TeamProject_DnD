@@ -20,7 +20,6 @@ public:
 	void setShieldType(ShieldType shieldType);
 
 	void randomBonuses();
-	ItemType getItemType();
 
 	std::string toString();
 

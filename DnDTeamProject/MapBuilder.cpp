@@ -8,6 +8,8 @@
 #include "CharacterBuilder.h"
 #include "ItemBuilder.h"
 #include "Chest.h"
+#include "CharacterEditor.h"
+
 
 MapBuilder::MapBuilder() {
 }
@@ -77,12 +79,19 @@ void MapBuilder::buildLayout() {
 		+ "  [4]\tSaved character\n"
 		+ "  [5]\tNew character\n"
 		+ "  [6]\tChest\n"
+		+ "Press the following keys to interact with characters and chests at the cursor location:\n"
+		+ "  [7]\tInspect\n"
+		+ "  [8]\tEdit\n"
+		+ "  [9]\tRemove\n"
 		+ "Press [Enter] to finish editing map layout.\n";
 	_map->setDrawSuffix(infoSuffix);
 	_map->draw();
 	while (editingLayout) {
+
+		Chest* editedChest;
 		int cursorX = _map->getCursor()->getX();
 		int cursorY = _map->getCursor()->getY();
+
 		unsigned char keypress = _getch();
 		if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
 			keypress = _getch();
@@ -219,7 +228,7 @@ void MapBuilder::buildLayout() {
 							chestItemsMenuOptions.push_back("Cancel");
 							int choice = menu(chestItemsMenuOptions, "Which item do you want to remove?");
 							if (choice != chestItemsMenuOptions.size())
-								placedChest->withdrawItem( - 1);
+								placedChest->withdrawItem(choice - 1);
 						}
 						break;
 					case 4:
@@ -232,6 +241,95 @@ void MapBuilder::buildLayout() {
 				_map->draw();
 			}
 			break;
+
+		case '7': //Inspect
+			for (int i = 0, n = _map->getNpcCharacters().size(); i < n; ++i) {
+				if (_map->getNpcCharacters()[i]->getX() == cursorX && _map->getNpcCharacters()[i]->getY() == cursorY) {
+					_map->setDrawSuffix(infoSuffix + "\n" + _map->getNpcCharacters()[i]->toString());
+					_map->draw();
+				}
+			}
+			for (int i = 0, n = _map->getChests().size(); i < n; ++i) {
+				if (_map->getChests()[i]->getX() == cursorX && _map->getChests()[i]->getY() == cursorY) {
+					_map->setDrawSuffix(infoSuffix + "\n" + _map->getChests()[i]->toString());
+					_map->draw();
+				}
+			}
+			break;
+
+		case '8': //Edit
+			for (int i = 0, n = _map->getNpcCharacters().size(); i < n; ++i) {
+				if (_map->getNpcCharacters()[i]->getX() == cursorX && _map->getNpcCharacters()[i]->getY() == cursorY) {
+					system("cls");
+					CharacterEditor characterEditor;
+					characterEditor.setCharacter(_map->getNpcCharacters()[i]);
+					characterEditor.editCharacter();
+				}
+			}
+			for (int i = 0, n = _map->getChests().size(); i < n; ++i) {
+				if (_map->getChests()[i]->getX() == cursorX && _map->getChests()[i]->getY() == cursorY) {
+
+					system("cls");
+					editedChest = _map->getChests()[i];
+					bool fillingChest = true;
+					while (fillingChest) {
+						std::cout << editedChest->toString() << std::endl << std::endl;
+						std::vector<Item*> loadedItems, chestItems;
+						std::vector<std::string> loadedItemsMenuOptions, chestItemsMenuOptions;
+						ItemBuilder itemBuilder;
+						switch (menu(mapBuilderChestOptions, "Modifying chest contents...")) {
+						case 1: //Add a saved item
+							std::cout << editedChest->toString() << std::endl << std::endl;
+							loadedItems = loadItems().getItemArchive();
+							if (loadedItems.size() > 0) {
+								for (int i = 0, n = loadedItems.size(); i < n; ++i) {
+									loadedItemsMenuOptions.push_back(loadedItems[i]->toString());
+								}
+								editedChest->depositItem(*loadedItems[menu(loadedItemsMenuOptions, "Which item do you want to add?") - 1]);
+							}
+							break;
+						case 2: //Add a new item
+							itemBuilder.construct();
+							editedChest->depositItem(*itemBuilder.getItem());
+							break;
+						case 3: //Withdraw an item
+							std::cout << editedChest->toString() << std::endl << std::endl;
+							if (editedChest->getContents().size() > 0) {
+								for (int i = 0, n = editedChest->getContents().size(); i < n; ++i) {
+									chestItemsMenuOptions.push_back(editedChest->getContents()[i]->toString());
+								}
+								chestItemsMenuOptions.push_back("Cancel");
+								int choice = menu(chestItemsMenuOptions, "Which item do you want to remove?");
+								if (choice != chestItemsMenuOptions.size())
+									editedChest->withdrawItem(choice - 1);
+							}
+							break;
+						case 4:
+							_map->draw();
+							fillingChest = false;
+							break;
+						}
+					}
+				}
+			}
+			_map->draw();
+			break;
+
+		case '9': //Remove
+			for (int i = 0, n = _map->getNpcCharacters().size(); i < n; ++i) {
+				if (_map->getNpcCharacters()[i]->getX() == cursorX && _map->getNpcCharacters()[i]->getY() == cursorY) {
+					_map->getNpcCharacters().erase(_map->getNpcCharacters().begin() + i);
+				}
+			}
+			for (int i = 0, n = _map->getChests().size(); i < n; ++i) {
+				if (_map->getChests()[i]->getX() == cursorX && _map->getChests()[i]->getY() == cursorY) {
+					if (_map->getChests()[i]->getX() == cursorX && _map->getChests()[i]->getY() == cursorY) {
+						_map->getChests().erase(_map->getChests().begin() + i);
+					}
+				}
+			}
+			break;
+
 		case '\r': //Finished
 			if (_map->validate()) {
 				editingLayout = false;

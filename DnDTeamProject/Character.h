@@ -16,6 +16,8 @@
 #include "Observable.h"
 #include "boost/serialization/access.hpp"
 
+
+
 class Character : public Observable {
 
 public:
@@ -73,6 +75,7 @@ public:
 
 	std::string toString();
 	void levelUp();
+	static int abilityScoreToModifier(int score);
 
 	bool operator==(const Character& character) const; //Needed for std::find()
 
@@ -105,7 +108,6 @@ private:
 
 
 
-	int abilityScoreToModifier(int score);
 
 	friend class boost::serialization::access;
 	template<class Archive> void serialize(Archive & ar, const unsigned int version) {

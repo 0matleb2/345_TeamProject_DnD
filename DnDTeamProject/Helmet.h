@@ -20,7 +20,6 @@ public:
 	void setWisdomBonus(int wisdomBonus);
 
 	void randomBonuses();
-	ItemType getItemType();
 
 	std::string toString();
 

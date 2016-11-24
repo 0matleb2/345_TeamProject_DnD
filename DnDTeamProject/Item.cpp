@@ -19,11 +19,19 @@ std::string Item::getName() {
 	return _name;
 }
 
+ItemType Item::getItemType() {
+	return _itemType;
+}
+
 
 
 //Mutators
 void Item::setName(std::string name) {
 	_name = name;
+}
+
+void Item::setType(ItemType itemType) {
+	_itemType = itemType;
 }
 
 
@@ -35,5 +43,5 @@ std::string Item::toString() {
 }
 
 bool Item::operator==(const Item & item) const {
-	return _id == item._id;
+	return _name == item._name;
 }

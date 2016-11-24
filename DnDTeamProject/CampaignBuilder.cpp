@@ -28,16 +28,16 @@ void CampaignBuilder::construct() {
 }
 
 void CampaignBuilder::buildName() {
-	std::string mapName;
+	std::string campaignName;
 	bool choosingRandomName = true;
 	switch (menu(builderNameOptions, "What is the campaign called?")) {
 	case 1:
 		while (choosingRandomName) {
-			mapName = campaignNames[Dice::roll("d" + std::to_string((campaignNames.size()))) - 1];
-			std::cout << "The campaign is called " << mapName << std::endl << std::endl;
+			campaignName = campaignNames[Dice::roll("d" + std::to_string((campaignNames.size()))) - 1];
+			std::cout << "The campaign is called " << campaignName << std::endl << std::endl;
 			if (menu(yesNoOptions, "Are you happy with this campaign name?") == 1) {
 				choosingRandomName = false;
-				_campaign->setName(mapName);
+				_campaign->setName(campaignName);
 			}
 		}
 		break;

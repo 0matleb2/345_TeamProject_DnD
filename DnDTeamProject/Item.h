@@ -14,21 +14,23 @@ public:
 	virtual ~Item();
 
 	std::string getName();
+	ItemType getItemType();
 
 
 	void setName(std::string);
+	void setType(ItemType itemType);
 	virtual std::string toString();
 	virtual void randomBonuses() = 0;
-	virtual ItemType getItemType() = 0;
 
-	bool operator==(const Item& item) const; //Needed for std::find()
+	bool operator ==(const Item& item) const; //Needed for std::find()
 
-private:
+protected:
 
 	static int _sNextId;
 
 	const int _id;
 	std::string _name;
+	ItemType _itemType;
 
 
 	friend class boost::serialization::access;

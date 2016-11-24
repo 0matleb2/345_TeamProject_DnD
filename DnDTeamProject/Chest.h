@@ -17,6 +17,10 @@ public:
 	void setX(int x);
 	void setY(int y);
 
+	std::string toString();
+
+	bool operator==(const Chest& chest) const;
+
 private:
 
 	int _x;

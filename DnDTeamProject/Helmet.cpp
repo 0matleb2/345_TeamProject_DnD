@@ -5,6 +5,7 @@
 
 
 Helmet::Helmet() : _armorClass(0), _intelligenceBonus(0), _wisdomBonus(0) {
+	_itemType = ItemType::HELMET;
 	setName(helmetNames[Dice::roll("1d100-1")]);
 	randomBonuses();
 }
@@ -53,10 +54,6 @@ void Helmet::randomBonuses() {
 	setArmorClass(statBonuses[0]);
 	setIntelligenceBonus(statBonuses[1]);
 	setWisdomBonus(statBonuses[2]);
-}
-
-ItemType Helmet::getItemType() {
-	return ItemType::HELMET;
 }
 
 std::string Helmet::toString() {

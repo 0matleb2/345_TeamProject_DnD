@@ -236,7 +236,7 @@ std::string Character::toString() {
 	if (getWeapon()) {
 		s += "\nWeapon:\t\t" + getWeapon()->toString();
 	}
-	s += "\n\n[INVENTORY]"
+	s += "\n\n[INVENTORY]\n"
 		+ getInventory()->toString() + "\n";
 	return s;
 }
@@ -255,7 +255,7 @@ void Character::levelUp() {
 }
 
 bool Character::operator==(const Character & character) const {
-	bool isIdentical = (_name == character._name &&
+	return _name == character._name &&
 		_lvl == character._lvl &&
 		_hp == character._hp &&
 		_maxHp == character._maxHp &&
@@ -264,6 +264,17 @@ bool Character::operator==(const Character & character) const {
 		_constitution == character._constitution &&
 		_intelligence == character._intelligence &&
 		_wisdom == character._wisdom &&
-		_charisma == character._charisma);
-	return isIdentical;
+		_charisma == character._charisma;
+		
+	/*  &&
+		_armor == character._armor &&
+		_belt == character._belt &&
+		_boots == character._boots &&
+		_bracers == character._bracers &&
+		_helmet == character._helmet &&
+		_ring == character._ring &&
+		_shield == character._shield &&
+		_weapon == character._weapon &&
+		_inventory == character._inventory;
+		*/
 }

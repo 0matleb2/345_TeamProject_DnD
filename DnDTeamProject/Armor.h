@@ -21,7 +21,6 @@ public:
 	void setArmorClassBonus(int armorClassBonus);
 
 	void randomBonuses();
-	ItemType getItemType();
 
 	std::string toString();
 
