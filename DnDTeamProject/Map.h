@@ -31,7 +31,7 @@ public:
 
 			//used for A* alg
 			int calcH(Cell* c2);
-			bool isIn(std::vector<SearchCell>& v);
+			bool isIn(std::vector<SearchCell*> v);
 
 			Cell* getNorth();
 			Cell* getEast();
@@ -123,13 +123,23 @@ public:
 	// related to pathfinding
 
 	// find smallest f value in a given vector
-	int smallestF(std::vector<SearchCell>* v);
+	int smallestF(std::vector<SearchCell*>* v);
 
 	// validation method using A* pathfinding alg
 	bool validateA();
-	
-	//move npc 1 square towards target
-	void advance(MapCharacter* actor, Cell* target);
+
+	// return a path from point A to B, if it exists
+	std::vector<SearchCell*> findPath(Cell* start, Cell* end);
+
+	// determine if one cell is within a certain range of another
+	bool inRange(Cell* actor, Cell* target, int range);
+
+	// return next cell to move to, given a valid (non-empty) path
+	Cell* nextMove(Cell* start, Cell* end);
+
+	// print out a path
+	void printPath(std::vector<SearchCell*>* path);
+
 
 	// for debugging
 	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
