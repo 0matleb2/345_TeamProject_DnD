@@ -136,7 +136,25 @@ void Map::Cell::setWest(Map::Cell* cell) {
 }
 void Map::Cell::setDfsVisited(bool b) {
 	_dfsVisited = b;
-} 
+}
+bool Map::Cell::sameCell(Cell * c2) {
+	if (_x == c2->getX() && _y == c2->getY())
+		return true;
+	return false;
+}
+int Map::Cell::calcH(Cell * c2) {
+	int temp = abs(c2->getX() - _x) + abs(c2->getY() - _y);
+	return temp;
+}
+bool Map::Cell::isIn(std::vector<SearchCell*> v) {
+	if (v.size() > 0) {
+		for (int i = 0; i < v.size(); i++) {
+			if (sameCell(v[i]->getCell()))
+				return true;
+		}
+	}
+	return false;
+}
 //End of Cell nested class
 
 
@@ -344,3 +362,238 @@ std::string Map::drawToString() {
 	return stringOutput;
 }
 
+int Map::smallestF(std::vector<SearchCell*>* v) {
+	int indexSmall = 0;
+	for (int i = 0; i < v->size(); i++) {
+		if (v->at(i)->calcF() < v->at(i)->calcF())
+			indexSmall = i;
+	}
+	//std::cout << "smallest F found!" << std::endl;
+	return indexSmall;
+}
+
+bool Map::validateA() {
+	// gets a path from entry to exit
+	std::vector<Map::SearchCell*> path = findPath(_entry, _exit);
+
+	// if path is empty, invalid map
+	if (path.size() == 0)
+		return false;
+	else
+		return true;
+}
+
+std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
+	// open and closed lists
+	std::vector<SearchCell*> closed = std::vector<SearchCell*>();
+	std::vector<SearchCell*> open = std::vector<SearchCell*>();
+
+	SearchCell* initial = new SearchCell(start, 0, start->calcH(end));
+
+	open.push_back(initial);
+
+	bool found = false;
+
+	//while all nodes in open list have not been exausted
+	while (open.size() != 0) {
+		int current = smallestF(&open);
+		// select a cell with smallest f-value
+
+		// put selected cell in closed list
+		closed.push_back(open[current]);
+		// remove it from open list
+		open.erase(open.begin() + current);
+
+		// if last cell added to closed is destination
+		if (closed.back()->getCell()->sameCell(end)) {
+			found = true;
+			break;
+		}
+		else //add neighbord to open list
+		{
+			//SearchCell tmp;
+
+			if (closed.back()->getCell()->getNorth()) {
+				// not already in closed list
+				if (!closed.back()->getCell()->getNorth()->isIn(closed)) {
+					// not a wall
+					if (closed.back()->getCell()->getNorth()->getSprite() != '#') {
+						open.push_back(new SearchCell(closed.back()->getCell()->getNorth(), closed.back(),
+							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+
+					}
+				}
+			}
+
+			// repeat for all other directions
+			// west cell exists
+			if (closed.back()->getCell()->getWest()) {
+				// not already in closed list
+				if (!closed.back()->getCell()->getWest()->isIn(closed)) {
+					// not a wall
+					if (closed.back()->getCell()->getWest()->getSprite() != '#') {
+
+						open.push_back(new SearchCell(closed.back()->getCell()->getWest(), closed.back(),
+							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+					}
+				}
+			}
+
+			// east cell exists
+			if (closed.back()->getCell()->getEast()) {
+				// not already in closed list
+				if (!closed.back()->getCell()->getEast()->isIn(closed)) {
+					// not a wall
+					if (closed.back()->getCell()->getEast()->getSprite() != '#') {
+						open.push_back(new SearchCell(closed.back()->getCell()->getEast(), closed.back(),
+							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+					}
+				}
+			}
+
+			// south cell exists
+			if (closed.back()->getCell()->getSouth()) {
+				// not already in closed list
+				if (!closed.back()->getCell()->getSouth()->isIn(closed)) {
+					// not a wall
+					if (closed.back()->getCell()->getSouth()->getSprite() != '#') {
+
+
+						// push into open list
+						open.push_back(new SearchCell(closed.back()->getCell()->getSouth(), closed.back(),
+							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+					}
+				}
+			}
+		}
+	}
+
+	if (found) {
+		// returns the closed vector, containing the path
+		return closed;
+	}
+	else {
+		// no valid path, returns an empty vector.
+		return std::vector<SearchCell*>();
+	}
+}
+
+bool Map::inRange(Cell * actor, Cell * target, int range) {
+	//check for a path to the cell
+	std::vector<Map::SearchCell*> path = findPath(actor, target);
+
+	// no valid path, return false
+	if (path.size() == 0)
+		return false;
+	else {
+		// get G-value (total no of moves)
+		int tgtR = path.back()->getG();
+
+		// if g exceeds range, then target is not in range
+		if (tgtR > range)
+			return false;
+		else
+			return true;
+	}
+}
+
+Map::Cell* Map::nextMove(Cell * start, Cell * end) {
+	std::vector<Map::SearchCell*> path = findPath(start, end);
+
+	SearchCell* temp = path.back();
+	SearchCell* temp2;
+
+	while (true) {
+		// if parent of cell is start, stop
+		if (temp->getParent()->getCell()->sameCell(start))
+			break;
+
+		temp2 = temp->getParent();
+		temp = temp2;
+
+	}
+
+	// return first cell in path
+	return temp->getCell();;
+}
+
+void Map::printPath(std::vector<SearchCell*>* path) {
+	// if empty vector given, no valid path
+	if (path->size() == 0) {
+		std::cout << "No path available" << std::endl;
+	}
+	else {
+		SearchCell* temp = path->back();
+
+		SearchCell* temp2;
+
+		std::cout << "Path: " << std::endl;
+
+		// follow parent links back to start, stop when start is reached
+		while (temp->getParent()) {
+			std::cout << "cell x = " << temp->getCell()->getX() << " y = " << temp->getCell()->getY() << std::endl;
+
+			temp2 = temp->getParent();
+
+			temp = temp2;
+		}
+
+		temp = nullptr;
+		temp2 = nullptr;
+	}
+}
+
+void Map::printVectorValidate(std::vector<SearchCell>* v, bool isopen) {
+	if (isopen)
+		std::cout << "OPEN vector:" << std::endl;
+	else
+		std::cout << "CLOSED vector" << std::endl;
+
+	if (v->size() == 0)
+		std::cout << "Empty" << std::endl;
+	else {
+		for (int i = 0; i < v->size(); i++) {
+			std::cout << "Coords: x - " << v->at(i).getCell()->getX()
+				<< " y - " << v->at(i).getCell()->getY() << std::endl;
+		}
+	}
+}
+
+void Map::printCellNeighbors(int x, int y) {
+	Cell* temp = getCell(x, y);
+	std::cout << "Cell: x - " << temp->getX() << " y - " << temp->getY() << std::endl;
+	std::cout << "North: x -" << temp->getNorth()->getX() << " y - " << temp->getNorth()->getY() << std::endl;
+}
+
+Map::SearchCell::SearchCell() {
+}
+
+Map::SearchCell::SearchCell(Cell * c, int gv, int hv) : _cell(c), _parent(nullptr), _gValue(gv), _hValue(hv) {
+
+}
+
+Map::SearchCell::SearchCell(Cell * c, SearchCell * p, int gv, int hv) : _cell(c), _parent(p), _gValue(gv), _hValue(hv) {
+}
+
+Map::SearchCell::~SearchCell() {
+}
+
+Map::Cell* Map::SearchCell::getCell() {
+	return _cell;
+}
+
+Map::SearchCell* Map::SearchCell::getParent() {
+	return _parent;
+}
+
+int Map::SearchCell::getG() {
+	return _gValue;
+}
+
+int Map::SearchCell::getH() {
+	return _hValue;
+}
+
+int Map::SearchCell::calcF() {
+	return _gValue + _hValue;
+}

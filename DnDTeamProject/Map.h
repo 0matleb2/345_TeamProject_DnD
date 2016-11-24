@@ -15,50 +15,88 @@ public:
 	Map(int w, int h);
 	~Map();
 
+	class SearchCell;
+
 	class Cell	{
 
-		public:
-			Cell();
-			Cell(int x, int y);
-			~Cell();
+	public:
+		Cell();
+		Cell(int x, int y);
+		~Cell();
 			
 			
-			char getSprite();
-			int getX();
-			int getY();
-			Cell* getNorth();
-			Cell* getEast();
-			Cell* getSouth();
-			Cell* getWest();
-			bool getDfsVisited();
+		char getSprite();
+		int getX();
+		int getY();
+		Cell* getNorth();
+		Cell* getEast();
+		Cell* getSouth();
+		Cell* getWest();
+		bool getDfsVisited();
 
-			void setSprite(char c);
-			void setX(int x);
-			void setY(int y);
-			void setNorth(Cell* cell);
-			void setEast(Cell* cell);
-			void setSouth(Cell* cell);
-			void setWest(Cell* cell);
-			void setDfsVisited(bool b);
+		void setSprite(char c);
+		void setX(int x);
+		void setY(int y);
+		void setNorth(Cell* cell);
+		void setEast(Cell* cell);
+		void setSouth(Cell* cell);
+		void setWest(Cell* cell);
+		void setDfsVisited(bool b);
 
-		private:
-			char _sprite;
-			int _x;
-			int _y;
-			Cell* _north;
-			Cell* _east;
-			Cell* _south;
-			Cell* _west;
+		// check if cells have same coordinates
+		bool sameCell(Cell* c2);
 
-			bool _dfsVisited; //Used by Map::validate()
+		//used for A* alg
+		int calcH(Cell* c2);
+		bool isIn(std::vector<SearchCell*> v);
 
-			friend class boost::serialization::access;
-			template<class Archive>
-			void serialize(Archive & ar, const unsigned int version) {
-				ar & _sprite;
-				ar & _x;
-				ar & _y;
-			}
+	private:
+		char _sprite;
+		int _x;
+		int _y;
+		Cell* _north;
+		Cell* _east;
+		Cell* _south;
+		Cell* _west;
+
+		bool _dfsVisited; //Used by Map::validate()
+
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive & ar, const unsigned int version) {
+			ar & _sprite;
+			ar & _x;
+			ar & _y;
+		}
+
+	};
+
+	//! class used in the A* algorithm
+	class SearchCell {
+
+	public:
+
+		SearchCell();
+		// start node (no parent)
+		SearchCell(Cell* c, int gv, int hv);
+		// with parent
+		SearchCell(Cell* c, SearchCell* p, int gv, int hv);
+		~SearchCell();
+
+		// getters
+		Cell* getCell();
+		SearchCell* getParent();
+		int getG();
+		int getH();
+
+		int calcF();
+
+	private:
+
+		Cell* _cell;
+		SearchCell* _parent;
+		int _gValue;
+		int _hValue;
 
 	};
 
@@ -91,6 +129,31 @@ public:
 	bool validate();
 	void draw();
 	std::string drawToString();
+
+	// related to pathfinding
+
+	// find smallest f value in a given vector
+	int smallestF(std::vector<SearchCell*>* v);
+
+	// validation method using A* pathfinding alg
+	bool validateA();
+
+	// return a path from point A to B, if it exists
+	std::vector<SearchCell*> findPath(Cell* start, Cell* end);
+
+	// determine if one cell is within a certain range of another
+	bool inRange(Cell* actor, Cell* target, int range);
+
+	// return next cell to move to, given a valid (non-empty) path
+	Cell* nextMove(Cell* start, Cell* end);
+
+	// print out a path
+	void printPath(std::vector<SearchCell*>* path);
+
+
+	// for debugging
+	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
+	void printCellNeighbors(int x, int y);
 
 
 private:
