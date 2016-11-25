@@ -248,6 +248,20 @@ void Character::levelUp() {
 	_hp = _maxHp;
 }
 
+void Character::attack()
+{
+	_lastLog = getName() + " attacks X.";
+
+	notify();
+
+	_lastLog = "none";
+}
+
+std::string Character::getLog()
+{
+	return _lastLog;
+}
+
 bool Character::operator==(const Character & character) const {
 	return _name == character._name &&
 		_lvl == character._lvl &&

@@ -668,6 +668,21 @@ void Map::printCellNeighbors(int x, int y) {
 	std::cout << "North: x -" << temp->getNorth()->getX() << " y - " << temp->getNorth()->getY() << std::endl;
 }
 
+void Map::charMove(Character* actor)
+{
+	_lastLog = actor->getName() + " moves to X.";
+
+	notify();
+
+	_lastLog = "none";
+}
+
+
+std::string Map::getLog()
+{
+	return _lastLog;
+}
+
 Map::SearchCell::SearchCell() {
 }
 

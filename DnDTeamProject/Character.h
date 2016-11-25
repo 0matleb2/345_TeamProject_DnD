@@ -79,6 +79,13 @@ public:
 
 	bool operator==(const Character& character) const; //Needed for std::find()
 
+	//placeholder for attack method, used to test game logger
+	void attack();
+
+
+	// get last log entry
+	std::string getLog();
+
 
 private:
 	
@@ -106,7 +113,8 @@ private:
 
 	ItemContainer* _inventory;
 
-
+	// for logging
+	std::string _lastLog = "none";
 
 
 	friend class boost::serialization::access;
