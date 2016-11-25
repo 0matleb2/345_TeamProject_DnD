@@ -15,6 +15,7 @@ public:
 
 	void editCharacter();
 	void loadCharacter();
+	void deleteCharacter();
 
 
 private:

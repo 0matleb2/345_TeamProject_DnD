@@ -13,20 +13,19 @@
 #include "CampaignEditor.h"
 #include "MapEditor.h"
 #include "CharacterEditor.h"
+#include "Menu.h"
+#include "GameDirector.h"
+#include <Windows.h>
 
 
-int main(int argc, char** argv) {
-
-	//Make first campaign, needs to be updated to include editing stuff from CampaignEditor
-	CampaignBuilder campaignBuilder;
-	campaignBuilder.construct();
-
-	//The good stuff
-	CampaignEditor campaignEditor;
-	campaignEditor.loadCampaign();
-	campaignEditor.editCampaign();
 
 
-	std::cout << std::endl << "End of program." << std::endl << "Enter any key to exit program: ";
-	getchar();
+int main(int argc, char** argv) { 
+	
+	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, NULL);
+
+	GameDirector::instance()->mainMenu();
+
 }
+
+

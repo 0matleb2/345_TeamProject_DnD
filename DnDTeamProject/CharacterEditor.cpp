@@ -281,3 +281,26 @@ void CharacterEditor::loadCharacter() {
 		_getch();
 	}
 }
+
+void CharacterEditor::deleteCharacter() {
+	_loadedCharacters = loadCharacters();
+	if (_loadedCharacters.size() > 0) {
+		std::vector<std::string> loadedCharacterMenuOptions;
+		for (int i = 0, n = _loadedCharacters.size(); i < n; ++i) {
+			loadedCharacterMenuOptions.push_back(_loadedCharacters[i]->getName() + ", Level: " + std::to_string(_loadedCharacters[i]->getLvl()));
+		}
+		int deleteIndex = menu(loadedCharacterMenuOptions, "Which character do you want to delete?") - 1;
+		switch (menu(yesNoOptions, "Are you sure you want to delete " + _loadedCharacters[deleteIndex]->getName() + "?")) {
+		case 1:
+			_loadedCharacters.erase(_loadedCharacters.begin() + deleteIndex);
+			saveCharacters(_loadedCharacters);
+			break;
+		case 2:
+			break;
+		}
+	}
+	else {
+		std::cout << "There are no saved characters to delete!" << std::endl;
+		_getch();
+	}
+}

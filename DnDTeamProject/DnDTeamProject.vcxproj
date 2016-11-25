@@ -168,6 +168,7 @@
     <ClInclude Include="Dice.h" />
     <ClInclude Include="Errors.h" />
     <ClInclude Include="FileIO.h" />
+    <ClInclude Include="GameDirector.h" />
     <ClInclude Include="Helmet.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemArchive.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="FileIO.cpp" />
+    <ClCompile Include="GameDirector.cpp" />
     <ClCompile Include="Helmet.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemArchive.cpp" />
@@ -220,6 +222,12 @@
     <ClCompile Include="Ring.cpp" />
     <ClCompile Include="Shield.cpp" />
     <ClCompile Include="Weapon.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="saved_campaigns.txt" />
+    <Text Include="saved_characters.txt" />
+    <Text Include="saved_items.txt" />
+    <Text Include="saved_maps.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

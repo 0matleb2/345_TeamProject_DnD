@@ -121,3 +121,26 @@ void CampaignEditor::loadCampaign() {
 		_getch();
 	}
 }
+
+void CampaignEditor::deleteCampaign() {
+	_loadedCampaigns = loadCampaigns();
+	if (_loadedCampaigns.size() > 0) {
+		std::vector<std::string> loadedCampaignsMenuOptions;
+		for (int i = 0, n = _loadedCampaigns.size(); i < n; ++i) {
+			loadedCampaignsMenuOptions.push_back(_loadedCampaigns[i]->getName() + ", " + std::to_string(_loadedCampaigns[i]->getCampaign().size()) + " levels");
+		}
+		int deleteIndex = menu(loadedCampaignsMenuOptions, "Which campaign do you want to delete?") - 1;
+		switch (menu(yesNoOptions, "Are you sure you want to delete " + _loadedCampaigns[deleteIndex]->getName() + "?")) {
+		case 1:
+			_loadedCampaigns.erase(_loadedCampaigns.begin() + deleteIndex);
+			saveCampaigns(_loadedCampaigns);
+			break;
+		case 2:
+			break;
+		}
+	}
+	else {
+		std::cout << "There are no saved campaigns to delete!" << std::endl;
+		_getch();
+	}
+}

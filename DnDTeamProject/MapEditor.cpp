@@ -359,3 +359,26 @@ void MapEditor::loadMap() {
 		_getch();
 	}
 }
+
+void MapEditor::deleteMap() {
+	_loadedMaps = loadMaps();
+	if (_loadedMaps.size() > 0) {
+		std::vector<std::string> loadedMapMenuOptions;
+		for (int i = 0, n = _loadedMaps.size(); i < n; ++i) {
+			loadedMapMenuOptions.push_back(_loadedMaps[i]->getName() + "\n" + _loadedMaps[i]->drawToString());
+		}
+		int deleteIndex = menu(loadedMapMenuOptions, "Which map do you want to delete?") - 1;
+		switch (menu(yesNoOptions, "Are you sure you want to delete " + _loadedMaps[deleteIndex]->getName() + "?")) {
+		case 1:
+			_loadedMaps.erase(_loadedMaps.begin() + deleteIndex);
+			saveMaps(_loadedMaps);
+			break;
+		case 2:
+			break;
+		}
+	}
+	else {
+		std::cout << "There are no saved maps to delete!" << std::endl;
+		_getch();
+	}
+}

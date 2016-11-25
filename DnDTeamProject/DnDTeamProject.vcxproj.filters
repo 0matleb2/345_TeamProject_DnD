@@ -120,6 +120,9 @@
     <ClInclude Include="CharacterEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameDirector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Errors.cpp">
@@ -218,5 +221,22 @@
     <ClCompile Include="CharacterEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameDirector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="saved_items.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="saved_characters.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="saved_campaigns.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="saved_maps.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@ public:
 
 	void editMap();
 	void loadMap();
+	void deleteMap();
 
 private:
 
