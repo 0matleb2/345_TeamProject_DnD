@@ -89,6 +89,11 @@ public:
 		int getG();
 		int getH();
 
+		// setters
+		void setParent(SearchCell* np);
+		void setG(int newg);
+		
+
 		int calcF();
 
 	private:

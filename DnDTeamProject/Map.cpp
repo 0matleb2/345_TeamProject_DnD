@@ -428,7 +428,7 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						if (closed.back()->getCell()->getNorth()->isIn(open))
 						{
 							// working on complete solution
-							/*
+							
 							for (int i = 0; i < open.size(); i++)
 							{
 								// find same cell
@@ -437,11 +437,12 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 									// if new path is faster, change current cell in path
 									if (open[i]->getG() > closed.back()->getG() + 1)
 									{
-										
+										open[i]->setG(closed.back()->getG() + 1);
+										open[i]->setParent(closed.back());
 									}
 								}
 							}
-							*/
+							
 							
 						}
 						else
@@ -463,17 +464,19 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						// if already in open list
 						if (closed.back()->getCell()->getWest()->isIn(open))
 						{
-							// working on complete solution
-							/*
 							for (int i = 0; i < open.size(); i++)
 							{
-							// find same cell
-							if (closed.back()->getCell()->sameCell(open[i]->getCell()))
-							{
-
+								// find same cell
+								if (closed.back()->getCell()->getWest()->sameCell(open[i]->getCell()))
+								{
+									// if new path is faster, change current cell in path
+									if (open[i]->getG() > closed.back()->getG() + 1)
+									{
+										open[i]->setG(closed.back()->getG() + 1);
+										open[i]->setParent(closed.back());
+									}
+								}
 							}
-							}
-							*/
 						}
 						else
 						{
@@ -493,17 +496,19 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						// if already in open list
 						if (closed.back()->getCell()->getEast()->isIn(open))
 						{
-							// working on complete solution
-							/*
 							for (int i = 0; i < open.size(); i++)
 							{
-							// find same cell
-							if (closed.back()->getCell()->sameCell(open[i]->getCell()))
-							{
-
+								// find same cell
+								if (closed.back()->getCell()->getEast()->sameCell(open[i]->getCell()))
+								{
+									// if new path is faster, change current cell in path
+									if (open[i]->getG() > closed.back()->getG() + 1)
+									{
+										open[i]->setG(closed.back()->getG() + 1);
+										open[i]->setParent(closed.back());
+									}
+								}
 							}
-							}
-							*/
 						}
 						else
 						{
@@ -523,17 +528,19 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						// if already in open list
 						if (closed.back()->getCell()->getSouth()->isIn(open))
 						{
-							// working on complete solution
-							/*
 							for (int i = 0; i < open.size(); i++)
 							{
-							// find same cell
-							if (closed.back()->getCell()->sameCell(open[i]->getCell()))
-							{
-
+								// find same cell
+								if (closed.back()->getCell()->getSouth()->sameCell(open[i]->getCell()))
+								{
+									// if new path is faster, change current cell in path
+									if (open[i]->getG() > closed.back()->getG() + 1)
+									{
+										open[i]->setG(closed.back()->getG() + 1);
+										open[i]->setParent(closed.back());
+									}
+								}
 							}
-							}
-							*/
 						}
 						else
 						{
@@ -674,4 +681,14 @@ int Map::SearchCell::getH() {
 
 int Map::SearchCell::calcF() {
 	return _gValue + _hValue;
+}
+
+void Map::SearchCell::setParent(SearchCell* np)
+{
+	_parent = np;
+}
+
+void Map::SearchCell::setG(int newg)
+{
+	_gValue = newg;
 }
