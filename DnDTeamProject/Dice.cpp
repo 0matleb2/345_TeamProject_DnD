@@ -6,6 +6,9 @@
 #include "dice.h"
 
 bool Dice::_isSeeded = false;
+std::string Dice::_lastLog = "none";
+bool Dice::_isLogging = true;
+std::string Dice::_destination = "defaultFile.txt";
 
 int Dice::roll(const std::string input)
 {
@@ -46,7 +49,14 @@ int Dice::roll(const std::string input)
 			sum += rolls[i];
 		}
 
-		return (sum > 0) ? sum : 0;
+		int result = (sum > 0) ? sum : 0;
+
+		_lastLog = input + ", result: " + std::to_string(result);
+
+		if (_isLogging)
+			writeLog(_lastLog, _destination);
+
+		return result;
 	}
 	else {
 		fatalError("Invalid std::string passed to Dice::roll");
@@ -57,4 +67,22 @@ int Dice::roll(const std::string input)
 void Dice::seed() {
 	srand((unsigned)time(NULL));
 	_isSeeded = true;
+}
+
+std::string Dice::getLog()
+{
+	return _lastLog;
+}
+
+void Dice::logging(bool choice)
+{
+	if (choice)
+		_isLogging = true;
+	else
+		_isLogging = false;
+}
+
+void Dice::setFile(std::string dest)
+{
+	_destination = dest;
 }

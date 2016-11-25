@@ -159,6 +159,7 @@
     <ClInclude Include="CampaignEditor.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterEditor.h" />
+    <ClInclude Include="CharacterLogger.h" />
     <ClInclude Include="CharacterObserver.h" />
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Cursor.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Errors.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="GameDirector.h" />
+    <ClInclude Include="GameLogger.h" />
     <ClInclude Include="Helmet.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemArchive.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="ItemContainer.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapEditor.h" />
+    <ClInclude Include="MapLogger.h" />
     <ClInclude Include="MapObserver.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Names.h" />
@@ -195,6 +198,7 @@
     <ClCompile Include="CampaignEditor.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterEditor.cpp" />
+    <ClCompile Include="CharacterLogger.cpp" />
     <ClCompile Include="CharacterObserver.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Cursor.cpp" />
@@ -211,6 +215,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="MapLogger.cpp" />
     <ClCompile Include="MapObserver.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Observable.cpp" />
