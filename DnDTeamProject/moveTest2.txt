@@ -1,0 +1,16 @@
+(3)4d6, result: 8
+(3)4d6, result: 12
+(3)4d6, result: 11
+(3)4d6, result: 11
+(3)4d6, result: 9
+(3)4d6, result: 12
+TestPC moves to X.
+TestPC moves to X.
+(3)4d6, result: 17
+(3)4d6, result: 13
+(3)4d6, result: 14
+(3)4d6, result: 14
+(3)4d6, result: 12
+(3)4d6, result: 11
+TestPC moves to X.
+TestPC moves to X.

@@ -162,6 +162,12 @@ public:
 	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
 	void printCellNeighbors(int x, int y);
 
+	//barebones placeholder methods for moving, used to demo game logger
+	void charMove(Character* actor);
+	
+
+	// getter for line to log
+	std::string getLog();
 
 private:
 
@@ -178,6 +184,9 @@ private:
 	std::vector<Chest*> _chests;
 
 	std::string _drawSuffix;
+
+	// line to be logged
+	std::string _lastLog = "none";
 
 
 	bool validate(Cell* vertex);

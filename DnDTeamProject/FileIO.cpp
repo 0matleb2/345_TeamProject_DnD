@@ -127,3 +127,31 @@ void saveCampaigns(std::vector<Campaign*> campaigns) {
 	boost::archive::text_oarchive outarchive(outfilestream);
 	outarchive << campaigns;
 }
+
+//! write line to log
+void writeLog(std::string line, std::string fileName)
+{
+	std::ofstream outstream(fileName, std::ios_base::app);
+	
+	outstream << line << std::endl;
+
+	outstream.close();
+}
+
+//! read log
+void readLog(std::string fileName)
+{
+	std::string line;
+
+	std::ifstream instream(fileName);
+
+	if (instream.is_open())
+	{
+		while (std::getline(instream, line))
+		{
+			std::cout << line << std::endl;
+		}
+
+		instream.close();
+	}
+}

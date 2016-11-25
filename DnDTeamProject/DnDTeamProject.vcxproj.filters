@@ -123,6 +123,15 @@
     <ClInclude Include="GameDirector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MapLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Errors.cpp">
@@ -222,6 +231,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameDirector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
