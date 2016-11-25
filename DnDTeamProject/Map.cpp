@@ -424,9 +424,31 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 				if (!closed.back()->getCell()->getNorth()->isIn(closed)) {
 					// not a wall
 					if (closed.back()->getCell()->getNorth()->getSprite() != '#') {
-						open.push_back(new SearchCell(closed.back()->getCell()->getNorth(), closed.back(),
-							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
-
+						// if already in open list
+						if (closed.back()->getCell()->getNorth()->isIn(open))
+						{
+							// working on complete solution
+							/*
+							for (int i = 0; i < open.size(); i++)
+							{
+								// find same cell
+								if (closed.back()->getCell()->getNorth()->sameCell(open[i]->getCell()))
+								{
+									// if new path is faster, change current cell in path
+									if (open[i]->getG() > closed.back()->getG() + 1)
+									{
+										
+									}
+								}
+							}
+							*/
+							
+						}
+						else
+						{
+							open.push_back(new SearchCell(closed.back()->getCell()->getNorth(), closed.back(),
+								closed.back()->getG() + 1, closed.back()->getCell()->getNorth()->calcH(_exit)));
+						}
 					}
 				}
 			}
@@ -438,9 +460,26 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 				if (!closed.back()->getCell()->getWest()->isIn(closed)) {
 					// not a wall
 					if (closed.back()->getCell()->getWest()->getSprite() != '#') {
+						// if already in open list
+						if (closed.back()->getCell()->getWest()->isIn(open))
+						{
+							// working on complete solution
+							/*
+							for (int i = 0; i < open.size(); i++)
+							{
+							// find same cell
+							if (closed.back()->getCell()->sameCell(open[i]->getCell()))
+							{
 
-						open.push_back(new SearchCell(closed.back()->getCell()->getWest(), closed.back(),
-							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+							}
+							}
+							*/
+						}
+						else
+						{
+							open.push_back(new SearchCell(closed.back()->getCell()->getWest(), closed.back(),
+								closed.back()->getG() + 1, closed.back()->getCell()->getWest()->calcH(_exit)));
+						}
 					}
 				}
 			}
@@ -451,8 +490,26 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 				if (!closed.back()->getCell()->getEast()->isIn(closed)) {
 					// not a wall
 					if (closed.back()->getCell()->getEast()->getSprite() != '#') {
-						open.push_back(new SearchCell(closed.back()->getCell()->getEast(), closed.back(),
-							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+						// if already in open list
+						if (closed.back()->getCell()->getEast()->isIn(open))
+						{
+							// working on complete solution
+							/*
+							for (int i = 0; i < open.size(); i++)
+							{
+							// find same cell
+							if (closed.back()->getCell()->sameCell(open[i]->getCell()))
+							{
+
+							}
+							}
+							*/
+						}
+						else
+						{
+							open.push_back(new SearchCell(closed.back()->getCell()->getEast(), closed.back(),
+								closed.back()->getG() + 1, closed.back()->getCell()->getEast()->calcH(_exit)));
+						}
 					}
 				}
 			}
@@ -463,11 +520,26 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 				if (!closed.back()->getCell()->getSouth()->isIn(closed)) {
 					// not a wall
 					if (closed.back()->getCell()->getSouth()->getSprite() != '#') {
+						// if already in open list
+						if (closed.back()->getCell()->getSouth()->isIn(open))
+						{
+							// working on complete solution
+							/*
+							for (int i = 0; i < open.size(); i++)
+							{
+							// find same cell
+							if (closed.back()->getCell()->sameCell(open[i]->getCell()))
+							{
 
-
-						// push into open list
-						open.push_back(new SearchCell(closed.back()->getCell()->getSouth(), closed.back(),
-							closed.back()->getG() + 1, closed.back()->getCell()->calcH(_exit)));
+							}
+							}
+							*/
+						}
+						else
+						{
+							open.push_back(new SearchCell(closed.back()->getCell()->getSouth(), closed.back(),
+								closed.back()->getG() + 1, closed.back()->getCell()->getWest()->calcH(_exit)));
+						}
 					}
 				}
 			}
