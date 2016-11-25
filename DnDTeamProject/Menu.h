@@ -131,7 +131,7 @@ static std::vector<std::string> creatorMenuOptions = {
 	"Create a new campaign",
 	"Create a new map",
 	"Create a new character",
-	"Edit an existing campaing",
+	"Edit an existing campaign",
 	"Edit an existing map",
 	"Edit an existing character",
 	"Delete a campaign",
