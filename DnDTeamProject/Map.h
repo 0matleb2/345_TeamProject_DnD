@@ -115,6 +115,7 @@ public:
 	Character* getPlayerCharacter();
 	std::vector<Character*> getNpcCharacters();
 	std::vector<Chest*> getChests();
+	std::string getDrawPrefix();
 	std::string getDrawSuffix();
 
 
@@ -128,36 +129,29 @@ public:
 	void removeNpcCharacter(Character*);
 	void addChest(Chest*);
 	void removeChest(Chest*);
+	void setDrawPrefix(std::string drawPrefix);
 	void setDrawSuffix(std::string drawSuffix);
 	bool isCellOccupied(int x, int y);
 
-	bool validate();
+	bool validate(); // deprecated TODO replace all calls with validateA and test
+	bool validateA();
+
 	void draw();
 	std::string drawToString();
 
-	void linkGridCells();
+	void linkGridCells(); //Links adjacent Cells upon map initialization and loading
 
 	// related to pathfinding
-
 	// find smallest f value in a given vector
 	int smallestF(std::vector<SearchCell*>* v);
-
-	// validation method using A* pathfinding alg
-	bool validateA();
-
 	// return a path from point A to B, if it exists
 	std::vector<SearchCell*> findPath(Cell* start, Cell* end);
-
 	// determine if one cell is within a certain range of another
 	bool inRange(Cell* actor, Cell* target, int range);
-
 	// return next cell to move to, given a valid (non-empty) path
 	Cell* nextMove(Cell* start, Cell* end);
-
 	// print out a path
 	void printPath(std::vector<SearchCell*>* path);
-
-
 	// for debugging
 	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
 	void printCellNeighbors(int x, int y);
@@ -177,6 +171,7 @@ private:
 	std::vector<Character*> _npcCharacters;
 	std::vector<Chest*> _chests;
 
+	std::string _drawPrefix;
 	std::string _drawSuffix;
 
 

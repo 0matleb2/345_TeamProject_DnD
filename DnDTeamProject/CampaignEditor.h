@@ -16,8 +16,7 @@ public:
 	void newCampaign();
 
 	void editCampaign();
-	void loadCampaign();
-	void deleteCampaign();
+	bool loadCampaign();
 
 private:
 

@@ -13,9 +13,9 @@ public:
 
 	void setMap(Map* map);
 
+	void newMap();
 	void editMap();
-	void loadMap();
-	void deleteMap();
+	bool loadMap();
 
 private:
 

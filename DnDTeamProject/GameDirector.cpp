@@ -1,12 +1,10 @@
 #include <conio.h>
 #include "GameDirector.h"
 #include "FileIO.h"
-#include "CampaignBuilder.h"
-#include "MapBuilder.h"
-#include "CharacterBuilder.h"
 #include "CampaignEditor.h"
 #include "MapEditor.h"
 #include "CharacterEditor.h"
+#include "ItemBuilder.h"
 
 
 GameDirector::GameDirector() {
@@ -90,7 +88,7 @@ void GameDirector::playMenu() {
 		std::vector<Character*> loadedCharacters;
 		std::vector<std::string> loadedCampaignMenuOptions;
 		std::vector<std::string> loadedCharacterMenuOptions;
-		CharacterBuilder characterBuilder;
+		CharacterEditor characterEditor;
 		switch (menu(playMenuOptions, "Choose a campaign and a character to play")) {
 		case 1:
 			loadedCampaigns = loadCampaigns();
@@ -117,8 +115,8 @@ void GameDirector::playMenu() {
 			}
 			break;
 		case 4:
-			characterBuilder.construct();
-			_playerCharacter = characterBuilder.getCharacter();
+			characterEditor.newCharacter();
+			_playerCharacter = characterEditor.getCharacter();
 			break;
 		case 5:
 			onPlayMenu = false;
@@ -132,44 +130,47 @@ void GameDirector::creatorMenu() {
 	bool onCreatorMenu = true;
 	while (onCreatorMenu) {
 		printLogo();
-		CampaignBuilder campaignBuilder;
-		MapBuilder mapBuilder;
-		CharacterBuilder characterBuilder;
 		CampaignEditor campaignEditor;
 		MapEditor mapEditor;
 		CharacterEditor characterEditor;
+		ItemBuilder itemBuilder;
 		switch (menu(creatorMenuOptions, "What do you want to do?")) {
 		case 1: //Create a new campaign
 			campaignEditor.newCampaign();
 			break;
 		case 2: //Create a new map
-			mapBuilder.construct();
+			mapEditor.newMap();
 			break;
 		case 3: //Create a new character
-			characterBuilder.construct();
+			characterEditor.newCharacter();
+		case 4: //Create a mew item
+			itemBuilder.newItem();
 			break;
-		case 4: //Edit an existing campaign
-			campaignEditor.loadCampaign();
-			campaignEditor.editCampaign();
+		case 5: //Edit an existing campaign
+			if (campaignEditor.loadCampaign())
+				campaignEditor.editCampaign();
 			break;
-		case 5: //Edit an exisiting map
-			mapEditor.loadMap();
-			mapEditor.editMap();
+		case 6: //Edit an exisiting map
+			if (mapEditor.loadMap())
+				mapEditor.editMap();
 			break;
-		case 6: //Edit an exisiting character
-			characterEditor.loadCharacter();
-			characterEditor.editCharacter();
+		case 7: //Edit an exisiting character
+			if (characterEditor.loadCharacter())
+				characterEditor.editCharacter();
 			break;
-		case 7: //Delete a campaign
-			campaignEditor.deleteCampaign();
+		case 8: //Delete a saved campaign
+			deleteCampaign();
 			break;
-		case 8: //Delete a map
-			mapEditor.deleteMap();
+		case 9: //Delete a saved map
+			deleteMap();
 			break;
-		case 9: //Delete a character
-			characterEditor.deleteCharacter();
+		case 10: //Delete a saved character
+			deleteCharacter();
 			break;
-		case 10: //Return to main menu
+		case 11: //Delete a saved item
+			deleteItem();									
+			break;
+		case 12: //Return to main menu
 			onCreatorMenu = false;
 			break;
 		}
@@ -196,10 +197,10 @@ void GameDirector::credits() {
 	std::cout << "\t\tFall 2016" << std::endl << std::endl;
 
 	std::cout << "\tDeveloped by:" << std::endl << std::endl;
-	std::cout << "\t\tMathieu Leblanc" << std::endl;
-	std::cout << "\t\t\Robert Nguyen" << std::endl;
 	std::cout << "\t\tCharles Boudreau" << std::endl;
-	std::cout << "\t\tEric Morgan" << std::endl << std::endl << std::endl;
+	std::cout << "\t\tEric Morgan" << std::endl;
+	std::cout << "\t\tMathieu Leblanc" << std::endl;
+	std::cout << "\t\t\Robert Nguyen" << std::endl << std::endl << std::endl;
 
 	std::cout << "Press any key to return to the Main Menu..." << std::endl;
 	_getch();

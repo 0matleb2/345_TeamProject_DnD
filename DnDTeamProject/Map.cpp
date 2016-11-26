@@ -164,6 +164,10 @@ std::vector<Chest*> Map::getChests() {
 	return _chests;
 }
 
+std::string Map::getDrawPrefix() {
+	return _drawPrefix;
+}
+
 std::string Map::getDrawSuffix() {
 	return _drawSuffix;
 }
@@ -213,6 +217,10 @@ void Map::addChest(Chest* container) {
 void Map::removeChest(Chest* container) {
 	int pos = std::find(_chests.begin(), _chests.end(), container) - _chests.begin();
 	_chests.erase(_chests.begin() + pos);
+}
+
+void Map::setDrawPrefix(std::string drawPrefix) {
+	_drawPrefix = drawPrefix;
 }
 
 void Map::setDrawSuffix(std::string drawSuffix) {
@@ -294,15 +302,21 @@ void Map::draw() {
 		drawBuffer[_cursor->getY() * _width + _cursor->getX()] = '_';
 	}
 
-	system("CLS");
+	system("cls");
 
+	std::cout << std::endl;
+	if (_drawPrefix != "")
+		std::cout << _drawPrefix << std::endl << std::endl;
 	for (int i = 0; i < _height; ++i) {
+		std::cout << "  ";
 		for (int j = 0; j < _width; ++j) {
 			std::cout << drawBuffer[i*_width + j];
 		}
 		std::cout << std::endl;
 	}
-	std::cout << std::endl << _drawSuffix << std::endl;
+	std::cout << std::endl;
+	if (_drawSuffix != "")
+		std::cout << _drawSuffix << std::endl << std::endl;
 }
 
 std::string Map::drawToString() {

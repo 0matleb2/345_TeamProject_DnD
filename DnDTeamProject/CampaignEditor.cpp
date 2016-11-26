@@ -1,6 +1,5 @@
 #include "CampaignEditor.h"
 #include "Menu.h"
-#include "MapBuilder.h"
 #include "FileIO.h"
 #include "MapEditor.h"
 #include "Names.h"
@@ -9,7 +8,7 @@
 
 
 
-CampaignEditor::CampaignEditor() {
+CampaignEditor::CampaignEditor() : _loadedCampaigns(std::vector<Campaign*>()) {
 }
 
 CampaignEditor::~CampaignEditor() {
@@ -25,8 +24,9 @@ void CampaignEditor::setCampaign(Campaign * campaign) {
 
 
 void CampaignEditor::newCampaign() {
+
 	_campaign = new Campaign();
-	_loadedCampaigns = loadCampaigns();
+
 	std::cout << "Creating a new campaign..." << std::endl << std::endl;
 	std::string campaignName;
 	bool choosingRandomName = true;
@@ -59,7 +59,6 @@ void CampaignEditor::editCampaign() {
 		std::vector<Map*>& campaignMapsRef = _campaign->getCampaign();
 		std::vector<Map*> campaignMaps, loadedMaps;
 		std::vector<std::string> campaignMapsMenuOptions, loadedMapMenuOptions;
-		MapBuilder mapBuilder;
 		MapEditor mapEditor;
 		Map* newMap;
 		int removeIndex, editIndex;
@@ -87,8 +86,8 @@ void CampaignEditor::editCampaign() {
 			}
 			break;
 		case 2: //Add a new map
-			mapBuilder.construct();
-			newMap = mapBuilder.getMap();
+			mapEditor.newMap();
+			newMap = mapEditor.getMap();
 			_campaign->addMap(newMap);
 			system("cls");
 			std::cout << newMap->getName() << " was saved and added to " << _campaign->getName() << "." << std::endl << std::endl;
@@ -100,16 +99,26 @@ void CampaignEditor::editCampaign() {
 				for (int i = 0, n = loadedMaps.size(); i < n; ++i) {
 					loadedMapMenuOptions.push_back(loadedMaps[i]->getName() + '\n' + loadedMaps[i]->drawToString());
 				}
-				_campaign->addMap(loadedMaps[menu(loadedMapMenuOptions) - 1]);
+				int addedMapIndex = menu(loadedMapMenuOptions) - 1;
+				_campaign->addMap(loadedMaps[addedMapIndex]);
+				std::cout << loadedMaps[addedMapIndex]->getName() << " was added to " << _campaign->getName() << "." << std::endl << std::endl;
+			}
+			else {
+				std::cout << "There are no saved maps!" << std::endl;
 			}
 			break;
 		case 4: //Edit a map
-			for (int i = 0, n = campaignMapsRef.size(); i < n; ++i) {
-				campaignMapsMenuOptions.push_back(campaignMapsRef[i]->getName() + "\n" + campaignMapsRef[i]->drawToString());
+			if (campaignMapsRef.size() > 0) {
+				for (int i = 0, n = campaignMapsRef.size(); i < n; ++i) {
+					campaignMapsMenuOptions.push_back(campaignMapsRef[i]->getName() + "\n" + campaignMapsRef[i]->drawToString());
+				}
+				editIndex = menu(campaignMapsMenuOptions, "Which map do you want to edit?") - 1;
+				mapEditor.setMap(campaignMapsRef[editIndex]);
+				mapEditor.editMap();
 			}
-			editIndex = menu(campaignMapsMenuOptions, "Which map do you want to edit?") - 1;
-			mapEditor.setMap(campaignMapsRef[editIndex]);
-			mapEditor.editMap();
+			else {
+				std::cout << "This campaign does not have any maps yet!" << std::endl;
+			}
 			break;
 		case 5: //Remove a map
 			campaignMaps = _campaign->getCampaign();
@@ -127,47 +136,36 @@ void CampaignEditor::editCampaign() {
 			break;
 		case 7: //Finished
 			editingCampaign = false;
-			saveCampaigns(_loadedCampaigns);
+			if (_loadedCampaigns.size() > 0)
+				saveCampaigns(_loadedCampaigns);
+			else
+				saveCampaign(_campaign);
 			std::cout << _campaign->getName() << " was saved!" << std::endl << std::endl;
 			break;
 		}
 	}
 }
 
-void CampaignEditor::loadCampaign() {
+bool CampaignEditor::loadCampaign() {
 	_loadedCampaigns = loadCampaigns();
 	if (_loadedCampaigns.size() > 0) {
 		std::vector<std::string> loadedCampaignsMenuOptions;
 		for (int i = 0, n = _loadedCampaigns.size(); i < n; ++i) {
-			loadedCampaignsMenuOptions.push_back(_loadedCampaigns[i]->getName() + ", " + std::to_string(_loadedCampaigns[i]->getCampaign().size()) + " levels");
+			loadedCampaignsMenuOptions.push_back(_loadedCampaigns[i]->getName() + ", " + std::to_string(_loadedCampaigns[i]->getCampaign().size()) + 
+				((_loadedCampaigns[i]->getCampaign().size() > 1) ? " levels" : " level"));
 		}
+		loadedCampaignsMenuOptions.push_back("Cancel");
+		int editIndex = menu(loadedCampaignsMenuOptions, "Which campaign do you want to edit?") - 1;
+		if (editIndex == loadedCampaignsMenuOptions.size() - 1)
+			return false;
 		_campaign = _loadedCampaigns[menu(loadedCampaignsMenuOptions, "Which campaign do you want to edit?") - 1];
+		return true;
 	}
 	else {
-		std::cout << "There are no saved campaigns to edit!" << std::endl;
+		std::cout << "There are no saved campaigns to edit!" << std::endl << std::endl;
+		std::cout << "Press any key to continue..." << std::endl;
 		_getch();
-	}
-}
-
-void CampaignEditor::deleteCampaign() {
-	_loadedCampaigns = loadCampaigns();
-	if (_loadedCampaigns.size() > 0) {
-		std::vector<std::string> loadedCampaignsMenuOptions;
-		for (int i = 0, n = _loadedCampaigns.size(); i < n; ++i) {
-			loadedCampaignsMenuOptions.push_back(_loadedCampaigns[i]->getName() + ", " + std::to_string(_loadedCampaigns[i]->getCampaign().size()) + " levels");
-		}
-		int deleteIndex = menu(loadedCampaignsMenuOptions, "Which campaign do you want to delete?") - 1;
-		switch (menu(yesNoOptions, "Are you sure you want to delete " + _loadedCampaigns[deleteIndex]->getName() + "?")) {
-		case 1:
-			_loadedCampaigns.erase(_loadedCampaigns.begin() + deleteIndex);
-			saveCampaigns(_loadedCampaigns);
-			break;
-		case 2:
-			break;
-		}
-	}
-	else {
-		std::cout << "There are no saved campaigns to delete!" << std::endl;
-		_getch();
+		system("cls");
+		return false;
 	}
 }
