@@ -9,7 +9,7 @@
 
 
 
-CampaignEditor::CampaignEditor() : _loadedCampaigns(loadCampaigns()) {
+CampaignEditor::CampaignEditor() {
 }
 
 CampaignEditor::~CampaignEditor() {
@@ -23,6 +23,32 @@ void CampaignEditor::setCampaign(Campaign * campaign) {
 	_campaign = campaign;
 }
 
+
+void CampaignEditor::newCampaign() {
+	_campaign = new Campaign();
+	_loadedCampaigns = loadCampaigns();
+	std::cout << "Creating a new campaign..." << std::endl << std::endl;
+	std::string campaignName;
+	bool choosingRandomName = true;
+	switch (menu(builderNameOptions, "What is the campaign called?")) {
+	case 1:
+		while (choosingRandomName) {
+			campaignName = campaignNames[Dice::roll("d" + std::to_string((campaignNames.size()))) - 1];
+			std::cout << "The campaign is called " << campaignName << std::endl << std::endl;
+			if (menu(yesNoOptions, "Are you happy with this campaign name?") == 1) {
+				choosingRandomName = false;
+				_campaign->setName(campaignName);
+			}
+		}
+		break;
+	case 2:
+		std::cout << "Enter a name: ";
+		_campaign->setName(getUserInputString());
+		std::cout << "The campaign is called " << _campaign->getName() << "." << std::endl << std::endl;
+		break;
+	}
+	editCampaign();
+}
 
 void CampaignEditor::editCampaign() {
 
@@ -109,6 +135,7 @@ void CampaignEditor::editCampaign() {
 }
 
 void CampaignEditor::loadCampaign() {
+	_loadedCampaigns = loadCampaigns();
 	if (_loadedCampaigns.size() > 0) {
 		std::vector<std::string> loadedCampaignsMenuOptions;
 		for (int i = 0, n = _loadedCampaigns.size(); i < n; ++i) {

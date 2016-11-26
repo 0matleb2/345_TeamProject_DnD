@@ -13,6 +13,8 @@ public:
 
 	void setCampaign(Campaign* campaign);
 
+	void newCampaign();
+
 	void editCampaign();
 	void loadCampaign();
 	void deleteCampaign();

@@ -89,12 +89,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\boost_1_62_0</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\boost_1_62_0;C:\dev\deps\boost_1_62_0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\boost_1_62_0\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\boost_1_62_0\stage\lib;C:\dev\deps\boost_1_62_0\stage\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

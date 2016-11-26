@@ -140,7 +140,7 @@ void GameDirector::creatorMenu() {
 		CharacterEditor characterEditor;
 		switch (menu(creatorMenuOptions, "What do you want to do?")) {
 		case 1: //Create a new campaign
-			campaignBuilder.construct();
+			campaignEditor.newCampaign();
 			break;
 		case 2: //Create a new map
 			mapBuilder.construct();
