@@ -29,7 +29,7 @@ void ItemBuilder::setItem(Item * item) {
 	_item = item;
 }
 
-void ItemBuilder::construct() {
+void ItemBuilder::newItem() {
 	std::cout << "Creating a new item..." << std::endl << std::endl;
 	switch (menu(itemBuilderTypeOptions, "What type of item do you want to create?")) {
 	case 1:
@@ -57,7 +57,9 @@ void ItemBuilder::construct() {
 		buildWeapon();
 		break;
 	}
+
 	saveItem(_item);
+	std::cout << _item->getName() << " was saved!" << std::endl << std::endl;
 }
 
 void ItemBuilder::buildType() {

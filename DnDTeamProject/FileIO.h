@@ -11,7 +11,10 @@ extern ItemArchive loadItems();
 extern std::vector<Map*> loadMaps();
 extern std::vector<Campaign*> loadCampaigns();
 
-extern void deleteCampaign(Campaign* campaign);
+extern void deleteCampaign();
+extern void deleteMap();
+extern void deleteCharacter();
+extern void deleteItem();
 
 extern void saveCharacter(Character* character);
 extern void saveCharacters(std::vector<Character*> characters);

@@ -12,7 +12,7 @@ public:
 
 	void setItem(Item* item);
 
-	void construct();
+	void newItem();
 
 private:
 

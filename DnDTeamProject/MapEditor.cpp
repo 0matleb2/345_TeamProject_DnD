@@ -1,5 +1,4 @@
 #include <conio.h>
-#include "CharacterBuilder.h"
 #include "ItemBuilder.h"
 #include "MapEditor.h"
 #include "Menu.h"
@@ -27,23 +26,72 @@ void MapEditor::setMap(Map * map) {
 	_map = map;
 }
 
+void MapEditor::newMap() {
+	_map = new Map();
+
+   //Initalize dimensions
+	bool initializingDimensions = true;
+	while (initializingDimensions) {
+		std::cout << "Creating a new map..." << std::endl << std::endl;
+
+		std::cout << "[?] What are the dimensions of the map?" << std::endl;
+		std::cout << "   Width (3-233): ";
+		int width = getUserInputInteger();
+		std::cout << "   Height (3-40): ";
+		int height = getUserInputInteger();
+		if (width >= 3 && width <= 233 && height >= 3 && height <= 40) {
+			std::cout << std::endl;
+			_map = new Map(width, height);
+			initializingDimensions = false;
+			system("cls");
+		}
+		else {
+			system("cls");
+			std::cout << "Invalid map dimensions!" << std::endl << std::endl;
+		}
+	}
+
+	//Initialize name
+	std::string mapName;
+	bool choosingRandomName = true;
+	switch (menu(builderNameOptions, "What is the map called?")) {
+	case 1:
+		while (choosingRandomName) {
+			mapName = dungeonNames[Dice::roll("d" + std::to_string((dungeonNames.size()))) - 1];
+			std::cout << "The map is called " << mapName << std::endl << std::endl;
+			if (menu(yesNoOptions, "Are you happy with this map name?") == 1) {
+				choosingRandomName = false;
+				_map->setName(mapName);
+			}
+		}
+		break;
+	case 2:
+		std::cout << "Enter a map name: ";
+		_map->setName(getUserInputString());
+		std::cout << _map->getName() << " has been created." << std::endl << std::endl;
+		break;
+	}
+	editMap();
+}
+
 void MapEditor::editMap() {
 	bool editingMap = true;
+	bool editingLayout = true;
+	bool choosingRandomName = true;
+	Chest* editedChest;
+	std::string infoSuffix, mapName;
+	Cursor* editorCursor;
+	CursorObserver* cursorObserver;
+
 	while (editingMap) {
 
-		bool editingLayout = true;
-		bool choosingRandomName = true;
-		Chest* editedChest;
-		Cursor* editorCursor = new Cursor();
-		CursorObserver* cursorObserver = new CursorObserver(editorCursor, _map);
-		_map->setCursor(editorCursor);
-		std::string infoSuffix, mapName;;
-
+		_map->setDrawPrefix("Editing " + _map->getName() + "...");
+		_map->draw();
 		switch (menu(mapEditorMenuOptions, "What part of " + _map->getName() + " do you want to edit?")) {
-
-		case 1: //Name
+		case 1: //Edit name
 			switch (menu(builderNameOptions, "What is the map called?")) {
 			case 1:
+				choosingRandomName = true;
 				while (choosingRandomName) {
 					mapName = dungeonNames[Dice::roll("d" + std::to_string((dungeonNames.size()))) - 1];
 					std::cout << "The map is called " << mapName << std::endl << std::endl;
@@ -61,7 +109,10 @@ void MapEditor::editMap() {
 			}
 			break;
 
-		case 2: //Layout
+		case 2: //Edit layout
+			editorCursor = new Cursor();
+			cursorObserver = new CursorObserver(editorCursor, _map);
+			_map->setCursor(editorCursor);
 			infoSuffix = std::string("Editing map layout...\n\n")
 				+ "Use [Arrow keys] or [W, A, S, D] to move the cursor.\n\n"
 				+ "Press the following keys to insert objects at the cursor location:\n"
@@ -128,18 +179,26 @@ void MapEditor::editMap() {
 						_map->setCell(cursorX, cursorY, '#');
 					}
 					break;
-				case '2': //Insert entrance
+				case '2': //Insert entrance (valid on edges except corners)
 					if ((cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
-						(_map->getCell(cursorX, cursorY)->getSprite() == '#') &&
+						(_map->getCell(cursorX, cursorY)->getSprite() == '#') && 
+						!(cursorX == 0 && cursorY == 0) &&
+						!(cursorX == 0 && cursorY == cursorY == _map->getHeight() - 1) &&
+						!(cursorX == _map->getWidth() - 1 && cursorY == 0) &&
+						!(cursorX == _map->getWidth() - 1 && cursorY == _map->getHeight() - 1) &&
 						!(_map->isCellOccupied(cursorX, cursorY))) {
 
 						_map->setEntry(cursorX, cursorY);
 						_map->draw();
 					}
 					break;
-				case '3': //Insert exit
+				case '3': //Insert exit (valid on edges except corners)
 					if ((cursorX == 0 || cursorX == _map->getWidth() - 1 || cursorY == 0 || cursorY == _map->getHeight() - 1) &&
 						(_map->getCell(cursorX, cursorY)->getSprite() == '#') &&
+						!(cursorX == 0 && cursorY == 0) &&
+						!(cursorX == 0 && cursorY == cursorY == _map->getHeight() - 1) &&
+						!(cursorX == _map->getWidth() - 1 && cursorY == 0) &&
+						!(cursorX == _map->getWidth() - 1 && cursorY == _map->getHeight() - 1) &&
 						!(_map->isCellOccupied(cursorX, cursorY))) {
 
 						_map->setExit(cursorX, cursorY);
@@ -173,9 +232,9 @@ void MapEditor::editMap() {
 					if ((_map->getCell(cursorX, cursorY)->getSprite() == '.') &&
 						!(_map->isCellOccupied(cursorX, cursorY))) {
 						system("cls");
-						CharacterBuilder characterBuilder;
-						characterBuilder.construct();
-						Character* placedCharacter = characterBuilder.getCharacter();
+						CharacterEditor characterEditor;
+						characterEditor.newCharacter();
+						Character* placedCharacter = characterEditor.getCharacter();
 						placedCharacter->setX(cursorX);
 						placedCharacter->setY(cursorY);
 						_map->addNpcCharacter(placedCharacter);
@@ -206,7 +265,7 @@ void MapEditor::editMap() {
 								}
 								break;
 							case 2: //Add a new item
-								itemBuilder.construct();
+								itemBuilder.newItem();
 								placedChest->depositItem(*itemBuilder.getItem());
 								break;
 							case 3: //Withdraw an item
@@ -277,7 +336,7 @@ void MapEditor::editMap() {
 									}
 									break;
 								case 2: //Add a new item
-									itemBuilder.construct();
+									itemBuilder.newItem();
 									editedChest->depositItem(*itemBuilder.getItem());
 									break;
 								case 3: //Withdraw an item
@@ -321,8 +380,9 @@ void MapEditor::editMap() {
 						editingLayout = false;
 						delete editorCursor;
 						delete cursorObserver;
+						_map->setCursor(NULL);
+						_map->setDrawSuffix("");
 						system("cls");
-						std::cout << _map->getName() << " was edited and saved!" << std::endl << std::endl;
 					}
 					else {
 						std::string drawSuffix = _map->getDrawSuffix();
@@ -330,8 +390,8 @@ void MapEditor::editMap() {
 						_map->draw();
 					}
 					break;
-				} //keypress switch
-			} //while editingLayout
+				} //END Switch: keypress
+			} //END Case: Edit Layout
 			break;
 
 		case 3: //Finished
@@ -340,45 +400,32 @@ void MapEditor::editMap() {
 				saveMaps(_loadedMaps);
 			else
 				saveMap(_map);
+			system("cls");
+			std::cout << _map->getName() << " was saved!" << std::endl << std::endl;
 			break;
-		} //editing map switch
-	} //while editingMap
+		} //END Switch editingMap
+	} //END Loop editingMap
 }
 
-void MapEditor::loadMap() {
+bool MapEditor::loadMap() {
 	_loadedMaps = loadMaps();
 	if (_loadedMaps.size() > 0) {
 		std::vector<std::string> loadedMapsMenuOptions;
 		for (int i = 0, n = _loadedMaps.size(); i < n; ++i) {
 			loadedMapsMenuOptions.push_back(_loadedMaps[i]->getName() + "\n" + _loadedMaps[i]->drawToString());
 		}
-		_map = _loadedMaps[menu(loadedMapsMenuOptions, "Which map do you want to edit?") - 1];
+		loadedMapsMenuOptions.push_back("Cancel");
+		int editIndex = menu(loadedMapsMenuOptions, "Which map do you want to edit?") - 1;
+		if (editIndex == loadedMapsMenuOptions.size() - 1)
+			return false;
+		_map = _loadedMaps[editIndex];
+		return true;
 	}
 	else {
-		std::cout << "There are no saved maps to edit!" << std::endl;
+		std::cout << "There are no saved maps to edit!" << std::endl << std::endl;
+		std::cout << "Press any key to continue..." << std::endl;
 		_getch();
-	}
-}
-
-void MapEditor::deleteMap() {
-	_loadedMaps = loadMaps();
-	if (_loadedMaps.size() > 0) {
-		std::vector<std::string> loadedMapMenuOptions;
-		for (int i = 0, n = _loadedMaps.size(); i < n; ++i) {
-			loadedMapMenuOptions.push_back(_loadedMaps[i]->getName() + "\n" + _loadedMaps[i]->drawToString());
-		}
-		int deleteIndex = menu(loadedMapMenuOptions, "Which map do you want to delete?") - 1;
-		switch (menu(yesNoOptions, "Are you sure you want to delete " + _loadedMaps[deleteIndex]->getName() + "?")) {
-		case 1:
-			_loadedMaps.erase(_loadedMaps.begin() + deleteIndex);
-			saveMaps(_loadedMaps);
-			break;
-		case 2:
-			break;
-		}
-	}
-	else {
-		std::cout << "There are no saved maps to delete!" << std::endl;
-		_getch();
+		system("cls");
+		return false;
 	}
 }

@@ -7,16 +7,8 @@
 
 Character::Character() : _lvl(1) {
 
-	_strength = Dice::roll("(3)4d6");
-	_dexterity = Dice::roll("(3)4d6");
-	_constitution = Dice::roll("(3)4d6");
-	_intelligence = Dice::roll("(3)4d6");
-	_wisdom = Dice::roll("(3)4d6");
-	_charisma = Dice::roll("(3)4d6");
-
 	_inventory = new ItemContainer(20);
-	_maxHp = 10 + abilityScoreToModifier(_constitution);
-	_hp = _maxHp;
+
 }
 
 Character::~Character() {

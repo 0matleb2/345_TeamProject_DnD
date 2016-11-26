@@ -22,6 +22,65 @@ void CharacterEditor::setCharacter(Character * character) {
 	_character = character;
 }
 
+void CharacterEditor::newCharacter() {
+
+	_character = new Character();
+
+	//Initialize name
+	std::string characterName;
+	bool choosingRandomName = true;
+	switch (menu(builderNameOptions, "What is the character's name?")) {
+	case 1:
+		while (choosingRandomName) {
+			characterName = characterNames[Dice::roll("d" + std::to_string((characterNames.size()))) - 1];
+			std::cout << "The character is named " << characterName << std::endl << std::endl;
+			if (menu(yesNoOptions, "Are you happy with this character name?") == 1) {
+				choosingRandomName = false;
+				_character->setName(characterName);
+			}
+		}
+		break;
+	case 2:
+		std::cout << "Enter a name: ";
+		_character->setName(getUserInputString());
+		std::cout << "The character is named " << _character->getName() << "." << std::endl << std::endl;
+		break;
+	}
+
+	//Intialize stats
+	switch (menu(characterBuilderStatOptions, "Which attributes does " + _character->getName() + " favor most?")) {
+	case 1:
+		rollStats();
+		break;
+	case 2:
+		rollStats("Strength", "Constitution", "Dexterity");
+		break;
+	case 3:
+		rollStats("Strength", "Dexterity", "Constitution");
+		break;
+	case 4:
+		rollStats("Dexterity", "Strength", "Constitution");
+		break;
+	case 5:
+		rollStats("Dexterity", "Constitution", "Strength");
+		break;
+	case 6:
+		rollStats("Constitution", "Dexterity", "Strength");
+		break;
+	case 7:
+		rollStats("Constitution", "Strength", "Dexterity");
+		break;
+	}
+
+	//Initialize health
+	_character->setMaxHp(10 + Character::abilityScoreToModifier(_character->getConsitiution()));
+	_character->setHp(_character->getMaxHp());
+
+	system("cls");
+
+	editCharacter();
+}
+
 void CharacterEditor::editCharacter() {
 	bool editingCharacter = true;
 	while (editingCharacter) {
@@ -206,7 +265,7 @@ void CharacterEditor::editCharacter() {
 					}
 					break;
 				case 9: //Create new item
-					itemBuilder.construct();
+					itemBuilder.newItem();
 					break;
 				case 10:
 					equippingItems = false;
@@ -247,7 +306,7 @@ void CharacterEditor::editCharacter() {
 					}
 					break;
 				case 3: //Create a new item
-					itemBuilder.construct();
+					itemBuilder.newItem();
 					break;
 				case 4: //Finished
 					storingItems = false;
@@ -262,45 +321,127 @@ void CharacterEditor::editCharacter() {
 			else
 				saveCharacter(_character);
 			system("cls");
-			std::cout << _character->getName() << " was edited and saved!" << std::endl;
+			std::cout << _character->getName() << " was saved!" << std::endl << std::endl;
 		}
 	}
 }
 
-void CharacterEditor::loadCharacter() {
+bool CharacterEditor::loadCharacter() {
 	_loadedCharacters = loadCharacters();
 	if (_loadedCharacters.size() > 0) {
 		std::vector<std::string> loadedCharacterMenuOptions;
 		for (int i = 0, n = _loadedCharacters.size(); i < n; ++i) {
 			loadedCharacterMenuOptions.push_back(_loadedCharacters[i]->getName() + ", Level: " + std::to_string(_loadedCharacters[i]->getLvl()));
 		}
-		_character = _loadedCharacters[menu(loadedCharacterMenuOptions, "Which character do you want to edit?") - 1];
+		loadedCharacterMenuOptions.push_back("Cancel");
+		int editIndex = menu(loadedCharacterMenuOptions, "Which character do you want to edit?") - 1;
+		if (editIndex == loadedCharacterMenuOptions.size() - 1)
+			return false;
+		_character = _loadedCharacters[editIndex];
+		return true;
 	}
 	else {
 		std::cout << "There are no saved characters to edit!" << std::endl;
+		std::cout << "Press any key to continue..." << std::endl;
 		_getch();
+		system("cls");
+		return false;
 	}
 }
 
-void CharacterEditor::deleteCharacter() {
-	_loadedCharacters = loadCharacters();
-	if (_loadedCharacters.size() > 0) {
-		std::vector<std::string> loadedCharacterMenuOptions;
-		for (int i = 0, n = _loadedCharacters.size(); i < n; ++i) {
-			loadedCharacterMenuOptions.push_back(_loadedCharacters[i]->getName() + ", Level: " + std::to_string(_loadedCharacters[i]->getLvl()));
+
+void CharacterEditor::rollStats(std::string firstPriority, std::string secondPriority, std::string thirdPriority) {
+	int rerolls = 5;
+	bool rolling = true;
+	std::vector<int> stats; // { STR, DEX, CONS, INT, WISD, CHA }
+	while (rolling) {
+		std::cout << "Rolling character stats...\n" << std::endl;
+		std::map<std::string, int> statIndexes = {
+			{ "Strength", 0 },{ "Dexterity", 1 },{ "Constitution", 2 },{ "Intelligence", 3 },{ "Wisdom", 4 },{ "Charisma", 5 },
+		};
+
+		for (int i = 0; i < 6; ++i) {
+			stats.push_back(0);
 		}
-		int deleteIndex = menu(loadedCharacterMenuOptions, "Which character do you want to delete?") - 1;
-		switch (menu(yesNoOptions, "Are you sure you want to delete " + _loadedCharacters[deleteIndex]->getName() + "?")) {
-		case 1:
-			_loadedCharacters.erase(_loadedCharacters.begin() + deleteIndex);
-			saveCharacters(_loadedCharacters);
-			break;
-		case 2:
-			break;
+		std::vector<int> rolls;
+		for (int i = 0; i < 6; ++i) {
+			rolls.push_back(Dice::roll("(3)4d6"));
+		}
+		std::sort(rolls.begin(), rolls.end()); // low-high
+		stats[statIndexes[firstPriority]] = rolls[5];
+		stats[statIndexes[secondPriority]] = rolls[4];
+		stats[statIndexes[thirdPriority]] = rolls[3];
+		rolls.resize(3);
+		for (int i = 0; i < 6; ++i) {
+			if (stats[i] == 0) {
+				int randomIndex = Dice::roll("d" + std::to_string(rolls.size())) - 1;
+				stats[i] = rolls[randomIndex];
+				rolls.erase(rolls.begin() + randomIndex);
+			}
+		}
+		std::cout << "Strength:\t" << stats[0] << "\tDexterity:\t" << stats[1] << "\nConstitution:\t" << stats[2]
+			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl << std::endl;
+		if (rerolls > 0) {
+			std::vector<std::string> rerollOptions;
+			rerollOptions.push_back("Yes");
+			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
+			switch (menu(rerollOptions, "Are you happy with these stats?")) {
+			case 1:
+				rolling = false;
+				break;
+			case 2:
+				--rerolls;
+				break;
+			}
+		}
+		else {
+			rolling = false;
 		}
 	}
-	else {
-		std::cout << "There are no saved characters to delete!" << std::endl;
-		_getch();
+	_character->setStrength(stats[0]);
+	_character->setDexterity(stats[1]);
+	_character->setConsitiution(stats[2]);
+	_character->setIntelligence(stats[3]);
+	_character->setWisdom(stats[4]);
+	_character->setCharisma(stats[5]);
+}
+
+
+
+
+void CharacterEditor::rollStats() {
+	int rerolls = 5;
+	bool rolling = true;
+	std::vector<int> stats;
+	while (rolling) {
+		std::cout << "Rolling stats...\n" << std::endl;
+		stats.clear();
+		for (int i = 0; i < 6; ++i) {
+			stats.push_back(Dice::roll("(3)4d6"));
+		}
+		std::cout << "Strength:\t" << stats[0] << "\tDexterity:\t" << stats[1] << "\nConstitution:\t" << stats[2]
+			<< "\tIntelligence:\t" << stats[3] << "\nWisdom:\t\t" << stats[4] << "\tCharisma:\t" << stats[5] << std::endl << std::endl;
+		if (rerolls > 0) {
+			std::vector<std::string> rerollOptions;
+			rerollOptions.push_back("Yes");
+			rerollOptions.push_back("No (" + std::to_string(rerolls) + " rerolls remaining)");
+			switch (menu(rerollOptions, "Are you happy with these stats?")) {
+			case 1:
+				rolling = false;
+				break;
+			case 2:
+				--rerolls;
+				break;
+			}
+		}
+		else {
+			rolling = false;
+		}
 	}
+	_character->setStrength(stats[0]);
+	_character->setDexterity(stats[1]);
+	_character->setConsitiution(stats[2]);
+	_character->setIntelligence(stats[3]);
+	_character->setWisdom(stats[4]);
+	_character->setCharisma(stats[5]);
 }
