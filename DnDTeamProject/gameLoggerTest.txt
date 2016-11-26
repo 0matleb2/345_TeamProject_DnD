@@ -1,0 +1,6 @@
+1d6, result: 2
+2d8, result: 3
+TestPC attacks X.
+TestPC moves to X.
+TestPC moves to X.
+1d12, result: 8
