@@ -211,6 +211,7 @@
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="GameDirector.cpp" />
+    <ClCompile Include="GameLogger.cpp" />
     <ClCompile Include="Helmet.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemArchive.cpp" />

@@ -19,6 +19,7 @@
 
 #include "Dice.h"
 #include "CharacterLogger.h"
+#include "GameLogger.h"
 
 int main(int argc, char** argv) { 
 	
@@ -27,30 +28,46 @@ int main(int argc, char** argv) {
 
 	GameDirector::instance()->mainMenu();
 	*/
-	Dice::logging(false);
+	
+	GameLogger::instance();
+	// turn off dice logging so character creation isnt registered
+	GameLogger::instance()->loggingDice(false);
 
-	Character c1 = Character();
-	c1.setName("Test1");
+	Character* c1 = new Character();
+	c1->setName("TestPC");
 
-	Character c2 = Character();
-	c2.setName("Test2");
+	Character* c2 = new Character();
+	c2->setName("TestNPC1");
 
-	CharacterLogger clog1 = CharacterLogger(&c1);
-	CharacterLogger clog2 = CharacterLogger(&c2);
+	Character* c3 = new Character();
+	c3->setName("TestNPC2");
 
-	clog1.setFile("charLog1.txt");
-	clog2.setFile("charLog1.txt");
+	Map* m1 = new Map(5, 5);
+	
+	m1->setPlayerCharacter(c1);
+	m1->addNpcCharacter(c2);
+	m1->addNpcCharacter(c3);
 
-	c1.attack();
-	c2.attack();
-	c2.attack();
+	GameLogger::instance()->setAll(m1);
 
-	clog2.logging(false);
+	GameLogger::instance()->loggingAll(true);
+	GameLogger::instance()->setFile("gameLoggerTest1.txt");
+	
+	Dice::roll("1d6");
+	Dice::roll("2d8");
+	c1->attack();
+	//c2->attack();
+	//c3->attack();
+	m1->charMove(m1->getPlayerCharacter());
+	
+	GameLogger::instance()->loggingPC(false);
 
-	c2.attack();
-	c1.attack();
+	m1->charMove(m1->getPlayerCharacter());
+	//this should not log
+	c1->attack();
+	Dice::roll("1d12");
 
-	readLog("charLog1.txt");
+	GameLogger::instance()->printLog();
 
 	system("PAUSE");
 
