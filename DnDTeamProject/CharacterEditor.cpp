@@ -341,7 +341,7 @@ bool CharacterEditor::loadCharacter() {
 		return true;
 	}
 	else {
-		std::cout << "There are no saved characters to edit!" << std::endl;
+		std::cout << "There are no saved characters to edit!" << std::endl << std::endl;
 		std::cout << "Press any key to continue..." << std::endl;
 		_getch();
 		system("cls");

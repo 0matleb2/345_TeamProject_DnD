@@ -34,6 +34,8 @@ private:
 
 	void startGame();
 
+	bool playLevel(Character * playerCharacter, Map * level);
+
 	void printLogo();
 
 };
