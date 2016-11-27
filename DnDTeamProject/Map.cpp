@@ -228,6 +228,10 @@ void Map::setDrawSuffix(std::string drawSuffix) {
 }
 
 bool Map::isCellOccupied(int x, int y) {
+	if (x < 0 || y < 0 || x > getWidth() - 1 || y > getHeight() - 1)
+		return true;
+	if (getCell(x, y)->getSprite() == '#')
+		return true;
 	if (_playerCharacter && _playerCharacter->getX() == x && _playerCharacter->getY() == y)
 		return true;
 	for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {

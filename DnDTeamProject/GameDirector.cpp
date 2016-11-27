@@ -5,12 +5,79 @@
 #include "MapEditor.h"
 #include "CharacterEditor.h"
 #include "ItemBuilder.h"
+#include "CharacterObserver.h"
 
 
 GameDirector::GameDirector() {
 }
 
 void GameDirector::startGame() {
+	for (int i = 0, n = _campaign->getCampaign().size(); i < n; ++i) {
+		Map* level = _campaign->getCampaign()[i];
+		bool levelComplete = false;
+		while (!levelComplete) {
+			levelComplete = playLevel(_playerCharacter, level);
+		}
+		_playerCharacter->levelUp();
+	}
+}
+
+bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
+	level->setPlayerCharacter(playerCharacter);
+	CharacterObserver characterObserver(playerCharacter, level);
+	playerCharacter->setX(level->getEntry()->getX());
+	playerCharacter->setY(level->getEntry()->getY());
+
+
+	level->setDrawSuffix("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n");
+	level->draw();
+	bool playingLevel = true;
+	while (playingLevel) {
+
+
+		int playerX = playerCharacter->getX();
+		int playerY = playerCharacter->getY();
+
+		if (playerX == level->getExit()->getX() && playerY == level->getExit()->getY()) {
+			return true;
+		}
+
+
+		unsigned char keypress = _getch();
+		if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
+			keypress = _getch();
+		}
+		switch (keypress) {
+		case 'W':
+		case 'w':
+		case 72: //Arrow key UP
+			if (!level->isCellOccupied(playerX, playerY - 1)) {
+				playerCharacter->setY(playerY - 1);
+			}
+			break;
+		case 'A':
+		case 'a':
+		case 75: //Arrow key LEFT
+			if (!level->isCellOccupied(playerX - 1, playerY)) {
+				playerCharacter->setX(playerX - 1);
+			}
+			break;
+		case 'S':
+		case 's':
+		case 80: //Arrow key DOWN
+			if (!level->isCellOccupied(playerX, playerY + 1)) {
+				playerCharacter->setY(playerY + 1);
+			}
+			break;
+		case 'D':
+		case 'd':
+		case 77: //Arrow key RIGHT
+			if (!level->isCellOccupied(playerX + 1, playerY)) {
+				playerCharacter->setX(playerX + 1);
+			}
+			break;
+		}
+	}
 }
 
 void GameDirector::printLogo() {
@@ -18,7 +85,6 @@ void GameDirector::printLogo() {
 		std::cout << dndLogo[i] << std::endl;
 	}
 }
-
 
 
 GameDirector* GameDirector::_gameDirectorInstance = new GameDirector();
@@ -31,8 +97,7 @@ GameDirector * GameDirector::instance() {
 		_gameDirectorInstance = new GameDirector();
 
 	return _gameDirectorInstance;
-}
-
+} 
 Character * GameDirector::getPlayerCharacter() {
 	return _playerCharacter;
 }
@@ -92,26 +157,44 @@ void GameDirector::playMenu() {
 		switch (menu(playMenuOptions, "Choose a campaign and a character to play")) {
 		case 1:
 			loadedCampaigns = loadCampaigns();
-			for (int i = 0, n = loadedCampaigns.size(); i < n; ++i) {
-				loadedCampaignMenuOptions.push_back(loadedCampaigns[i]->getName() + ", " + std::to_string(loadedCampaigns[i]->getCampaign().size()) + " levels");
+			if (loadedCampaigns.size() > 0) {
+				for (int i = 0, n = loadedCampaigns.size(); i < n; ++i) {
+					loadedCampaignMenuOptions.push_back(loadedCampaigns[i]->getName() + ", " + std::to_string(loadedCampaigns[i]->getCampaign().size()) + " levels");
+				}
+				loadedCampaignMenuOptions.push_back("Cancel");
+				int playIndex = menu(loadedCampaignMenuOptions, "Which campaign do you want to play?") - 1;
+				if (playIndex == loadedCampaignMenuOptions.size() - 1)
+					break;
+				_campaign = loadedCampaigns[playIndex];
 			}
-			printLogo();
-			_campaign = loadedCampaigns[menu(loadedCampaignMenuOptions, "Which campaign do you want to play?") - 1];
+			else {
+				std::cout << "There are no saved campaigns to play!" << std::endl;
+			}
 			break;
 		case 2:
 			loadedCharacters = loadCharacters();
-			for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
-				loadedCharacterMenuOptions.push_back(loadedCharacters[i]->getName() + ", Level: " + std::to_string(loadedCharacters[i]->getLvl()));
+			if (loadedCharacters.size() > 0) {
+				for (int i = 0, n = loadedCharacters.size(); i < n; ++i) {
+					loadedCharacterMenuOptions.push_back(loadedCharacters[i]->getName() + ", Level: " + std::to_string(loadedCharacters[i]->getLvl()));
+				}
+				loadedCharacterMenuOptions.push_back("Cancel");
+				
+				int playIndex = menu(loadedCharacterMenuOptions, "Which character do you want to play?") - 1;
+				if (playIndex == loadedCharacterMenuOptions.size() - 1)
+					break;
+				_playerCharacter = loadedCharacters[playIndex];
 			}
-			printLogo();
-			_playerCharacter = loadedCharacters[menu(loadedCharacterMenuOptions, "Which character do you want to play with?") - 1];
+			else {
+				std::cout << "There are no saved characters to play!" << std::endl;
+			}
 			break;
 		case 3:
 			if (_playerCharacter && _campaign) {
 				startGame();
+				std::cout << "This feature is still in development!" << std::endl;
 			}
 			else {
-				std::cout << "A character and a campaign must be selected to play." << std::endl;
+				std::cout << "A character and a campaign must be selected to play!" << std::endl;
 			}
 			break;
 		case 4:

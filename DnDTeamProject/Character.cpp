@@ -106,10 +106,12 @@ ItemContainer* Character::getInventory() {
 //Mutators
 void Character::setX(int x) {
 	_x = x;
+	notify();
 }
 
 void Character::setY(int y) {
 	_y = y;
+	notify();
 }
 
 void Character::setName(std::string name) {
