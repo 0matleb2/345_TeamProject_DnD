@@ -309,6 +309,9 @@ void Map::draw() {
 		Cell* current;
 		Cell* pcCell;
 		int distance;
+
+		int currentX;
+		int currentY;
 		
 		// scan cells in buffer
 		for (int i = 0; i < drawBuffer.size(); i++)
@@ -324,6 +327,35 @@ void Map::draw() {
 			{
 				// value represents cell out of visual range
 				drawBuffer[i] = 'X';
+			}
+			else
+			{
+				// checking if there is a wall in the way
+				currentX = current->getX();
+				currentY = current->getY();
+
+				while (currentX != pcCell->getX() || currentY != pcCell->getY())
+				{
+					if (currentX != pcCell->getX())
+					{
+						if (currentX > pcCell->getX())
+							currentX--;
+						else
+							currentX++;
+					}
+
+					if (currentY != pcCell->getY())
+					{
+						if (currentY > pcCell->getY())
+							currentY--;
+						else
+							currentY++;
+					}
+
+					// if there is a wall in the way
+					if (getCell(currentX, currentY)->getSprite() == '#')
+						drawBuffer[i] = 'X';
+				}
 			}
 		}
 
