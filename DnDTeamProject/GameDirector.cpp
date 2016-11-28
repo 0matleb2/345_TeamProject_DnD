@@ -28,6 +28,8 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 	playerCharacter->setX(level->getEntry()->getX());
 	playerCharacter->setY(level->getEntry()->getY());
 
+	//set level to "in play"
+	level->setPlay(true);
 
 	level->setDrawSuffix("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n");
 	level->draw();
@@ -39,6 +41,7 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 		int playerY = playerCharacter->getY();
 
 		if (playerX == level->getExit()->getX() && playerY == level->getExit()->getY()) {
+			level->setPlay(false);
 			return true;
 		}
 

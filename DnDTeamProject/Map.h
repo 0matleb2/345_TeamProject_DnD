@@ -155,7 +155,11 @@ public:
 	// for debugging
 	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
 	void printCellNeighbors(int x, int y);
-
+	// for line of sight/fog of war
+	// return cell corresponding to index
+	Cell* indexToCell(int index);
+	// set is in play on/off
+	void setPlay(bool choice);
 
 private:
 
@@ -174,6 +178,9 @@ private:
 	std::string _drawPrefix;
 	std::string _drawSuffix;
 
+	//check whether map is in play or not
+	//so line of sight/fog of war doesn't trigger in edit mode
+	bool _isInPlay = false;
 
 	bool validate(Cell* vertex);
 

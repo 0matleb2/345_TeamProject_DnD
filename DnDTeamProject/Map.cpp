@@ -302,6 +302,35 @@ void Map::draw() {
 			drawBuffer[_chests[i]->getY() * _width + _chests[i]->getX()] = 'B';
 		}
 	}
+
+	//Line of Sight implementation
+	if (_isInPlay)
+	{
+		Cell* current;
+		Cell* pcCell;
+		int distance;
+		
+		// scan cells in buffer
+		for (int i = 0; i < drawBuffer.size(); i++)
+		{		
+			// get current cell
+			current = indexToCell(i);
+			// get cell of player
+			pcCell = getCell(_playerCharacter->getX(), _playerCharacter->getY());
+			// calculate distance
+			distance = current->calcH(pcCell);
+			// "4" represents line of sight value. placeholder. dont know if you want an extra field in character or based on other stat
+			if (distance > 4)
+			{
+				// value represents cell out of visual range
+				drawBuffer[i] = 'X';
+			}
+		}
+
+		current = nullptr;
+		pcCell = nullptr;
+	}
+
 	if (_cursor) {
 		drawBuffer[_cursor->getY() * _width + _cursor->getX()] = '_';
 	}
@@ -666,6 +695,20 @@ void Map::printCellNeighbors(int x, int y) {
 	Cell* temp = getCell(x, y);
 	std::cout << "Cell: x - " << temp->getX() << " y - " << temp->getY() << std::endl;
 	std::cout << "North: x -" << temp->getNorth()->getX() << " y - " << temp->getNorth()->getY() << std::endl;
+}
+
+//! return cell corresponding to given index number
+Map::Cell* Map::indexToCell(int index)
+{
+	int x = index % _width;
+	int y = index / _width;
+
+	return getCell(x, y);
+}
+
+void Map::setPlay(bool choice)
+{
+	_isInPlay = choice;
 }
 
 Map::SearchCell::SearchCell() {
