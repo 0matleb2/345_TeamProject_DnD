@@ -28,3 +28,4 @@ extern void saveCampaigns(std::vector<Campaign*> campaigns);
 //logging-related
 extern void writeLog(std::string line, std::string fileName);
 extern void readLog(std::string fileName);
+extern void clearFile(std::string fileName);

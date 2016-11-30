@@ -113,11 +113,15 @@ ItemContainer* Character::getInventory() {
 //Mutators
 void Character::setX(int x) {
 	_x = x;
+	_lastLog = getName() + " moves to " + std::to_string(_x) + ", " + std::to_string(_y);
 	notify();
+	_lastLog = "none";
 }
 
 void Character::setY(int y) {
+	_lastLog = getName() + " moves to " + std::to_string(_x) + ", " + std::to_string(_y);
 	_y = y;
+	_lastLog = "none";
 	notify();
 }
 
@@ -704,11 +708,19 @@ void Character::attack(Character* target, Map* context) {
 		if (attackRoll + attackBonus >= getTotalArmorClass()) {
 			//Damage roll
 			int damageRoll = Dice::roll(_weapon->getDamage()) + _weapon->getDamageBonus();
+
+			_lastLog = getName() + "'s attack hit " + target->getName() + " for " + std::to_string(damageRoll) + " damage.";
+			notify();
 			postAttackSuffix += "\nAttack hit!\n" + std::to_string(damageRoll) + " damage done to " + target->getName();
+			_lastLog = "none";
 			target->setHp(target->getHp() - damageRoll);
 		}
 		else {
+			// logger makes use of an observer and the _lastLog string to log
+			_lastLog = getName() + "'s attack missed!";
+			notify();
 			postAttackSuffix += "\nAttack missed!";
+			_lastLog = "none";
 		}	
 	}
 	if (target->getHp() <= 0) {
@@ -769,19 +781,15 @@ void Character::levelUp() {
 	_hp = _maxHp;
 }
 
-void Character::attack()
-{
-	_lastLog = getName() + " attacks X.";
 
-	notify();
-
-	_lastLog = "none";
-}
 
 std::string Character::getLog()
 {
 	return _lastLog;
 }
+
+
+
 
 bool Character::operator==(const Character & character) const {
 	return _name == character._name &&

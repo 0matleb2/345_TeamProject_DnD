@@ -8,7 +8,7 @@ CharacterLogger::CharacterLogger(Character* model) : Observer()
 
 CharacterLogger::~CharacterLogger()
 {
-
+	_model->detach(this);
 }
 
 void CharacterLogger::update()
