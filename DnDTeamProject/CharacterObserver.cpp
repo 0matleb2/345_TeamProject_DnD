@@ -7,6 +7,7 @@ CharacterObserver::CharacterObserver(Character* model, Map* context) : _model(mo
 }
 
 CharacterObserver::~CharacterObserver() {
+	_model->detach(this);
 }
 
 void CharacterObserver::update() {

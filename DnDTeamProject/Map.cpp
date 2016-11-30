@@ -772,6 +772,11 @@ Map::Cell* Map::indexToCell(int index)
 	return getCell(x, y);
 }
 
+std::string Map::getLog()
+{
+	return _lastLog;
+}
+
 Map::SearchCell::SearchCell() {
 }
 

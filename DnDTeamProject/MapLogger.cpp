@@ -8,7 +8,7 @@ MapLogger::MapLogger(Map* model) : Observer()
 
 MapLogger::~MapLogger()
 {
-
+	_model->detach(this);
 }
 
 void MapLogger::logging(bool choice)

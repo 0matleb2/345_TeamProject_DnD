@@ -260,3 +260,10 @@ void readLog(std::string fileName)
 		instream.close();
 	}
 }
+
+void clearFile(std::string fileName)
+{
+	std::ofstream outs(fileName, std::ios_base::trunc);
+
+	outs.close();
+}

@@ -14,6 +14,7 @@ class Observable {
 		void detach(Observer* observer);
 		void notify();
 
+
 	private:
 		std::vector<Observer*> _views;
 
