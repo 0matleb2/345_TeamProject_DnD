@@ -262,6 +262,33 @@ std::string Character::getLog()
 	return _lastLog;
 }
 
+//! move a character in the desired direction
+void Character::moveCharacter(char direction)
+{
+	switch (direction)
+	{
+	case 'u':
+		_lastLog = getName() + " moves to " + std::to_string(_x) + ", " + std::to_string(_y - 1);
+		setY(_y - 1);
+		break;
+	case 'd':
+		_lastLog = getName() + " moves to " + std::to_string(_x) + ", " + std::to_string(_y + 1);
+		setY(_y + 1);
+		break;
+	case 'l':
+		_lastLog = getName() + " moves to " + std::to_string(_x - 1) + ", " + std::to_string(_y);
+		setX(_x - 1);
+		break;
+	case 'r':
+		_lastLog = getName() + " moves to " + std::to_string(_x + 1) + ", " + std::to_string(_y);
+		setX(_x + 1);
+		break;
+	default:
+		_lastLog = "none";
+		break;
+	}
+}
+
 bool Character::operator==(const Character & character) const {
 	return _name == character._name &&
 		_lvl == character._lvl &&

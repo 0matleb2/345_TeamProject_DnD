@@ -7,14 +7,33 @@
 #include "ItemBuilder.h"
 #include "CharacterObserver.h"
 
+#include "GameLogger.h"
+
 
 GameDirector::GameDirector() {
 }
 
 void GameDirector::startGame() {
+	//setup logging
+	logDir(true);
+	setFile("GameLog1.txt");
+	clearLog();
+
+	//logging
+	GameLogger::instance();
+	GameLogger::instance()->setPC(_playerCharacter);
+	GameLogger::instance()->setDir(this);
+	GameLogger::instance()->setFile();
+	GameLogger::instance()->loggingAll(true);
+
+	campaignStartLog();
+
 	for (int i = 0, n = _campaign->getCampaign().size(); i < n; ++i) {
 		Map* level = _campaign->getCampaign()[i];
 		bool levelComplete = false;
+
+		mapStartLog(level->getName());
+
 		while (!levelComplete) {
 			levelComplete = playLevel(_playerCharacter, level);
 		}
@@ -27,7 +46,6 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 	CharacterObserver characterObserver(playerCharacter, level);
 	playerCharacter->setX(level->getEntry()->getX());
 	playerCharacter->setY(level->getEntry()->getY());
-
 
 	level->setDrawSuffix("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n");
 	level->draw();
@@ -52,32 +70,37 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 		case 'w':
 		case 72: //Arrow key UP
 			if (!level->isCellOccupied(playerX, playerY - 1)) {
-				playerCharacter->setY(playerY - 1);
+				//playerCharacter->setY(playerY - 1); //changed for logging purposes
+				playerCharacter->moveCharacter('u');
 			}
 			break;
 		case 'A':
 		case 'a':
 		case 75: //Arrow key LEFT
 			if (!level->isCellOccupied(playerX - 1, playerY)) {
-				playerCharacter->setX(playerX - 1);
+				//playerCharacter->setX(playerX - 1);
+				playerCharacter->moveCharacter('l');
 			}
 			break;
 		case 'S':
 		case 's':
 		case 80: //Arrow key DOWN
 			if (!level->isCellOccupied(playerX, playerY + 1)) {
-				playerCharacter->setY(playerY + 1);
+				//playerCharacter->setY(playerY + 1);
+				playerCharacter->moveCharacter('d');
 			}
 			break;
 		case 'D':
 		case 'd':
 		case 77: //Arrow key RIGHT
 			if (!level->isCellOccupied(playerX + 1, playerY)) {
-				playerCharacter->setX(playerX + 1);
+				//playerCharacter->setX(playerX + 1);
+				playerCharacter->moveCharacter('r');
 			}
 			break;
 		}
 	}
+
 }
 
 void GameDirector::printLogo() {
@@ -287,4 +310,55 @@ void GameDirector::credits() {
 
 	std::cout << "Press any key to return to the Main Menu..." << std::endl;
 	_getch();
+}
+
+//logging-related, decided to forgo the observer and implement directly into director
+
+void GameDirector::logDir(bool choice)
+{
+	_isLogging = choice;
+}
+
+void GameDirector::setFile(std::string fileName)
+{
+	_destination = fileName;
+}
+
+std::string GameDirector::getFile()
+{
+	return _destination;
+}
+
+void GameDirector::campaignStartLog()
+{
+	std::string logStr = "Starting Campaign \"" + _campaign->getName() + "\"...";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::mapStartLog(std::string mapName)
+{
+	std::string logStr = "Loading Map \"" + mapName + "\"...";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::phaseLog(bool ePhase)
+{
+	std::string logStr;
+	
+	if (ePhase)
+		logStr = "/Enemy Phase/";
+	else
+		logStr = "/Player Phase/";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::clearLog()
+{
+	clearFile(_destination);
 }

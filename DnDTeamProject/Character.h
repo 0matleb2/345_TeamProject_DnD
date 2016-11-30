@@ -81,7 +81,8 @@ public:
 
 	//placeholder for attack method, used to test game logger
 	void attack();
-
+	// move method, for use with log
+	void moveCharacter(char direction);
 
 	// get last log entry
 	std::string getLog();

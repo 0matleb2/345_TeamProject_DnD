@@ -6,6 +6,7 @@
 #include "MapLogger.h"
 #include "Character.h"
 #include "CharacterLogger.h"
+#include "GameDirector.h";
 
 class GameLogger
 {
@@ -22,6 +23,11 @@ public:
 	void setMap(Map* map);
 	void setAll(Map* map);
 
+	void setDir(GameDirector* dir);
+
+	// getters
+	CharacterLogger* getPC();
+
 	void clearNPCs();
 
 	// turn logging on/off
@@ -29,10 +35,14 @@ public:
 	void loggingNPCs(bool choice);
 	void loggingMap(bool choice);
 	void loggingDice(bool choice);
+	void loggingDir(bool choice);
+	
 	void loggingAll(bool choice);
 
 	// set file destination
 	void setFile(std::string fileName);
+	// set to same as director
+	void setFile();
 
 	//get file destination
 	std::string getFile();
@@ -47,7 +57,8 @@ private:
 	CharacterLogger* _loggedPC;
 	std::vector<CharacterLogger*>* _loggedNPCs;
 	MapLogger* _loggedMap;
+	GameDirector* _loggedDir;
 
 	std::string _destination;
-
+	
 };

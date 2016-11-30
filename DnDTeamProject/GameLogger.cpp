@@ -22,11 +22,16 @@ GameLogger* GameLogger::instance()
 
 void GameLogger::setPC(Character* pc)
 {
+	
+
 	_loggedPC = new CharacterLogger(pc);
 }
 
 void GameLogger::setNPCs(std::vector<Character*>* npcs)
 {
+	if (!_loggedNPCs)
+		return;
+
 	if (npcs->size() != 0)
 	{
 		// add logger for all npcs in vector
@@ -55,25 +60,36 @@ void GameLogger::setAll(Map* map)
 	//setNPCs(&map->getNpcCharacters());
 }
 
+CharacterLogger* GameLogger::getPC()
+{
+	if (_loggedPC)
+		return _loggedPC;
+}
+
 void GameLogger::loggingPC(bool choice)
 {
-	_loggedPC->logging(choice);
+	if (_loggedPC)
+		_loggedPC->logging(choice);
 }
 
 void GameLogger::loggingNPCs(bool choice)
 {
-	if (_loggedNPCs->size() != 0)
+	if (_loggedNPCs)
 	{
-		for (int i = 0; i < _loggedNPCs->size(); i++)
+		if (_loggedNPCs->size() != 0)
 		{
-			_loggedNPCs->at(i)->logging(choice);
+			for (int i = 0; i < _loggedNPCs->size(); i++)
+			{
+				_loggedNPCs->at(i)->logging(choice);
+			}
 		}
 	}
 }
 
 void GameLogger::loggingMap(bool choice)
 {
-	_loggedMap->logging(choice);
+	if (_loggedMap)
+		_loggedMap->logging(choice);
 }
 
 void GameLogger::loggingDice(bool choice)
@@ -84,26 +100,42 @@ void GameLogger::loggingDice(bool choice)
 void GameLogger::loggingAll(bool choice)
 {
 	loggingPC(choice);
-	//loggingNPCs(choice);
+	loggingNPCs(choice);
 	loggingMap(choice);
 	loggingDice(choice);
+	loggingDir(choice);
 }
 
 void GameLogger::setFile(std::string fileName)
 {
 	_destination = fileName;
 
-	_loggedPC->setFile(fileName);
+	if (_loggedPC)
+		_loggedPC->setFile(fileName);
 
-	/*
-	for (int i = 0; i < _loggedNPCs->size(); i++)
+	if (_loggedNPCs)
 	{
-		_loggedNPCs->at(i)->setFile(fileName);
+		for (int i = 0; i < _loggedNPCs->size(); i++)
+		{
+			_loggedNPCs->at(i)->setFile(fileName);
+		}
 	}
-	*/
-	_loggedMap->setFile(fileName);
+
+	if (_loggedMap)
+		_loggedMap->setFile(fileName);
 
 	Dice::setFile(fileName);
+
+	if (_loggedDir)
+		_loggedDir->setFile(fileName);
+}
+
+void GameLogger::setFile()
+{
+	if (_loggedDir)
+	{
+		setFile(_loggedDir->getFile());
+	}
 }
 
 std::string GameLogger::getFile()
@@ -114,4 +146,15 @@ std::string GameLogger::getFile()
 void GameLogger::printLog()
 {
 	readLog(_destination);
+}
+
+void GameLogger::setDir(GameDirector* dir)
+{
+	_loggedDir = dir;
+}
+
+void GameLogger::loggingDir(bool choice)
+{
+	if (_loggedDir)
+		_loggedDir->logDir(choice);
 }
