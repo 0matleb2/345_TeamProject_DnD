@@ -603,6 +603,10 @@ bool Map::inRange(Cell * actor, Cell * target, int range) {
 Map::Cell* Map::nextMove(Cell * start, Cell * end) {
 	std::vector<Map::SearchCell*> path = findPath(start, end);
 
+	// return start cell if no path
+	if (path.size() == 0)
+		return start;
+
 	SearchCell* temp = path.back();
 	SearchCell* temp2;
 
@@ -668,6 +672,28 @@ void Map::printCellNeighbors(int x, int y) {
 	std::cout << "North: x -" << temp->getNorth()->getX() << " y - " << temp->getNorth()->getY() << std::endl;
 }
 
+void Map::setNPCstrat(int choice)
+{
+	if (_npcCharacters.size() != 0)
+	{
+		for (int i = 0; i < _npcCharacters.size(); i++)
+		{
+			_npcCharacters[i]->setStrategy(choice);
+		}
+	}
+}
+
+void Map::executeNPCstrat()
+{
+	if (_npcCharacters.size() != 0)
+	{
+		for (int i = 0; i < _npcCharacters.size(); i++)
+		{
+			_npcCharacters[i]->executeStrat(this);
+		}
+	}
+}
+
 Map::SearchCell::SearchCell() {
 }
 
@@ -710,3 +736,4 @@ void Map::SearchCell::setG(int newg)
 {
 	_gValue = newg;
 }
+

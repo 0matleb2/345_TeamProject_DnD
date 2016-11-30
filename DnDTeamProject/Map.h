@@ -156,6 +156,11 @@ public:
 	void printVectorValidate(std::vector<SearchCell>* v, bool isopen);
 	void printCellNeighbors(int x, int y);
 
+	//strategy related
+
+	void setNPCstrat(int choice);
+	void executeNPCstrat();
+
 
 private:
 

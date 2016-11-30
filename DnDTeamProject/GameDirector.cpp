@@ -28,6 +28,8 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 	playerCharacter->setX(level->getEntry()->getX());
 	playerCharacter->setY(level->getEntry()->getY());
 
+	level->setNPCstrat(1);
+
 
 	level->setDrawSuffix("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n");
 	level->draw();
@@ -77,6 +79,8 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 			}
 			break;
 		}
+
+		level->executeNPCstrat();
 	}
 }
 

@@ -22,6 +22,12 @@ int main(int argc, char** argv) {
 	
 	SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, NULL);
 
+	//debugging
+	/*
+	std::ofstream outf("debugPath.txt", std::ios_base::trunc);
+	outf.close();
+	*/
+
 	GameDirector::instance()->mainMenu();
 }
 
