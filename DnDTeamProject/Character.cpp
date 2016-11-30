@@ -14,6 +14,8 @@ Character::Character() : _lvl(1) {
 
 	_inventory = new ItemContainer(20);
 
+	_strategy = new DefaultStrategy();
+
 }
 
 Character::~Character() {
@@ -786,4 +788,28 @@ bool Character::operator==(const Character & character) const {
 		_weapon == character._weapon &&
 		_inventory == character._inventory;
 		*/
+}
+
+//strategy-related
+
+void Character::setStrategy(int choice)
+{
+	switch (choice)
+	{
+	case 0:
+		_strategy = new DefaultStrategy();
+		break;
+	case 1:
+		_strategy = new FriendlyStrategy();
+		break;
+	default:
+		break;
+	}
+
+	
+}
+
+void Character::executeStrat(Map* context)
+{
+	_strategy->execute(this, context);
 }
