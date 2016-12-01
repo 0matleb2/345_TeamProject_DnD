@@ -4,20 +4,21 @@
 
 
 
-Weapon::Weapon() : _attackBonus(0), _damageBonus(0) {
+Weapon::Weapon() : _attackBonus(0), _damageBonus(0), _range(0) {
 	_itemType = ItemType::WEAPON;
 }
 
 Weapon::Weapon(WeaponType weaponType) : Weapon() {
-	_itemType = ItemType::WEAPON;
 	switch (weaponType) {
 	case WeaponType::LONGSWORD:
 		setName(longswordNames[Dice::roll("1d100-1")]);
 		setDamage("1d8");
+		setRange(1);
 		break;
 	case WeaponType::LONGBOW:
 		setName(longbowNames[Dice::roll("1d100-1")]);
 		setDamage("1d8");
+		setRange(3);
 		break;
 	}
 	setWeaponType(weaponType);
@@ -47,6 +48,10 @@ std::string Weapon::getDamage() {
 	return _damage;
 }
 
+int Weapon::getRange() {
+	return _range;
+}
+
 
 
 //Mutators
@@ -64,6 +69,10 @@ void Weapon::setDamageBonus(int damageBonus) {
 
 void Weapon::setDamage(std::string damage) {
 	_damage = damage;
+}
+
+void Weapon::setRange(int range) {
+	_range = range;
 }
 
 
@@ -90,5 +99,7 @@ std::string Weapon::toString() {
 		s += ", Attack bonus: " + std::to_string(getAttackBonus());
 	if (getDamageBonus() != 0)
 		s += ", Damage bonus: " + std::to_string(getDamageBonus());
+	if (getRange() != 0)
+		s += ", Range: " + std::to_string(getRange());
 	return s;
 }

@@ -16,11 +16,13 @@ public:
 	int getAttackBonus();
 	int getDamageBonus();
 	std::string getDamage();
+	int getRange();
 
 	void setWeaponType(WeaponType weaponType);
 	void setAttackBonus(int attackBonus);
 	void setDamageBonus(int damageBonus);
 	void setDamage(std::string damage);
+	void setRange(int range);
 
 	void randomBonuses();
 
@@ -32,6 +34,7 @@ private:
 	int _attackBonus;
 	int _damageBonus;
 	std::string _damage;
+	int _range;
 
 
 	friend class boost::serialization::access;
@@ -41,7 +44,7 @@ private:
 		ar & _attackBonus;
 		ar & _damageBonus;
 		ar & _damage;
+		ar & _range;
 	}
-
 };
 

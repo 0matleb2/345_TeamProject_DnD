@@ -213,7 +213,6 @@ void saveMap(Map* map) {
 	std::ofstream outfilestream("saved_maps.txt");
 	boost::archive::text_oarchive outarchive(outfilestream);
 	outarchive << appendedMaps;
-	std::cout << map->getName() << " was saved!" << std::endl << std::endl;
 }
 void saveMaps(std::vector<Map*> maps) {
 	std::ofstream outfilestream("saved_maps.txt");
@@ -227,7 +226,6 @@ void saveCampaign(Campaign* campaign) {
 	std::ofstream outfilestream("saved_campaigns.txt");
 	boost::archive::text_oarchive outarchive(outfilestream);
 	outarchive << appendedCampaigns;
-	std::cout << campaign->getName() << " was saved!" << std::endl << std::endl;
 }
 void saveCampaigns(std::vector<Campaign*> campaigns) {
 	std::ofstream outfilestream("saved_campaigns.txt");

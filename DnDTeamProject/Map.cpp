@@ -172,6 +172,10 @@ std::string Map::getDrawSuffix() {
 	return _drawSuffix;
 }
 
+bool Map::getDrawModeLOS() {
+	return _drawModeLOS;
+}
+
 
 void Map::setName(std::string name) {
 	_name = name;
@@ -209,6 +213,9 @@ void Map::removeNpcCharacter(Character* character) {
 	int pos = std::find(_npcCharacters.begin(), _npcCharacters.end(), character) - _npcCharacters.begin();
 	_npcCharacters.erase(_npcCharacters.begin() + pos);
 }
+void Map::removeNpcCharacter(int index) {
+	_npcCharacters.erase(_npcCharacters.begin() + index);
+}
 void Map::addChest(Chest* container) {
 	if (std::find(_chests.begin(), _chests.end(), container) == _chests.end()) {
 		_chests.push_back(container);
@@ -218,6 +225,9 @@ void Map::removeChest(Chest* container) {
 	int pos = std::find(_chests.begin(), _chests.end(), container) - _chests.begin();
 	_chests.erase(_chests.begin() + pos);
 }
+void Map::removeChest(int index) {
+	_chests.erase(_chests.begin() + index);
+}
 
 void Map::setDrawPrefix(std::string drawPrefix) {
 	_drawPrefix = drawPrefix;
@@ -225,6 +235,10 @@ void Map::setDrawPrefix(std::string drawPrefix) {
 
 void Map::setDrawSuffix(std::string drawSuffix) {
 	_drawSuffix = drawSuffix;
+}
+
+void Map::setDrawModeLOS(bool LOSenabled) {
+	_drawModeLOS = LOSenabled;
 }
 
 bool Map::isCellOccupied(int x, int y) {
@@ -298,7 +312,7 @@ bool Map::validate(Cell* vertex) {
 	return false;
 }
 
-void Map::draw(bool lineOfSight) {
+void Map::draw() {
 	std::vector<char> drawBuffer;
 	for (int i = 0, n = _grid.size(); i < n; ++i) {
 		drawBuffer.push_back(_grid[i].getSprite());
@@ -318,7 +332,7 @@ void Map::draw(bool lineOfSight) {
 	}
 
 	//Line of Sight implementation
-	if (lineOfSight) {
+	if (_drawModeLOS) {
 		Cell* current;
 		Cell* pcCell;
 		int distance;
@@ -422,6 +436,27 @@ std::string Map::drawToString() {
 			stringOutput += '\n';
 	}
 	return stringOutput;
+}
+
+void Map::resolveNpcDeaths() {
+	for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {
+		if (_npcCharacters[i]->getHp() <= 0) {
+			Chest* lootDrop = new Chest(_npcCharacters[i]->getX(), _npcCharacters[i]->getY(), 20);
+			for (int j = 0, n = _npcCharacters[i]->getInventory()->getContents().size(); j < n; ++j) {
+				lootDrop->depositItem(*(_npcCharacters[i]->getInventory()->getContents()[j]));
+			}
+			removeNpcCharacter(i);
+			addChest(lootDrop);
+		}
+	}
+}
+
+void Map::resolveEmptyChests() {
+	for (int i = 0, n = _chests.size(); i < n; ++i) {
+		if (_chests[i]->getContents().size() == 0) {
+			removeChest(i);
+		}
+	}
 }
 
 void Map::linkGridCells() {

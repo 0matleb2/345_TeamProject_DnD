@@ -11,10 +11,10 @@ public:
 	~GameDirector();
 	static GameDirector* instance(); //Singleton pattern
 
-	Character* getPlayerCharacter();
+	Character* getPlayer();
 	Campaign* getCampaign();
 
-	void setPlayerCharacter(Character* character);
+	void setPlayer(Character* character);
 	void setCampaign(Campaign* campaign);
 
 	void mainMenu();
@@ -25,7 +25,7 @@ private:
 
 	static GameDirector* _gameDirectorInstance;
 
-	Character* _playerCharacter;
+	Character* _player;
 	std::vector<Character*> _loadedCharacters;
 	Campaign* _campaign;
 
