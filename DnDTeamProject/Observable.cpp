@@ -16,7 +16,7 @@ void Observable::detach(Observer* observer) {
 }
 
 void Observable::notify() {
-	for (int i = 0; i < _views.size(); i++) {
+	for (int i = 0, n = _views.size(); i < n; i++) {
 		_views[i]->update();
 	}
 }

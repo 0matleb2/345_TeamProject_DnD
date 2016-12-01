@@ -42,7 +42,7 @@ int Dice::roll(const std::string input)
 		rolls.resize(bestX);
 
 		int sum = modifier;
-		for (int i = 0; i < rolls.size(); i++) {
+		for (int i = 0, n = rolls.size(); i < n; i++) {
 			sum += rolls[i];
 		}
 

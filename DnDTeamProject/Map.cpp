@@ -118,7 +118,7 @@ int Map::Cell::calcH(Cell * c2) {
 }
 bool Map::Cell::isIn(std::vector<SearchCell*> v) {
 	if (v.size() > 0) {
-		for (int i = 0; i < v.size(); i++) {
+		for (int i = 0, n = v.size(); i < n; i++) {
 			if (sameCell(v[i]->getCell()))
 				return true;
 		}
@@ -326,7 +326,7 @@ void Map::draw(bool lineOfSight) {
 		int currentY;
 		
 		// scan cells in buffer
-		for (int i = 0; i < drawBuffer.size(); i++)	{
+		for (int i = 0, n = drawBuffer.size(); i < n; i++)	{
 			current = indexToCell(i);
 			// get cell of player
 			pcCell = getCell(_playerCharacter->getX(), _playerCharacter->getY());
@@ -459,7 +459,7 @@ void Map::linkGridCells() {
 
 int Map::smallestF(std::vector<SearchCell*>* v) {
 	int indexSmall = 0;
-	for (int i = 0; i < v->size(); i++) {
+	for (int i = 0, n = v->size(); i < n; i++) {
 		if (v->at(i)->calcF() < v->at(i)->calcF())
 			indexSmall = i;
 	}
@@ -518,7 +518,7 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						{
 							// working on complete solution
 							
-							for (int i = 0; i < open.size(); i++)
+							for (int i = 0, n = open.size(); i < n; i++)
 							{
 								// find same cell
 								if (closed.back()->getCell()->getNorth()->sameCell(open[i]->getCell()))
@@ -553,7 +553,7 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						// if already in open list
 						if (closed.back()->getCell()->getWest()->isIn(open))
 						{
-							for (int i = 0; i < open.size(); i++)
+							for (int i = 0, n = open.size(); i < n; i++)
 							{
 								// find same cell
 								if (closed.back()->getCell()->getWest()->sameCell(open[i]->getCell()))
@@ -585,7 +585,7 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						// if already in open list
 						if (closed.back()->getCell()->getEast()->isIn(open))
 						{
-							for (int i = 0; i < open.size(); i++)
+							for (int i = 0, n = open.size(); i < n; i++)
 							{
 								// find same cell
 								if (closed.back()->getCell()->getEast()->sameCell(open[i]->getCell()))
@@ -617,7 +617,7 @@ std::vector<Map::SearchCell*> Map::findPath(Cell * start, Cell * end) {
 						// if already in open list
 						if (closed.back()->getCell()->getSouth()->isIn(open))
 						{
-							for (int i = 0; i < open.size(); i++)
+							for (int i = 0, n = open.size(); i < n; i++)
 							{
 								// find same cell
 								if (closed.back()->getCell()->getSouth()->sameCell(open[i]->getCell()))
@@ -726,7 +726,7 @@ void Map::printVectorValidate(std::vector<SearchCell>* v, bool isopen) {
 	if (v->size() == 0)
 		std::cout << "Empty" << std::endl;
 	else {
-		for (int i = 0; i < v->size(); i++) {
+		for (int i = 0, n = v->size(); i < n; i++) {
 			std::cout << "Coords: x - " << v->at(i).getCell()->getX()
 				<< " y - " << v->at(i).getCell()->getY() << std::endl;
 		}

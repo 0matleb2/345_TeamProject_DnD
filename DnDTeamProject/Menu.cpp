@@ -46,7 +46,7 @@ int menu(std::vector<std::string> options, std::string title) {
 		std::cout << "Choose an option: ";
 		std::string choice = getUserInputString();
 		try {
-			int intChoice = std::stoi(choice);
+			unsigned int intChoice = std::stoi(choice);
 			if (intChoice >= 1 && intChoice <= options.size()) {
 				system("cls");
 				return intChoice;
@@ -57,6 +57,7 @@ int menu(std::vector<std::string> options, std::string title) {
 			}
 		}
 		catch (const std::exception& e) {
+			(void)e;
 		}
 		if (options[0].substr(0, 3) == "Yes") {
 			if (choice == "y" || choice == "Y") {

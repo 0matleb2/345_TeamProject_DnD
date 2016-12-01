@@ -42,45 +42,46 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 		int playerY = playerCharacter->getY();
 
 		if (playerX == level->getExit()->getX() && playerY == level->getExit()->getY()) {
-			return true;
+			playingLevel = false;
 		}
-
-
-		unsigned char keypress = _getch();
-		if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
-			keypress = _getch();
-		}
-		switch (keypress) {
-		case 'W':
-		case 'w':
-		case 72: //Arrow key UP
-			if (level->isCellEmpty(playerX, playerY - 1)) {
-				playerCharacter->setY(playerY - 1);
+		else {
+			unsigned char keypress = _getch();
+			if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
+				keypress = _getch();
 			}
-			break;
-		case 'A':
-		case 'a':
-		case 75: //Arrow key LEFT
-			if (level->isCellEmpty(playerX - 1, playerY)) {
-				playerCharacter->setX(playerX - 1);
+			switch (keypress) {
+			case 'W':
+			case 'w':
+			case 72: //Arrow key UP
+				if (level->isCellEmpty(playerX, playerY - 1)) {
+					playerCharacter->setY(playerY - 1);
+				}
+				break;
+			case 'A':
+			case 'a':
+			case 75: //Arrow key LEFT
+				if (level->isCellEmpty(playerX - 1, playerY)) {
+					playerCharacter->setX(playerX - 1);
+				}
+				break;
+			case 'S':
+			case 's':
+			case 80: //Arrow key DOWN
+				if (level->isCellEmpty(playerX, playerY + 1)) {
+					playerCharacter->setY(playerY + 1);
+				}
+				break;
+			case 'D':
+			case 'd':
+			case 77: //Arrow key RIGHT
+				if (level->isCellEmpty(playerX + 1, playerY)) {
+					playerCharacter->setX(playerX + 1);
+				}
+				break;
 			}
-			break;
-		case 'S':
-		case 's':
-		case 80: //Arrow key DOWN
-			if (level->isCellEmpty(playerX, playerY + 1)) {
-				playerCharacter->setY(playerY + 1);
-			}
-			break;
-		case 'D':
-		case 'd':
-		case 77: //Arrow key RIGHT
-			if (level->isCellEmpty(playerX + 1, playerY)) {
-				playerCharacter->setX(playerX + 1);
-			}
-			break;
 		}
 	}
+	return true;
 }
 
 void GameDirector::printLogo() {
@@ -284,7 +285,7 @@ void GameDirector::credits() {
 	std::cout << "\t\tCharles Boudreau" << std::endl;
 	std::cout << "\t\tEric Morgan" << std::endl;
 	std::cout << "\t\tMathieu Leblanc" << std::endl;
-	std::cout << "\t\t\Robert Nguyen" << std::endl << std::endl << std::endl;
+	std::cout << "\t\tRobert Nguyen" << std::endl << std::endl << std::endl;
 
 	std::cout << "Press any key to return to the Main Menu..." << std::endl;
 	_getch();
