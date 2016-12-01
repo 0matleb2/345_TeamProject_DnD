@@ -826,3 +826,25 @@ void Map::SearchCell::setG(int newg)
 {
 	_gValue = newg;
 }
+
+void Map::setNPCstrat(int choice)
+{
+	if (_npcCharacters.size() != 0)
+	{
+		for (int i = 0; i < _npcCharacters.size(); i++)
+		{
+			_npcCharacters[i]->setStrategy(choice);
+		}
+	}
+}
+
+void Map::executeNPCstrat()
+{
+	if (_npcCharacters.size() != 0)
+	{
+		for (int i = 0; i < _npcCharacters.size(); i++)
+		{
+			_npcCharacters[i]->executeStrat(this);
+		}
+	}
+}
