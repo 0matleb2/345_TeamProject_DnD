@@ -3,6 +3,8 @@
 #include "Character.h"
 #include "Menu.h"
 
+#include "CursorObserver.h"
+
 
 
 class GameDirector {
@@ -38,5 +40,8 @@ private:
 	bool playLevel(Character * playerCharacter, Map * level);
 
 	void printLogo();
+
+	//actions
+	Map::Cell* selectMode(Map* lvl);
 
 };

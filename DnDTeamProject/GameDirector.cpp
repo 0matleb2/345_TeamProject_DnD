@@ -32,12 +32,17 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 	playerCharacter->setX(level->getEntry()->getX());
 	playerCharacter->setY(level->getEntry()->getY());
 
-	level->setDrawSuffix("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n");
+	std::string infoSuffix;
+
+	infoSuffix = std::string("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n")
+		+ "use T to test target mode.\n";
+
+	level->setDrawSuffix(infoSuffix);
 	level->draw(true);
 	bool playingLevel = true;
 	while (playingLevel) {
 
-
+		level->setDrawSuffix(infoSuffix);
 		int playerX = playerCharacter->getX();
 		int playerY = playerCharacter->getY();
 
@@ -78,6 +83,13 @@ bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
 			if (level->isCellEmpty(playerX + 1, playerY)) {
 				playerCharacter->setX(playerX + 1);
 			}
+			break;
+		case 'T':
+		case 't':
+			Map::Cell* pick = selectMode(level);
+			std::cout << "\nSelected Cell: " + std::to_string(pick->getX()) + std::to_string(pick->getY()) << std::endl;
+			system("PAUSE");
+			level->draw(true);
 			break;
 		}
 	}
@@ -288,4 +300,70 @@ void GameDirector::credits() {
 
 	std::cout << "Press any key to return to the Main Menu..." << std::endl;
 	_getch();
+}
+
+Map::Cell* GameDirector::selectMode(Map* lvl)
+{
+	Cursor* targetCursor = new Cursor();
+	CursorObserver* curObs = new CursorObserver(targetCursor, lvl);
+	std::string infoSuffix;
+	bool selectingTarget = true;
+
+	lvl->setCursor(targetCursor);
+	infoSuffix = std::string("Use [Arrow keys] or [W, A, S, D] to move the cursor.\n\n")
+		+ "Press [ENTER] to select a target.\n";
+
+	lvl->setDrawSuffix(infoSuffix);
+	lvl->draw();
+
+	while (selectingTarget)
+	{
+		lvl->setDrawSuffix(infoSuffix);
+		int cursorX = lvl->getCursor()->getX();
+		int cursorY = lvl->getCursor()->getY();
+		unsigned char keypress = _getch();
+
+		if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
+			keypress = _getch();
+		}
+
+		switch (keypress)
+		{
+		case 'W':
+		case 'w':
+		case 72: //Arrow key UP
+			if (cursorY > 0)
+				lvl->getCursor()->setY(cursorY - 1);
+			break;
+		case 'A':
+		case 'a':
+		case 75: //Arrow key LEFT
+			if (cursorX > 0)
+				lvl->getCursor()->setX(cursorX - 1);
+			break;
+		case 'S':
+		case 's':
+		case 80: //Arrow key DOWN
+			if (cursorY < (lvl->getHeight() - 1))
+				lvl->getCursor()->setY(cursorY + 1);
+			break;
+		case 'D':
+		case 'd':
+		case 77: //Arrow key RIGHT
+			if (cursorX < (lvl->getWidth() - 1))
+				lvl->getCursor()->setX(cursorX + 1);
+			break;
+		case '\r':
+			selectingTarget = false;
+			Map::Cell* selected = lvl->getCell(targetCursor->getX(), targetCursor->getY());
+			delete targetCursor;
+			delete curObs;
+			lvl->setCursor(NULL);
+			lvl->setDrawSuffix("");
+			system("cls");
+			return selected;
+			break;
+		}
+
+	} //end target select loop
 }
