@@ -225,6 +225,9 @@ void Map::removeChest(Chest* container) {
 	int pos = std::find(_chests.begin(), _chests.end(), container) - _chests.begin();
 	_chests.erase(_chests.begin() + pos);
 }
+void Map::removeChest(int index) {
+	_chests.erase(_chests.begin() + index);
+}
 
 void Map::setDrawPrefix(std::string drawPrefix) {
 	_drawPrefix = drawPrefix;
@@ -444,6 +447,14 @@ void Map::resolveNpcDeaths() {
 			}
 			removeNpcCharacter(i);
 			addChest(lootDrop);
+		}
+	}
+}
+
+void Map::resolveEmptyChests() {
+	for (int i = 0, n = _chests.size(); i < n; ++i) {
+		if (_chests[i]->getContents().size() == 0) {
+			removeChest(i);
 		}
 	}
 }

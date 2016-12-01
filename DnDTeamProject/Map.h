@@ -131,6 +131,7 @@ public:
 	void removeNpcCharacter(int index);
 	void addChest(Chest*);
 	void removeChest(Chest*);
+	void removeChest(int intex);
 	void setDrawPrefix(std::string drawPrefix);
 	void setDrawSuffix(std::string drawSuffix);
 	void setDrawModeLOS(bool LOSenabled);
@@ -145,6 +146,8 @@ public:
 	std::string drawToString();
 
 	void resolveNpcDeaths();
+
+	void resolveEmptyChests();
 
 	void linkGridCells(); //Links adjacent Cells upon map initialization and loading
 

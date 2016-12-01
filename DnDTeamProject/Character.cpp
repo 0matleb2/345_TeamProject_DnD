@@ -318,8 +318,7 @@ Character* Character::selectAttackTarget(Map* context) {
 
 	std::vector<Character*> levelNPCs = context->getNpcCharacters();
 
-	bool selectingAttackTarget = true;
-	while (selectingAttackTarget) {
+	while (true) {
 		int cursorX = context->getCursor()->getX();
 		int cursorY = context->getCursor()->getY();
 		unsigned char keypress = _getch();
@@ -378,6 +377,124 @@ Character* Character::selectAttackTarget(Map* context) {
 			break;
 		}
 	}
+}
+
+bool Character::npcInRange(Map* context) {
+	int range = _weapon->getRange();
+	for (int h = -range; h < range + 1; ++h) {
+		for (int w = -range; w < range + 1; ++w) {
+			if (h + _y >= 0 && h + _y <= context->getHeight() - 1 && w + _x >= 0 && w + _x <= context->getWidth() - 1) {
+				for (int i = 0, n = context->getNpcCharacters().size(); i < n; ++i) {
+					if (w + _x == context->getNpcCharacters()[i]->getX() && h + _y == context->getNpcCharacters()[i]->getY()) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool Character::chestInRange(Map* context) {
+	for (int h = -1; h < 2; ++h) {
+		for (int w = -1; w < 2; ++w) {
+			if (h + _y >= 0 && h + _y <= context->getHeight() - 1 && w + _x >= 0 && w + _x <= context->getWidth() - 1) {
+				for (int i = 0, n = context->getChests().size(); i < n; ++i) {
+					if (w + _x == context->getChests()[i]->getX() && h + _y == context->getChests()[i]->getY()) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+Chest* Character::selectLootTarget(Map* context) {
+
+	context->setDrawSuffix("<Loot Phase>\n\nSelecting loot target...\n\nUse [W, A, S, D] to move the cursor.\nPress [+] to inspect a Chest.\nPress [Enter] to loot the chest.\nPress [Esc] to continue without looting.");
+
+	Cursor* lootSelectCursor = new Cursor();
+	CursorObserver* cursorObserver = new CursorObserver(lootSelectCursor, context);
+	context->setCursor(lootSelectCursor);
+	lootSelectCursor->setX(_x);
+	lootSelectCursor->setY(_y);
+
+	std::vector<Chest*> levelChests = context->getChests();
+
+	while (true) {
+		int cursorX = context->getCursor()->getX();
+		int cursorY = context->getCursor()->getY();
+		unsigned char keypress = _getch();
+		if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
+			keypress = _getch();
+		}
+		switch (keypress) {
+		case 'W':
+		case 'w':
+		case 72: //Arrow key UP
+			if (cursorY > 0 && (cursorY > _y - 1))
+				context->getCursor()->setY(cursorY - 1);
+			break;
+		case 'A':
+		case 'a':
+		case 75: //Arrow key LEFT
+			if (cursorX > 0 && (cursorX > _x - 1))
+				context->getCursor()->setX(cursorX - 1);
+			break;
+		case 'S':
+		case 's':
+		case 80: //Arrow key DOWN
+			if (cursorY < (context->getHeight() - 1) && (cursorY < _y + 1))
+				context->getCursor()->setY(cursorY + 1);
+			break;
+		case 'D':
+		case 'd':
+		case 77: //Arrow key RIGHT
+			if (cursorX < (context->getWidth() - 1) && (cursorX < _x + 1))
+				context->getCursor()->setX(cursorX + 1);
+			break;
+		case '+': //Inspect
+			for (int i = 0, n = levelChests.size(); i < n; ++i) {
+				if (cursorX == levelChests[i]->getX() && cursorY == levelChests[i]->getY()) {
+					context->draw();
+					std::cout << levelChests[i]->toString() << std::endl;
+				}
+			}
+			break;
+		case '\r': //ENTER (loot target)
+			for (int i = 0, n = levelChests.size(); i < n; ++i) {
+				if (cursorX == levelChests[i]->getX() && cursorY == levelChests[i]->getY()) {
+					context->setCursor(nullptr);
+					delete lootSelectCursor;
+					delete cursorObserver;
+					return levelChests[i];
+				}
+			}
+			break;
+		case 27: //ESC (cancel attack)
+			context->setCursor(nullptr);
+			delete lootSelectCursor;
+			delete cursorObserver;
+			context->draw();
+			return nullptr;
+			break;
+		}
+	}
+}
+
+void Character::loot(Chest* target, Map* context) {
+	std::string postLootSuffix;
+	for (int i = 0, n = target->getContents().size(); i < n; ++i) {
+		Item* withdrawnItem = target->withdrawItem(i);
+		postLootSuffix += "Looted:  " + withdrawnItem->toString() + "\n";
+		getInventory()->depositItem(*withdrawnItem);
+	}
+	context->resolveEmptyChests();
+	postLootSuffix += "\n\nPress any key to continue...";
+	context->setDrawSuffix(postLootSuffix);
+	context->draw();
+	_getch();
 }
 
 void Character::attack(Character* target, Map* context) {

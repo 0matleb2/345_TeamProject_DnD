@@ -36,23 +36,35 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 
 	while (true) {
 
+		//Move phase
 		level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(3) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
-
 		for (int i = 0; i < 3; ++i) {
 			level->draw();
 			level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(2-i) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
 			player->move(level);
-			if (player->getX() == level->getExit()->getX() && player->getY() == level->getExit()->getY())
+			if (player->getX() == level->getExit()->getX() && player->getY() == level->getExit()->getY()) //Exit reached
 				goto exitReached;
 		}
-		Character* target = player->selectAttackTarget(level);
-		if (target) {
-			player->attack(target, level);
+
+		//Attack phase
+		if (player->npcInRange(level)) {
+			Character* targetCharacter = player->selectAttackTarget(level);
+			if (targetCharacter) {
+				player->attack(targetCharacter, level);
+			}
+		}
+
+		//Loot phase
+		if (player->chestInRange(level)) {
+			Chest* targetChest = player->selectLootTarget(level);
+			if (targetChest) {
+				player->loot(targetChest, level);
+			}
 		}
 	}
+
 exitReached:
 	return true;
-
 
 }
 

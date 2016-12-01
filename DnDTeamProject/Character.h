@@ -13,6 +13,7 @@
 #include "Shield.h"
 #include "Weapon.h"
 #include "ItemContainer.h"
+#include "Chest.h"
 #include "Observable.h"
 #include "boost/serialization/access.hpp"
 
@@ -81,6 +82,10 @@ public:
 
 	void move(Map * context);
 	Character* selectAttackTarget(Map * context);
+	bool npcInRange(Map * context);
+	bool chestInRange(Map * context);
+	Chest* selectLootTarget(Map* context);
+	void loot(Chest * target, Map * context);
 	void attack(Character* target, Map* context);
 
 	bool operator==(const Character& character) const; //Needed for std::find()
