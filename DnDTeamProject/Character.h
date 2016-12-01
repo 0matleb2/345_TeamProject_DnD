@@ -72,10 +72,16 @@ public:
 	void setWeapon(Weapon* weapon);
 	void setInventory(ItemContainer* inventory);
 
+	int getTotalArmorClass();
+
 
 	std::string toString();
 	void levelUp();
 	static int abilityScoreToModifier(int score);
+
+	void move(Map * context);
+	Character* selectAttackTarget(Map * context);
+	void attack(Character* target, Map* context);
 
 	bool operator==(const Character& character) const; //Needed for std::find()
 

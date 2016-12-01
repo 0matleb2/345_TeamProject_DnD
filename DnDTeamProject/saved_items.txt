@@ -1,2 +1,2 @@
-22 serialization::archive 14 0 0 0 0 1 0 4 1 0
-0 0 0 29 Armguards of Shattered Voices 0 2
+22 serialization::archive 14 0 0 0 0 1 0 8 1 0
+0 0 0 19 Wasp, Bow of Trials 2 2 2 3 1d8 3

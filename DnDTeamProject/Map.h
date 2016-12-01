@@ -117,6 +117,7 @@ public:
 	std::vector<Chest*> getChests();
 	std::string getDrawPrefix();
 	std::string getDrawSuffix();
+	bool getDrawModeLOS();
 
 
 	void setName(std::string name);
@@ -127,18 +128,23 @@ public:
 	void setPlayerCharacter(Character*);
 	void addNpcCharacter(Character*);
 	void removeNpcCharacter(Character*);
+	void removeNpcCharacter(int index);
 	void addChest(Chest*);
 	void removeChest(Chest*);
 	void setDrawPrefix(std::string drawPrefix);
 	void setDrawSuffix(std::string drawSuffix);
+	void setDrawModeLOS(bool LOSenabled);
+
 	bool isCellOccupied(int x, int y);
 	bool isCellEmpty(int x, int y);
 
 	bool validate(); // deprecated TODO replace all calls with validateA and test
 	bool validateA();
 
-	void draw(bool lineOfSight = false);
+	void draw();
 	std::string drawToString();
+
+	void resolveNpcDeaths();
 
 	void linkGridCells(); //Links adjacent Cells upon map initialization and loading
 
@@ -176,6 +182,8 @@ private:
 
 	std::string _drawPrefix;
 	std::string _drawSuffix;
+
+	bool _drawModeLOS;
 
 	bool validate(Cell* vertex);
 

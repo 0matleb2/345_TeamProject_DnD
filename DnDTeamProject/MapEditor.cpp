@@ -83,6 +83,8 @@ void MapEditor::editMap() {
 	Cursor* editorCursor;
 	CursorObserver* cursorObserver;
 
+	_map->setDrawModeLOS(false);
+
 	while (editingMap) {
 
 		_map->setDrawPrefix("Editing " + _map->getName() + "...");
@@ -130,6 +132,7 @@ void MapEditor::editMap() {
 				+ "Press [Enter] to finish editing map layout.\n";
 			_map->setDrawSuffix(infoSuffix);
 			_map->draw();
+			editingLayout = true;
 			while (editingLayout) {
 				_map->setDrawSuffix(infoSuffix);
 				int cursorX = _map->getCursor()->getX();

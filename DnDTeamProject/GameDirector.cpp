@@ -5,6 +5,7 @@
 #include "MapEditor.h"
 #include "CharacterEditor.h"
 #include "ItemBuilder.h"
+#include "Dice.h"
 #include "CharacterObserver.h"
 
 
@@ -17,71 +18,42 @@ void GameDirector::startGame() {
 		bool levelComplete = false;
 		while (!levelComplete) {
 			level->setDrawPrefix("Level " + std::to_string(i + 1) + ": " + level->getName());
-			levelComplete = playLevel(_playerCharacter, level);
+			levelComplete = playLevel(_player, level);
 		}
-		_playerCharacter->levelUp();
+		_player->levelUp();
 		saveCharacters(_loadedCharacters);
 	}
 	system("cls");
 	std::cout << "Congratulations! You have completed " << _campaign->getName() << std::endl;
 }
 
-bool GameDirector::playLevel(Character* playerCharacter, Map* level) {
-	level->setPlayerCharacter(playerCharacter);
-	CharacterObserver characterObserver(playerCharacter, level);
-	playerCharacter->setX(level->getEntry()->getX());
-	playerCharacter->setY(level->getEntry()->getY());
+bool GameDirector::playLevel(Character* player, Map* level) {
+	level->setPlayerCharacter(player);
+	CharacterObserver characterObserver(player, level);
+	player->setX(level->getEntry()->getX());
+	player->setY(level->getEntry()->getY());
+	level->setDrawModeLOS(true);
 
-	level->setDrawSuffix("\nUse [Arrow keys] or [W, A, S, D] to move.\n\n");
-	level->draw(true);
-	bool playingLevel = true;
-	while (playingLevel) {
+	while (true) {
 
+		level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(3) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
 
-		int playerX = playerCharacter->getX();
-		int playerY = playerCharacter->getY();
-
-		if (playerX == level->getExit()->getX() && playerY == level->getExit()->getY()) {
-			playingLevel = false;
+		for (int i = 0; i < 3; ++i) {
+			level->draw();
+			level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(2-i) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
+			player->move(level);
+			if (player->getX() == level->getExit()->getX() && player->getY() == level->getExit()->getY())
+				goto exitReached;
 		}
-		else {
-			unsigned char keypress = _getch();
-			if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
-				keypress = _getch();
-			}
-			switch (keypress) {
-			case 'W':
-			case 'w':
-			case 72: //Arrow key UP
-				if (level->isCellEmpty(playerX, playerY - 1)) {
-					playerCharacter->setY(playerY - 1);
-				}
-				break;
-			case 'A':
-			case 'a':
-			case 75: //Arrow key LEFT
-				if (level->isCellEmpty(playerX - 1, playerY)) {
-					playerCharacter->setX(playerX - 1);
-				}
-				break;
-			case 'S':
-			case 's':
-			case 80: //Arrow key DOWN
-				if (level->isCellEmpty(playerX, playerY + 1)) {
-					playerCharacter->setY(playerY + 1);
-				}
-				break;
-			case 'D':
-			case 'd':
-			case 77: //Arrow key RIGHT
-				if (level->isCellEmpty(playerX + 1, playerY)) {
-					playerCharacter->setX(playerX + 1);
-				}
-				break;
-			}
+		Character* target = player->selectAttackTarget(level);
+		if (target) {
+			player->attack(target, level);
 		}
 	}
+exitReached:
 	return true;
+
+
 }
 
 void GameDirector::printLogo() {
@@ -102,16 +74,16 @@ GameDirector * GameDirector::instance() {
 
 	return _gameDirectorInstance;
 } 
-Character * GameDirector::getPlayerCharacter() {
-	return _playerCharacter;
+Character * GameDirector::getPlayer() {
+	return _player;
 }
 
 Campaign * GameDirector::getCampaign() {
 	return _campaign;
 }
 
-void GameDirector::setPlayerCharacter(Character * playerCharacter) {
-	_playerCharacter = playerCharacter;
+void GameDirector::setPlayer(Character * player) {
+	_player = player;
 }
 
 void GameDirector::setCampaign(Campaign * campaign) {
@@ -148,7 +120,7 @@ void GameDirector::playMenu() {
 		printLogo();
 		std::vector<std::string> playMenuOptions;
 		playMenuOptions.push_back("Campaign:\t" + (_campaign ? _campaign->getName() + ", " + std::to_string(_campaign->getCampaign().size()) + " levels" : ""));
-		playMenuOptions.push_back("Character:\t" + (_playerCharacter ? _playerCharacter->getName() + ", Level: " + std::to_string(_playerCharacter->getLvl()) : ""));
+		playMenuOptions.push_back("Character:\t" + (_player ? _player->getName() + ", Level: " + std::to_string(_player->getLvl()) : ""));
 		playMenuOptions.push_back("Start game!");
 		playMenuOptions.push_back("Create a new character");
 		playMenuOptions.push_back("Return to main menu");
@@ -185,14 +157,14 @@ void GameDirector::playMenu() {
 				int playIndex = menu(loadedCharacterMenuOptions, "Which character do you want to play?") - 1;
 				if (playIndex == loadedCharacterMenuOptions.size() - 1)
 					break;
-				_playerCharacter = _loadedCharacters[playIndex];
+				_player = _loadedCharacters[playIndex];
 			}
 			else {
 				std::cout << "There are no saved characters to play!" << std::endl;
 			}
 			break;
 		case 3:
-			if (_playerCharacter && _campaign) {
+			if (_player && _campaign) {
 				startGame();
 			}
 			else {
@@ -201,7 +173,7 @@ void GameDirector::playMenu() {
 			break;
 		case 4:
 			characterEditor.newCharacter();
-			_playerCharacter = characterEditor.getCharacter();
+			_player = characterEditor.getCharacter();
 			break;
 		case 5:
 			onPlayMenu = false;
@@ -228,6 +200,7 @@ void GameDirector::creatorMenu() {
 			break;
 		case 3: //Create a new character
 			characterEditor.newCharacter();
+			break;
 		case 4: //Create a mew item
 			itemBuilder.newItem();
 			break;
