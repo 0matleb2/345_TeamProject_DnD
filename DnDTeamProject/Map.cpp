@@ -228,10 +228,6 @@ void Map::setDrawSuffix(std::string drawSuffix) {
 }
 
 bool Map::isCellOccupied(int x, int y) {
-	if (x < 0 || y < 0 || x > getWidth() - 1 || y > getHeight() - 1)
-		return true;
-	if (getCell(x, y)->getSprite() == '#')
-		return true;
 	if (_playerCharacter && _playerCharacter->getX() == x && _playerCharacter->getY() == y)
 		return true;
 	for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {
@@ -243,6 +239,24 @@ bool Map::isCellOccupied(int x, int y) {
 			return true;
 	}
 	return false;
+}
+
+bool Map::isCellEmpty(int x, int y) {
+	if (x < 0 || y < 0 || x > getWidth() - 1 || y > getHeight() - 1)
+		return false;
+	if (getCell(x, y)->getSprite() == '#')
+		return false;
+	if (_playerCharacter && _playerCharacter->getX() == x && _playerCharacter->getY() == y)
+		return false;
+	for (int i = 0, n = _npcCharacters.size(); i < n; ++i) {
+		if (_npcCharacters[i]->getX() == x && _npcCharacters[i]->getY() == y)
+			return false;
+	}
+	for (int i = 0, n = _chests.size(); i < n; ++i) {
+		if (_chests[i]->getX() == x && _chests[i]->getY() == y)
+			return false;
+	}
+	return true;
 }
 
 //Validates the map by checking if a path exists between an _entry and an _exit
@@ -284,7 +298,7 @@ bool Map::validate(Cell* vertex) {
 	return false;
 }
 
-void Map::draw() {
+void Map::draw(bool lineOfSight) {
 	std::vector<char> drawBuffer;
 	for (int i = 0, n = _grid.size(); i < n; ++i) {
 		drawBuffer.push_back(_grid[i].getSprite());
@@ -304,29 +318,25 @@ void Map::draw() {
 	}
 
 	//Line of Sight implementation
-	if (_isInPlay)
-	{
+	if (lineOfSight) {
 		Cell* current;
 		Cell* pcCell;
 		int distance;
-
 		int currentX;
 		int currentY;
 		
 		// scan cells in buffer
-		for (int i = 0; i < drawBuffer.size(); i++)
-		{		
-			// get current cell
+		for (int i = 0; i < drawBuffer.size(); i++)	{
 			current = indexToCell(i);
 			// get cell of player
 			pcCell = getCell(_playerCharacter->getX(), _playerCharacter->getY());
 			// calculate distance
 			distance = current->calcH(pcCell);
 			// "4" represents line of sight value. placeholder. dont know if you want an extra field in character or based on other stat
-			if (distance > 4)
+			if (distance > 6)
 			{
 				// value represents cell out of visual range
-				drawBuffer[i] = 'X';
+				drawBuffer[i] = ' ';
 			}
 			else
 			{
@@ -354,7 +364,7 @@ void Map::draw() {
 
 					// if there is a wall in the way
 					if (getCell(currentX, currentY)->getSprite() == '#')
-						drawBuffer[i] = 'X';
+						drawBuffer[i] = ' ';
 				}
 			}
 		}
@@ -736,11 +746,6 @@ Map::Cell* Map::indexToCell(int index)
 	int y = index / _width;
 
 	return getCell(x, y);
-}
-
-void Map::setPlay(bool choice)
-{
-	_isInPlay = choice;
 }
 
 Map::SearchCell::SearchCell() {

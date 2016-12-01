@@ -132,11 +132,12 @@ public:
 	void setDrawPrefix(std::string drawPrefix);
 	void setDrawSuffix(std::string drawSuffix);
 	bool isCellOccupied(int x, int y);
+	bool isCellEmpty(int x, int y);
 
 	bool validate(); // deprecated TODO replace all calls with validateA and test
 	bool validateA();
 
-	void draw();
+	void draw(bool lineOfSight = false);
 	std::string drawToString();
 
 	void linkGridCells(); //Links adjacent Cells upon map initialization and loading
@@ -158,8 +159,6 @@ public:
 	// for line of sight/fog of war
 	// return cell corresponding to index
 	Cell* indexToCell(int index);
-	// set is in play on/off
-	void setPlay(bool choice);
 
 private:
 
@@ -177,10 +176,6 @@ private:
 
 	std::string _drawPrefix;
 	std::string _drawSuffix;
-
-	//check whether map is in play or not
-	//so line of sight/fog of war doesn't trigger in edit mode
-	bool _isInPlay = false;
 
 	bool validate(Cell* vertex);
 
