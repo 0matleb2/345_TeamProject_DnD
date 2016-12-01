@@ -20,3 +20,9 @@ class FriendlyStrategy : public Strategy
 public:
 	void execute(Character* actor, Map* context);
 };
+
+class HostileStrategy : public Strategy
+{
+public:
+	void execute(Character* actor, Map* context);
+};

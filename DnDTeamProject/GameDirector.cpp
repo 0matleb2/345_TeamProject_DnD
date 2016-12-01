@@ -8,11 +8,16 @@
 #include "Dice.h"
 #include "CharacterObserver.h"
 
+#include <fstream>
 
 GameDirector::GameDirector() {
 }
 
 void GameDirector::startGame() {
+
+	std::ofstream ofs("debugPath.txt", std::ios_base::trunc);
+	ofs.close();
+
 	for (int i = 0, n = _campaign->getCampaign().size(); i < n; ++i) {
 		Map* level = _campaign->getCampaign()[i];
 		bool levelComplete = false;
@@ -34,6 +39,18 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	player->setY(level->getEntry()->getY());
 	level->setDrawModeLOS(true);
 
+	level->setNPCstrat(1);
+	/*
+	std::vector<CharacterObserver> npcObs = std::vector<CharacterObserver>();
+
+	for (int i = 0; i < level->getNpcCharacters().size(); i++)
+	{
+		CharacterObserver temp(level->getNpcCharacters()[i], level);
+
+		npcObs.push_back(temp);
+	}
+	*/
+
 	while (true) {
 
 		level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(3) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
@@ -49,6 +66,9 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 		if (target) {
 			player->attack(target, level);
 		}
+
+		level->executeNPCstrat();
+		level->draw();
 	}
 exitReached:
 	return true;

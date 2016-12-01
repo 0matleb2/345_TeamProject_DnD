@@ -166,6 +166,10 @@ public:
 	// return cell corresponding to index
 	Cell* indexToCell(int index);
 
+	//strategy-related
+	void setNPCstrat(int choice);
+	void executeNPCstrat();
+
 private:
 
 	std::string _name;

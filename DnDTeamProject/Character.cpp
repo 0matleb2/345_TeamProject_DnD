@@ -383,6 +383,10 @@ Character* Character::selectAttackTarget(Map* context) {
 }
 
 void Character::attack(Character* target, Map* context) {
+	
+	//change target to hostile, wont affect player as player strategy isnt called
+	target->setStrategy(2);
+	
 	//Loop for multiple attacks;
 	int numAttacks = (getLvl() - 1) / 5 + 1;
 	std::string postAttackSuffix;
@@ -463,6 +467,8 @@ void Character::setStrategy(int choice)
 	case 1:
 		_strategy = new FriendlyStrategy();
 		break;
+	case 2:
+		_strategy = new HostileStrategy();
 	default:
 		break;
 	}
@@ -472,5 +478,5 @@ void Character::setStrategy(int choice)
 
 void Character::executeStrat(Map* context)
 {
-	_strategy->execute(this, context);
+		_strategy->execute(this, context);
 }
