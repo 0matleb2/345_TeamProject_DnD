@@ -10,5 +10,5 @@ CharacterObserver::~CharacterObserver() {
 }
 
 void CharacterObserver::update() {
-	_context->draw();
+	_context->draw(true);
 }

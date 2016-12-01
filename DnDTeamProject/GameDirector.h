@@ -26,6 +26,7 @@ private:
 	static GameDirector* _gameDirectorInstance;
 
 	Character* _playerCharacter;
+	std::vector<Character*> _loadedCharacters;
 	Campaign* _campaign;
 
 	void playMenu();
