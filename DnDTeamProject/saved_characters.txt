@@ -1,5 +1,5 @@
 22 serialization::archive 14 0 0 4 0 1 1 0
-0 31 6 4 Toni 3 24 24 16 14 13 13 12 10 -1 -1 -1 -1 -1 -1 -1 9 1 0
+0 31 6 4 Toni 4 33 33 16 14 13 13 12 10 -1 -1 -1 -1 -1 -1 -1 9 1 0
 1 0 0 19 Wasp, Bow of Trials 2 2 2 3 1d8 3 11 1 0
 2 0 0 2 0 2 1 0
 3 24 Ebon Bronzed Breastplate 4 3 4 2
