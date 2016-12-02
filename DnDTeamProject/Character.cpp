@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <conio.h>
+#include <math.h>
 #include "Character.h"
 #include "Dice.h"
 #include "Types.h"
@@ -491,7 +492,7 @@ void Character::loot(Chest* target, Map* context) {
 		getInventory()->depositItem(*withdrawnItem);
 	}
 	context->resolveEmptyChests();
-	postLootSuffix += "\n\nPress any key to continue...";
+	postLootSuffix += "\nPress any key to continue...";
 	context->setDrawSuffix(postLootSuffix);
 	context->draw();
 	_getch();
@@ -501,6 +502,7 @@ void Character::attack(Character* target, Map* context) {
 	//Loop for multiple attacks;
 	int numAttacks = (getLvl() - 1) / 5 + 1;
 	std::string postAttackSuffix;
+	postAttackSuffix += "Attacking " + target->getName() + "...\n\n" + target->getName() + " has a total armor class of " + std::to_string(target->getTotalArmorClass()) + ".";
 	for (int i = 0; i < numAttacks; ++i) {
 		//Attack roll
 		int attackBonus = getLvl() - 5 * i;
@@ -512,7 +514,7 @@ void Character::attack(Character* target, Map* context) {
 				attackBonus += abilityScoreToModifier(_dexterity);
 		}
 		int attackRoll = Dice::roll("d20");
-		postAttackSuffix += "Attacking " + target->getName() + "...\n\n" + "[Attack #" + std::to_string(i + 1) + "]\nAttack roll: " + std::to_string(attackRoll) + ", Attack bonus:" + std::to_string(attackBonus);
+		postAttackSuffix +=  "\n\n[Attack #" + std::to_string(i + 1) + "]\nAttack roll : " + std::to_string(attackRoll) + ", Attack bonus : " + std::to_string(attackBonus);
 		if (attackRoll + attackBonus >= getTotalArmorClass()) {
 			//Damage roll
 			int damageRoll = Dice::roll(_weapon->getDamage()) + _weapon->getDamageBonus();
@@ -534,6 +536,46 @@ void Character::attack(Character* target, Map* context) {
 }
 
 
+void Character::scale(int targetLevel) {
+	double averageHpUpPerLvl = (double)(_maxHp - 10) / (double)(_lvl - 1);
+	_maxHp = 10 + std::round((targetLevel - 1) * averageHpUpPerLvl);
+	_hp = _maxHp;
+	_lvl = targetLevel;
+	double scaledLevelMultiplier = (_lvl > 10) ? 5.0 : (_lvl / 2.0);
+	if (_armor)
+		_armor->setArmorClassBonus(round((_armor->getArmorClassBonus() / 5.0) * scaledLevelMultiplier ));
+	if (_belt) {
+		_belt->setConstitutionBonus(round((_belt->getConstitutionBonus() / 5.0) * scaledLevelMultiplier));
+		_belt->setStrengthBonus(round((_belt->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
+	}
+	if (_boots) {
+		_boots->setArmorClass(round((_boots->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_boots->setDexterityBonus(round((_boots->getDexterityBonus() / 5.0) * scaledLevelMultiplier));
+	}
+	if (_bracers) {
+		_bracers->setArmorClass(round((_bracers->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_bracers->setStrengthBonus(round((_bracers->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
+	}
+	if (_helmet) {
+		_helmet->setArmorClass(round((_helmet->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_helmet->setIntelligenceBonus(round((_helmet->getIntelligenceBonus() / 5.0) * scaledLevelMultiplier));
+		_helmet->setWisdomBonus(round((_helmet->getWisdomBonus() / 5.0) * scaledLevelMultiplier));
+	}
+	if (_ring) {
+		_ring->setArmorClass(round((_ring->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_ring->setConstitutionBonus(round((_ring->getConstitutionBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setWisdomBonus(round((_ring->getWisdomBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setStrengthBonus(round((_ring->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setCharismaBonus(round((_ring->getCharismaBonus() / 5.0) * scaledLevelMultiplier));
+	}
+	if (_shield) {
+		_shield->setArmorClassBonus(round(((double)_shield->getArmorClassBonus() / 5.0) * scaledLevelMultiplier));
+	}
+	if (_weapon) {
+		_weapon->setAttackBonus(round((_weapon->getAttackBonus() / 5.0) * scaledLevelMultiplier));
+		_weapon->setDamageBonus(round(((double)_weapon->getDamageBonus() / 5.0) * scaledLevelMultiplier));
+	}
+}
 
 void Character::levelUp() {
 	++_lvl;

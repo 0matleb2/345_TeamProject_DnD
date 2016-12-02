@@ -34,6 +34,11 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	player->setY(level->getEntry()->getY());
 	level->setDrawModeLOS(true);
 
+	//Scale NPCs to player levels
+	for (int i = 0, n = level->getNpcCharacters().size(); i < n; ++i) {
+		level->getNpcCharacters()[i]->scale(player->getLvl());
+	}
+
 	while (true) {
 
 		//Move phase
@@ -80,25 +85,25 @@ GameDirector* GameDirector::_gameDirectorInstance = new GameDirector();
 GameDirector::~GameDirector() {
 }
 
-GameDirector * GameDirector::instance() {
+GameDirector* GameDirector::instance() {
 	if (!_gameDirectorInstance)
 		_gameDirectorInstance = new GameDirector();
 
 	return _gameDirectorInstance;
 } 
-Character * GameDirector::getPlayer() {
+Character* GameDirector::getPlayer() {
 	return _player;
 }
 
-Campaign * GameDirector::getCampaign() {
+Campaign* GameDirector::getCampaign() {
 	return _campaign;
 }
 
-void GameDirector::setPlayer(Character * player) {
+void GameDirector::setPlayer(Character* player) {
 	_player = player;
 }
 
-void GameDirector::setCampaign(Campaign * campaign) {
+void GameDirector::setCampaign(Campaign* campaign) {
 	_campaign = campaign;
 }
 

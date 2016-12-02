@@ -1,3 +1,5 @@
-22 serialization::archive 14 0 0 0 0 2 0 8 1 0
+22 serialization::archive 14 0 0 0 0 4 0 8 1 0
 0 0 0 19 Wasp, Bow of Trials 2 2 2 3 1d8 3 1 1 0
-1 24 Ebon Bronzed Breastplate 4 3 4
+1 24 Ebon Bronzed Breastplate 4 3 4 7 1 0
+2 11 Terror Ward 1 4 1 4 1 0
+3 22 Armbands of Lost Power 1 1
