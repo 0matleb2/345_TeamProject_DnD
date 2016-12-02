@@ -8,7 +8,7 @@
 #include "Map.h"
 #include "CursorObserver.h"
 #include "Menu.h"
-
+#include "GameLogger.h"
 
 Character::Character() : _lvl(1) {
 
@@ -316,6 +316,14 @@ void Character::move(Map* context) {
 		characterMenu();
 		context->draw();
 		break;
+	case 'l':
+	case 'L': //Log info view
+		system("cls");
+		GameLogger::instance()->printLog();
+		std::cout << std::endl << "Press any key to return..." << std::endl;
+		_getch();
+		context->draw();
+		break;
 	}
 }
 
@@ -557,9 +565,18 @@ Character* Character::selectAttackTarget(Map* context) {
 			characterMenu();
 			context->draw();
 			break;
+		case 'l':
+		case 'L': //Log info view
+			system("cls");
+			GameLogger::instance()->printLog();
+			std::cout << std::endl << "Press any key to return..." << std::endl;
+			_getch();
+			context->draw();
+			break;
 		}
 	}
 }
+
 
 bool Character::npcInRange(Map* context) {
 	int range = _weapon->getRange();
@@ -664,6 +681,14 @@ Chest* Character::selectLootTarget(Map* context) {
 		case 'c':
 		case 'C': //In game menu
 			characterMenu();
+			context->draw();
+			break;
+		case 'l':
+		case 'L': //Log info view
+			system("cls");
+			GameLogger::instance()->printLog();
+			std::cout << std::endl << "Press any key to return..." << std::endl;
+			_getch();
 			context->draw();
 			break;
 		}

@@ -2,119 +2,68 @@ Starting Campaign "Fate Of Despair"...
 Loading Map "The Red Pits"...
 Toni moves to 1, 6
 Toni moves to 2, 6
-Toni moves to 3, 6
 Lindon moves to 10, 6
 Lindon moves to 22, 6
-Toni moves to 4, 6
-Toni moves to 5, 6
-Toni moves to 6, 5
-Toni moves to 7, 6
-d20, result: 8
+Toni moves to 3, 8
+Toni moves to 4, 8
+Lindon moves to 9, 6
+Lindon moves to 21, 6
+Toni moves to 5, 8
+Toni moves to 6, 8
+Toni moves to 7, 8
+d20, result: 9
+1d8, result: 5
+Toni's attack hit Lindon for 7 damage.
+Lindon moves to 8, 6
+Lindon moves to 20, 6
+d20, result: 3
 1d8, result: 3
 Toni's attack hit Lindon for 5 damage.
-Lindon moves to 9, 5
-Lindon moves to 21, 5
-Toni moves to 8, 6
-Toni moves to 9, 6
-Toni moves to 10, 6
-d20, result: 2
+Lindon moves to 7, 6
+Lindon moves to 19, 6
+Toni moves to 8, 8
+Toni moves to 7, 7
+d20, result: 18
+1d8, result: 5
+Toni's attack hit Lindon for 7 damage.
+d20, result: 8
+1d8, result: 6
+Lindon's attack hit Toni for 7 damage.
+Lindon moves to 18, 6
+d20, result: 8
+1d8, result: 2
+Toni's attack hit Lindon for 4 damage.
+d20, result: 19
+1d8, result: 5
+Lindon's attack hit Toni for 6 damage.
+Lindon moves to 17, 6
+d20, result: 13
+1d8, result: 4
+Toni's attack hit Lindon for 6 damage.
+d20, result: 4
+1d8, result: 5
+Lindon's attack hit Toni for 6 damage.
+Lindon moves to 16, 6
+Lindon moves to 15, 6
+Toni moves to 8, 10
+d20, result: 14
+1d8, result: 3
+Toni's attack hit Lindon for 5 damage.
+Lindon moves to 8, 7
+Lindon moves to 14, 6
+Toni moves to 9, 9
+Toni moves to 10, 9
+Toni moves to 11, 9
+d20, result: 8
 1d8, result: 1
 Toni's attack hit Lindon for 3 damage.
-Lindon moves to 10, 5
-Lindon moves to 20, 5
-Toni moves to 11, 6
-Toni moves to 12, 6
-Toni moves to 13, 6
-d20, result: 1
-1d8, result: 6
-Toni's attack hit Lindon for 8 damage.
-Lindon moves to 11, 5
-Lindon moves to 19, 5
-Toni moves to 14, 5
-Toni moves to 15, 5
-Lindon moves to 12, 5
-Lindon moves to 18, 5
-Toni moves to 16, 5
-Toni moves to 17, 6
-d20, result: 6
-1d8, result: 8
-Toni's attack hit Lindon for 10 damage.
-Lindon moves to 13, 5
-Lindon moves to 17, 5
-Toni moves to 18, 6
-Toni moves to 19, 5
-d20, result: 11
-1d8, result: 5
-Toni's attack hit Lindon for 7 damage.
-Lindon moves to 14, 5
-Lindon moves to 18, 5
-Toni moves to 20, 5
-Toni moves to 21, 5
-d20, result: 11
-1d8, result: 5
-Toni's attack hit Lindon for 7 damage.
-Lindon moves to 15, 5
-Lindon moves to 19, 5
-Toni moves to 20, 6
-Toni moves to 21, 6
-d20, result: 12
-1d8, result: 7
-Toni's attack hit Lindon for 9 damage.
-Lindon moves to 16, 5
-Toni moves to 20, 6
-Toni moves to 19, 6
-Lindon moves to 17, 5
-Toni moves to 18, 6
-Toni moves to 17, 6
-d20, result: 19
-1d8, result: 7
-Lindon's attack hit Toni for 8 damage.
-Toni moves to 18, 6
+Lindon moves to 9, 7
+Lindon moves to 13, 6
+Toni moves to 10, 9
+Lindon moves to 10, 7
+Lindon moves to 12, 6
 d20, result: 4
-1d8, result: 8
-Toni's attack hit Lindon for 10 damage.
-Lindon moves to 18, 5
-Toni moves to 19, 6
-Toni moves to 20, 6
-Toni moves to 21, 6
-Toni moves to 22, 6
-Toni moves to 21, 6
-Toni moves to 22, 6
-Toni moves to 23, 6
-Toni moves to 22, 6
-Toni moves to 21, 7
-Toni moves to 20, 7
-Toni moves to 19, 7
-Toni moves to 18, 7
-Toni moves to 17, 7
-Lindon moves to 17, 5
-Toni moves to 18, 8
-Toni moves to 19, 8
-Toni moves to 20, 8
-Lindon moves to 18, 6
-Toni moves to 21, 6
-Lindon moves to 19, 6
-Toni moves to 22, 6
-Toni moves to 23, 6
-Toni moves to 24, 6
-Lindon moves to 20, 6
-Toni moves to 25, 6
-Toni moves to 26, 6
-Toni moves to 27, 6
-Lindon moves to 21, 6
-Toni moves to 28, 6
-Toni moves to 29, 6
-Toni moves to 28, 6
-Lindon moves to 22, 6
-Toni moves to 27, 6
-Toni moves to 28, 5
-Toni moves to 27, 6
-Toni moves to 28, 6
-Lindon moves to 23, 5
-Toni moves to 29, 6
-Toni moves to 28, 6
-Toni moves to 29, 6
-Lindon moves to 24, 5
-Toni moves to 30, 6
-Toni moves to 31, 6
-1d10, result: 8
+1d8, result: 1
+Toni's attack hit Lindon for 3 damage.
+Lindon moves to 11, 6
+Lindon moves to 10, 6

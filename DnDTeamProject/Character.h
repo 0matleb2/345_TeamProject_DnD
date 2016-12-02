@@ -91,6 +91,7 @@ public:
 	void discardItemMenu();
 	void equip(Item * item);
 	Character* selectAttackTarget(Map * context);
+	void displayLog();
 	bool npcInRange(Map * context);
 	bool chestInRange(Map * context);
 	Chest* selectLootTarget(Map* context);

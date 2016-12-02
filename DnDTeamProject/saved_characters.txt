@@ -4,7 +4,7 @@
 2 0 0 2 0 2 1 0
 3 24 Ebon Bronzed Breastplate 4 3 4 2
 4 24 Ebon Bronzed Breastplate 4 3 4 20 2 1
-5 31 6 4 Toni 3 17 17 16 14 13 13 12 10 -1 -1 -1 -1 -1 -1 -1 9
+5 31 6 4 Toni 4 23 23 16 14 13 13 12 10 -1 -1 -1 -1 -1 -1 -1 9
 6 19 Wasp, Bow of Trials 2 2 2 3 1d8 3 11
 7 1 0 2
 8 24 Ebon Bronzed Breastplate 4 3 4 20 1 1
