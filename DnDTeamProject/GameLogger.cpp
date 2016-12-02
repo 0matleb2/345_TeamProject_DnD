@@ -6,7 +6,7 @@ GameLogger* GameLogger::_loggerInstance = new GameLogger();
 
 GameLogger::GameLogger()
 {
-
+	_loggedNPCs = new std::vector<CharacterLogger*>();
 }
 
 GameLogger::~GameLogger()
@@ -24,15 +24,24 @@ GameLogger* GameLogger::instance()
 
 void GameLogger::setPC(Character* pc)
 {
-	
+	if (_loggedPC)
+		delete _loggedPC;
 
 	_loggedPC = new CharacterLogger(pc);
 }
 
 void GameLogger::setNPCs(std::vector<Character*>* npcs)
 {
-	if (!_loggedNPCs)
-		return;
+
+	if (_loggedNPCs)
+	{
+		for (int i = 0; i < _loggedNPCs->size(); i++)
+		{
+			delete _loggedNPCs->at(i);
+		}
+
+		_loggedNPCs->clear();
+	}
 
 	if (npcs->size() != 0)
 	{
@@ -51,6 +60,9 @@ void GameLogger::clearNPCs()
 
 void GameLogger::setMap(Map* map)
 {
+	if (_loggedMap)
+		delete _loggedMap;
+
 	_loggedMap = new MapLogger(map);
 }
 

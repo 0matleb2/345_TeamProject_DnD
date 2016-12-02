@@ -8,6 +8,8 @@
 #include "Dice.h"
 #include "CharacterObserver.h"
 
+#include "GameLogger.h"
+
 #include <fstream>
 
 GameDirector::GameDirector() {
@@ -15,8 +17,14 @@ GameDirector::GameDirector() {
 
 void GameDirector::startGame() {
 
-	std::ofstream ofs("debugPath.txt", std::ios_base::trunc);
-	ofs.close();
+	//logging
+	GameDirector::instance();
+	GameDirector::instance()->setFile("gameLogTest.txt");
+	GameDirector::instance()->clearLog();
+	GameDirector::instance()->logDir(true);
+	GameDirector::instance()->campaignStartLog();
+	GameLogger::instance();
+	GameLogger::instance()->setDir(this);
 
 	for (int i = 0, n = _campaign->getCampaign().size(); i < n; ++i) {
 		Map* level = _campaign->getCampaign()[i];
@@ -39,17 +47,21 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	player->setY(level->getEntry()->getY());
 	level->setDrawModeLOS(true);
 
-	level->setNPCstrat(1);
-	/*
-	std::vector<CharacterObserver> npcObs = std::vector<CharacterObserver>();
+	std::vector<CharacterObserver*> npcObs = std::vector<CharacterObserver*>();
 
 	for (int i = 0; i < level->getNpcCharacters().size(); i++)
 	{
-		CharacterObserver temp(level->getNpcCharacters()[i], level);
-
-		npcObs.push_back(temp);
+		npcObs.push_back(new CharacterObserver(level->getNpcCharacters()[i], level));
 	}
-	*/
+
+	//logging
+	GameLogger::instance()->setPC(player);
+	GameLogger::instance()->setNPCs(&level->getNpcCharacters());
+	GameLogger::instance()->setFile();
+	GameLogger::instance()->loggingAll(true);
+
+	level->setNPCstrat(1);
+
 
 	while (true) {
 
@@ -66,11 +78,15 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 		if (target) {
 			player->attack(target, level);
 		}
-
+		
 		level->executeNPCstrat();
-		level->draw();
+		//level->draw();
 	}
 exitReached:
+	for (int i = 0; i < npcObs.size(); i++)
+	{
+		delete npcObs[i];
+	}
 	return true;
 
 
@@ -282,4 +298,55 @@ void GameDirector::credits() {
 
 	std::cout << "Press any key to return to the Main Menu..." << std::endl;
 	_getch();
+}
+
+//logging-related, decided to forgo the observer and implement directly into director
+
+void GameDirector::logDir(bool choice)
+{
+	_isLogging = choice;
+}
+
+void GameDirector::setFile(std::string fileName)
+{
+	_destination = fileName;
+}
+
+std::string GameDirector::getFile()
+{
+	return _destination;
+}
+
+void GameDirector::campaignStartLog()
+{
+	std::string logStr = "Starting Campaign \"" + _campaign->getName() + "\"...";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::mapStartLog(std::string mapName)
+{
+	std::string logStr = "Loading Map \"" + mapName + "\"...";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::phaseLog(bool ePhase)
+{
+	std::string logStr;
+
+	if (ePhase)
+		logStr = "/Enemy Phase/";
+	else
+		logStr = "/Player Phase/";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::clearLog()
+{
+	clearFile(_destination);
 }

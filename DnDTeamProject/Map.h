@@ -170,6 +170,9 @@ public:
 	void setNPCstrat(int choice);
 	void executeNPCstrat();
 
+	//logging
+	std::string getLog();
+
 private:
 
 	std::string _name;
@@ -191,6 +194,7 @@ private:
 
 	bool validate(Cell* vertex);
 
+	std::string _lastLog;
 
 	friend class boost::serialization::access;
 	template<class Archive>
