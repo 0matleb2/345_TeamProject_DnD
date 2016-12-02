@@ -17,7 +17,9 @@
 #include "Observable.h"
 #include "boost/serialization/access.hpp"
 
+#include "Strategy.h"
 
+class Map;
 
 class Character : public Observable {
 
@@ -98,6 +100,14 @@ public:
 	bool operator==(const Character& character) const; //Needed for std::find()
 
 
+	// logging
+	std::string getLog();
+
+	//strategy-related
+
+	void setStrategy(int choice);
+	void executeStrat(Map* context);
+
 private:
 	
 	int _x;
@@ -124,7 +134,12 @@ private:
 
 	ItemContainer* _inventory;
 
+	//logging
+	std::string _lastLog = "none";
 
+	//strategy-related
+
+	Strategy* _strategy;
 
 
 	friend class boost::serialization::access;

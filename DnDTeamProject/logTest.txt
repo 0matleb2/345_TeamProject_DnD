@@ -1,0 +1,12 @@
+2d6+3, result: 8
+1d20, result: 1
+2d6+3, result: 5
+4d8+1, result: 6
+1d20, result: 5
+2d6+3, result: 8
+4d8+1, result: 7
+1d20, result: 4
+2d6+3, result: 7
+4d8+1, result: 9
+1d20, result: 6
+4d8+1, result: 5
