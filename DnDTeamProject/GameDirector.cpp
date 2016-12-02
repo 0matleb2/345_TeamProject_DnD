@@ -39,6 +39,7 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 		level->getNpcCharacters()[i]->scale(player->getLvl());
 	}
 
+	//Game loop
 	while (true) {
 
 		//Move phase

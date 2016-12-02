@@ -24,3 +24,8 @@ extern void saveMap(Map* map);
 extern void saveMaps(std::vector<Map*> maps);
 extern void saveCampaign(Campaign* campaign);
 extern void saveCampaigns(std::vector<Campaign*> campaigns);
+
+//logging-related
+extern void writeLog(std::string line, std::string fileName);
+extern void readLog(std::string fileName);
+extern void clearFile(std::string fileName);

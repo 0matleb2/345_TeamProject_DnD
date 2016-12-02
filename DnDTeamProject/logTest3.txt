@@ -1,0 +1,4 @@
+1d20, result: 9
+4d8+1, result: 6
+1d20, result: 8
+4d8+1, result: 8

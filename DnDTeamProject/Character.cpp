@@ -14,6 +14,8 @@ Character::Character() : _lvl(1) {
 
 	_inventory = new ItemContainer(20);
 
+	_strategy = new DefaultStrategy();
+
 }
 
 Character::~Character() {
@@ -111,11 +113,15 @@ ItemContainer* Character::getInventory() {
 //Mutators
 void Character::setX(int x) {
 	_x = x;
+	_lastLog = getName() + " moves to " + std::to_string(_x) + ", " + std::to_string(_y);
 	notify();
+	_lastLog = "none";
 }
 
 void Character::setY(int y) {
+	_lastLog = getName() + " moves to " + std::to_string(_x) + ", " + std::to_string(_y);
 	_y = y;
+	_lastLog = "none";
 	notify();
 }
 
@@ -679,6 +685,10 @@ void Character::loot(Chest* target, Map* context) {
 }
 
 void Character::attack(Character* target, Map* context) {
+	
+	//change target to hostile, wont affect player as player strategy isnt called
+	target->setStrategy(2);
+	
 	//Loop for multiple attacks;
 	int numAttacks = (getLvl() - 1) / 5 + 1;
 	std::string postAttackSuffix;
@@ -698,11 +708,19 @@ void Character::attack(Character* target, Map* context) {
 		if (attackRoll + attackBonus >= getTotalArmorClass()) {
 			//Damage roll
 			int damageRoll = Dice::roll(_weapon->getDamage()) + _weapon->getDamageBonus();
+
+			_lastLog = getName() + "'s attack hit " + target->getName() + " for " + std::to_string(damageRoll) + " damage.";
+			notify();
 			postAttackSuffix += "\nAttack hit!\n" + std::to_string(damageRoll) + " damage done to " + target->getName();
+			_lastLog = "none";
 			target->setHp(target->getHp() - damageRoll);
 		}
 		else {
+			// logger makes use of an observer and the _lastLog string to log
+			_lastLog = getName() + "'s attack missed!";
+			notify();
 			postAttackSuffix += "\nAttack missed!";
+			_lastLog = "none";
 		}	
 	}
 	if (target->getHp() <= 0) {
@@ -763,6 +781,16 @@ void Character::levelUp() {
 	_hp = _maxHp;
 }
 
+
+
+std::string Character::getLog()
+{
+	return _lastLog;
+}
+
+
+
+
 bool Character::operator==(const Character & character) const {
 	return _name == character._name &&
 		_lvl == character._lvl &&
@@ -786,4 +814,30 @@ bool Character::operator==(const Character & character) const {
 		_weapon == character._weapon &&
 		_inventory == character._inventory;
 		*/
+}
+
+//strategy-related
+
+void Character::setStrategy(int choice)
+{
+	switch (choice)
+	{
+	case 0:
+		_strategy = new DefaultStrategy();
+		break;
+	case 1:
+		_strategy = new FriendlyStrategy();
+		break;
+	case 2:
+		_strategy = new HostileStrategy();
+	default:
+		break;
+	}
+
+	
+}
+
+void Character::executeStrat(Map* context)
+{
+		_strategy->execute(this, context);
 }
