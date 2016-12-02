@@ -8,16 +8,29 @@
 #include "Dice.h"
 #include "CharacterObserver.h"
 
+#include "GameLogger.h"
+
 
 GameDirector::GameDirector() {
 }
 
 void GameDirector::startGame() {
+	
+	//logging
+	GameDirector::instance();
+	GameDirector::instance()->setFile("gameLogTest.txt"); //file to output to
+	GameDirector::instance()->clearLog(); //clear file
+	GameDirector::instance()->logDir(true); //turn on director logging
+	GameDirector::instance()->campaignStartLog(); //log start of campaign
+	GameLogger::instance();
+	GameLogger::instance()->setDir(this); //set director to logger
+
 	for (int i = 0, n = _campaign->getCampaign().size(); i < n; ++i) {
 		Map* level = _campaign->getCampaign()[i];
 		bool levelComplete = false;
 		while (!levelComplete) {
 			level->setDrawPrefix("Level " + std::to_string(i + 1) + ": " + level->getName());
+			GameDirector::instance()->mapStartLog(level->getName());
 			levelComplete = playLevel(_player, level);
 		}
 		_player->levelUp();
@@ -34,10 +47,27 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	player->setY(level->getEntry()->getY());
 	level->setDrawModeLOS(true);
 
+	//observers for NPCs
+	std::vector<CharacterObserver*> npcObs = std::vector<CharacterObserver*>();
+
+	for (int i = 0; i < level->getNpcCharacters().size(); i++)
+	{
+		npcObs.push_back(new CharacterObserver(level->getNpcCharacters()[i], level));
+	}
+
 	//Scale NPCs to player levels
 	for (int i = 0, n = level->getNpcCharacters().size(); i < n; ++i) {
 		level->getNpcCharacters()[i]->scale(player->getLvl());
 	}
+
+	//logging
+	GameLogger::instance()->setPC(player); //set player for logging
+	GameLogger::instance()->setNPCs(&level->getNpcCharacters()); //log npcs
+	GameLogger::instance()->setFile(); //set file to same as director
+	GameLogger::instance()->loggingAll(true); //turn on all logging
+
+	//Set NPC strategy (set all to hostile for test)
+	level->setNPCstrat(2);
 
 	//Game loop
 	while (true) {
@@ -60,6 +90,9 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 			}
 		}
 
+		//enemy phase
+		level->executeNPCstrat();
+
 		//Loot phase
 		if (player->chestInRange(level)) {
 			Chest* targetChest = player->selectLootTarget(level);
@@ -70,6 +103,10 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	}
 
 exitReached:
+	for (int i = 0; i < npcObs.size(); i++)
+	{
+		delete npcObs[i];
+	}
 	return true;
 
 }

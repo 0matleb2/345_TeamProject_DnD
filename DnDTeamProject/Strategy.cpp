@@ -29,11 +29,6 @@ void FriendlyStrategy::execute(Character* actor, Map* context)
 	//debugging
 	
 	
-
-	std::ofstream ofile("debugPath.txt", std::ios_base::app);
-	ofile << "NextCell: x = " + std::to_string(nextCell->getX()) + ", y = " + std::to_string(nextCell->getY()) << std::endl;
-	ofile.close();
-	
 	
 	if (nextCell->sameCell(current))
 	{
@@ -74,11 +69,6 @@ void HostileStrategy::execute(Character* actor, Map* context)
 
 	//debugging
 
-
-
-	std::ofstream ofile("debugPath.txt", std::ios_base::app);
-	ofile << "NextCell: x = " + std::to_string(nextCell->getX()) + ", y = " + std::to_string(nextCell->getY()) << std::endl;
-	ofile.close();
 
 
 	if (nextCell->sameCell(current))
