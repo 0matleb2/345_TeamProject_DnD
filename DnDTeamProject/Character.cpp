@@ -7,6 +7,7 @@
 #include "Types.h"
 #include "Map.h"
 #include "CursorObserver.h"
+#include "Menu.h"
 
 
 Character::Character() : _lvl(1) {
@@ -304,6 +305,175 @@ void Character::move(Map* context) {
 			setX(_x + 1);
 		}
 		break;
+	case 'c':
+	case 'C': //In game menu
+		characterMenu();
+		context->draw();
+		break;
+	}
+}
+
+void Character::characterMenu() {
+	bool onCharacterMenu = true;
+	while (onCharacterMenu) {
+		system("cls");
+		std::cout << toString() << std::endl;
+		switch (menu(inGameMenuOptions, "What do you want to do?")) {
+		case 1: //Equip an item
+			equipItemMenu();
+			break;
+		case 2: //Unequip an item
+			unequipItemMenu();
+			break;
+		case 3: //Discard an item
+			discardItemMenu();
+			break;
+		case 4: //Return to game
+			onCharacterMenu = false;
+			break;
+		}
+
+	}
+}
+
+void Character::equipItemMenu() {
+	std::vector<std::string> inventoryItemsMenuOptions;
+	std::vector<Item*> inventory = getInventory()->getContents();
+	for (int i = 0, n = inventory.size(); i < n; ++i) {
+		inventoryItemsMenuOptions.push_back(inventory[i]->toString());
+	}
+	inventoryItemsMenuOptions.push_back("Cancel");
+	int choice = menu(inventoryItemsMenuOptions, "Which item do you want to equip?") - 1;
+	if (choice == inventoryItemsMenuOptions.size() - 1)
+		return;
+	equip(getInventory()->withdrawItem(choice));
+	return;
+}
+
+void Character::unequipItemMenu() {
+	std::vector<std::string> equippedItemsMenuOptions;
+	equippedItemsMenuOptions.push_back("Armor:\t\t" + (getArmor() ? getArmor()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Belt:\t\t" + (getBelt() ? getBelt()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Boots:\t\t" + (getBoots() ? getBoots()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Bracers:\t\t" + (getBracers() ? getBracers()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Helmet:\t\t" + (getHelmet() ? getHelmet()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Ring:\t\t" + (getRing() ? getRing()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Shield:\t\t" + (getShield() ? getShield()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Weapon:\t\t" + (getWeapon() ? getWeapon()->toString() : ""));
+	equippedItemsMenuOptions.push_back("Cancel");
+	int choice = menu(equippedItemsMenuOptions, "Which item do you want to unequip?");
+	if (choice == equippedItemsMenuOptions.size())
+		return;
+	switch (choice) {
+	case 1: //Armor
+		if (_armor) {
+			_inventory->depositItem(*_armor);
+			_armor = nullptr;
+		}
+		break;
+	case 2: //Belt
+		if (_belt) {
+			_inventory->depositItem(*_belt);
+			_belt = nullptr;
+		}
+		break;
+	case 3: //Boots
+		if (_boots) {
+			_inventory->depositItem(*_boots);
+			_boots = nullptr;
+		}
+		break;
+	case 4: //Bracers
+		if (_bracers) {
+			_inventory->depositItem(*_bracers);
+			_bracers = nullptr;
+		}
+		break;
+	case 5: //Helmet
+		if (_helmet) {
+			_inventory->depositItem(*_helmet);
+			_helmet = nullptr;
+		}
+		break;
+	case 6: //Ring
+		if (_ring) {
+			_inventory->depositItem(*_ring);
+			_ring = nullptr;
+		}
+		break;
+	case 7: //Shield
+		if (_shield) {
+			_inventory->depositItem(*_shield);
+			_shield = nullptr;
+		}
+		break;
+	case 8: //Weapon
+		if (_weapon) {
+			_inventory->depositItem(*_weapon);
+			_weapon = nullptr;
+		}
+		break;
+	}
+}
+
+
+void Character::discardItemMenu() {
+	std::vector<std::string> inventoryItemsMenuOptions;
+	std::vector<Item*> inventory = getInventory()->getContents();
+	for (int i = 0, n = inventory.size(); i < n; ++i) {
+		inventoryItemsMenuOptions.push_back(inventory[i]->toString());
+	}
+	inventoryItemsMenuOptions.push_back("Cancel");
+	int choice = menu(inventoryItemsMenuOptions, "Which item do you want to discard?") - 1;
+	if (choice == inventoryItemsMenuOptions.size() - 1)
+		return;
+	if (menu(yesNoOptions, "Are you sure you want to discard " + inventory[choice]->getName() + "?") == 1)
+		_inventory->withdrawItem(choice);
+	return;
+}
+
+void Character::equip(Item* item) {
+	switch (item->getItemType()) {
+	case ItemType::ARMOR:
+		if (_armor)
+			_inventory->depositItem(*_armor);
+		_armor = dynamic_cast<Armor*>(item);
+		break;
+	case ItemType::BELT:
+		if (_belt)
+			_inventory->depositItem(*_belt);
+		_belt = dynamic_cast<Belt*>(item);
+		break;
+	case ItemType::BOOTS:
+		if (_boots)
+			_inventory->depositItem(*_boots);
+		_boots = dynamic_cast<Boots*>(item);
+		break;
+	case ItemType::BRACERS:
+		if (_bracers)
+			_inventory->depositItem(*_bracers);
+		_bracers = dynamic_cast<Bracers*>(item);
+		break;
+	case ItemType::HELMET:
+		if (_helmet)
+			_inventory->depositItem(*_helmet);
+		_helmet = dynamic_cast<Helmet*>(item);
+		break;
+	case ItemType::RING:
+		if (_ring)
+			_inventory->depositItem(*_ring);
+		_ring = dynamic_cast<Ring*>(item);
+		break;
+	case ItemType::SHIELD:
+		if (_shield)
+			_inventory->depositItem(*_shield);
+		_shield = dynamic_cast<Shield*>(item);
+		break;
+	case ItemType::WEAPON:
+		if (_weapon)
+			_inventory->depositItem(*_weapon);
+		_weapon = dynamic_cast<Weapon*>(item);
+		break;
 	}
 }
 
@@ -375,6 +545,11 @@ Character* Character::selectAttackTarget(Map* context) {
 			delete cursorObserver;
 			context->draw();
 			return nullptr;
+			break;
+		case 'c':
+		case 'C': //In game menu
+			characterMenu();
+			context->draw();
 			break;
 		}
 	}
@@ -480,6 +655,11 @@ Chest* Character::selectLootTarget(Map* context) {
 			context->draw();
 			return nullptr;
 			break;
+		case 'c':
+		case 'C': //In game menu
+			characterMenu();
+			context->draw();
+			break;
 		}
 	}
 }
@@ -538,42 +718,42 @@ void Character::attack(Character* target, Map* context) {
 
 void Character::scale(int targetLevel) {
 	double averageHpUpPerLvl = (double)(_maxHp - 10) / (double)(_lvl - 1);
-	_maxHp = 10 + std::round((targetLevel - 1) * averageHpUpPerLvl);
+	_maxHp = 10 + (int)std::round((targetLevel - 1) * averageHpUpPerLvl);
 	_hp = _maxHp;
 	_lvl = targetLevel;
 	double scaledLevelMultiplier = (_lvl > 10) ? 5.0 : (_lvl / 2.0);
 	if (_armor)
-		_armor->setArmorClassBonus(round((_armor->getArmorClassBonus() / 5.0) * scaledLevelMultiplier ));
+		_armor->setArmorClassBonus((int)round((_armor->getArmorClassBonus() / 5.0) * scaledLevelMultiplier ));
 	if (_belt) {
-		_belt->setConstitutionBonus(round((_belt->getConstitutionBonus() / 5.0) * scaledLevelMultiplier));
-		_belt->setStrengthBonus(round((_belt->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
+		_belt->setConstitutionBonus((int)round((_belt->getConstitutionBonus() / 5.0) * scaledLevelMultiplier));
+		_belt->setStrengthBonus((int)round((_belt->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
 	}
 	if (_boots) {
-		_boots->setArmorClass(round((_boots->getArmorClass() / 5.0) * scaledLevelMultiplier));
-		_boots->setDexterityBonus(round((_boots->getDexterityBonus() / 5.0) * scaledLevelMultiplier));
+		_boots->setArmorClass((int)round((_boots->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_boots->setDexterityBonus((int)round((_boots->getDexterityBonus() / 5.0) * scaledLevelMultiplier));
 	}
 	if (_bracers) {
-		_bracers->setArmorClass(round((_bracers->getArmorClass() / 5.0) * scaledLevelMultiplier));
-		_bracers->setStrengthBonus(round((_bracers->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
+		_bracers->setArmorClass((int)round((_bracers->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_bracers->setStrengthBonus((int)round((_bracers->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
 	}
 	if (_helmet) {
-		_helmet->setArmorClass(round((_helmet->getArmorClass() / 5.0) * scaledLevelMultiplier));
-		_helmet->setIntelligenceBonus(round((_helmet->getIntelligenceBonus() / 5.0) * scaledLevelMultiplier));
-		_helmet->setWisdomBonus(round((_helmet->getWisdomBonus() / 5.0) * scaledLevelMultiplier));
+		_helmet->setArmorClass((int)round((_helmet->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_helmet->setIntelligenceBonus((int)round((_helmet->getIntelligenceBonus() / 5.0) * scaledLevelMultiplier));
+		_helmet->setWisdomBonus((int)round((_helmet->getWisdomBonus() / 5.0) * scaledLevelMultiplier));
 	}
 	if (_ring) {
-		_ring->setArmorClass(round((_ring->getArmorClass() / 5.0) * scaledLevelMultiplier));
-		_ring->setConstitutionBonus(round((_ring->getConstitutionBonus() / 5.0) * scaledLevelMultiplier));
-		_ring->setWisdomBonus(round((_ring->getWisdomBonus() / 5.0) * scaledLevelMultiplier));
-		_ring->setStrengthBonus(round((_ring->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
-		_ring->setCharismaBonus(round((_ring->getCharismaBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setArmorClass((int)round((_ring->getArmorClass() / 5.0) * scaledLevelMultiplier));
+		_ring->setConstitutionBonus((int)round((_ring->getConstitutionBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setWisdomBonus((int)round((_ring->getWisdomBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setStrengthBonus((int)round((_ring->getStrengthBonus() / 5.0) * scaledLevelMultiplier));
+		_ring->setCharismaBonus((int)round((_ring->getCharismaBonus() / 5.0) * scaledLevelMultiplier));
 	}
 	if (_shield) {
-		_shield->setArmorClassBonus(round(((double)_shield->getArmorClassBonus() / 5.0) * scaledLevelMultiplier));
+		_shield->setArmorClassBonus((int)round((_shield->getArmorClassBonus() / 5.0) * scaledLevelMultiplier));
 	}
 	if (_weapon) {
-		_weapon->setAttackBonus(round((_weapon->getAttackBonus() / 5.0) * scaledLevelMultiplier));
-		_weapon->setDamageBonus(round(((double)_weapon->getDamageBonus() / 5.0) * scaledLevelMultiplier));
+		_weapon->setAttackBonus((int)round((_weapon->getAttackBonus() / 5.0) * scaledLevelMultiplier));
+		_weapon->setDamageBonus((int)round((_weapon->getDamageBonus() / 5.0) * scaledLevelMultiplier));
 	}
 }
 

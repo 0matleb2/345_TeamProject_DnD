@@ -42,7 +42,7 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	while (true) {
 
 		//Move phase
-		level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(3) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
+		level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(3) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [C] to access character menu and inventory.\nPress [Esc] to continue without moving.");
 		for (int i = 0; i < 3; ++i) {
 			level->draw();
 			level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(2-i) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [Esc] to continue without moving.");
