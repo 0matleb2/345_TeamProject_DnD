@@ -99,6 +99,10 @@ public:
 
 	bool operator==(const Character& character) const; //Needed for std::find()
 
+
+	// logging
+	std::string getLog();
+
 	//strategy-related
 
 	void setStrategy(int choice);
@@ -129,6 +133,9 @@ private:
 	Weapon* _weapon;
 
 	ItemContainer* _inventory;
+
+	//logging
+	std::string _lastLog = "none";
 
 	//strategy-related
 
