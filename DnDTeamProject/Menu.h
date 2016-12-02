@@ -142,6 +142,12 @@ static std::vector<std::string> creatorMenuOptions = {
 	"Return to Main Menu"
 }; 
 
+static std::vector<std::string> inGameMenuOptions = {
+	"Equip an item",
+	"Unequip an item",
+	"Discard an item",
+	"Return to game"
+};
 
 
 static std::vector<std::string> dndLogo = {

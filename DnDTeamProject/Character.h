@@ -82,6 +82,12 @@ public:
 	static int abilityScoreToModifier(int score);
 
 	void move(Map * context);
+	void characterMenu();
+	void equipItemMenu();
+	void unequipItemMenu();
+	void unequipItemMenu(Item * item);
+	void discardItemMenu();
+	void equip(Item * item);
 	Character* selectAttackTarget(Map * context);
 	bool npcInRange(Map * context);
 	bool chestInRange(Map * context);
