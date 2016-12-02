@@ -158,7 +158,7 @@ bool CampaignEditor::loadCampaign() {
 		int editIndex = menu(loadedCampaignsMenuOptions, "Which campaign do you want to edit?") - 1;
 		if (editIndex == loadedCampaignsMenuOptions.size() - 1)
 			return false;
-		_campaign = _loadedCampaigns[menu(loadedCampaignsMenuOptions, "Which campaign do you want to edit?") - 1];
+		_campaign = _loadedCampaigns[editIndex];
 		return true;
 	}
 	else {

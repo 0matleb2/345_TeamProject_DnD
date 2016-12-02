@@ -157,10 +157,10 @@ Cursor * Map::getCursor() {
 Character* Map::getPlayerCharacter() {
 	return _playerCharacter;
 }
-std::vector<Character*> Map::getNpcCharacters() {
+std::vector<Character*>& Map::getNpcCharacters() {
 	return _npcCharacters;
 }
-std::vector<Chest*> Map::getChests() {
+std::vector<Chest*>& Map::getChests() {
 	return _chests;
 }
 
@@ -447,6 +447,7 @@ void Map::resolveNpcDeaths() {
 			}
 			removeNpcCharacter(i);
 			addChest(lootDrop);
+			break;
 		}
 	}
 }

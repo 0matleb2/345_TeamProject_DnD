@@ -77,6 +77,7 @@ public:
 
 
 	std::string toString();
+	void scale(int targetLevel);
 	void levelUp();
 	static int abilityScoreToModifier(int score);
 

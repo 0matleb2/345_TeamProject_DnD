@@ -384,8 +384,16 @@
 382 35 28 11
 383 35 29 11
 384 35 30 11
-385 35 31 11 32 12 5 194 5 225 0 0 1 0 7 1 0
-386 10 6 4 Toni 1 11 11 16 14 13 13 12 10 -1 -1 -1 -1 -1 -1 -1 15 1 0
-387 0 0 19 Wasp, Bow of Trials 2 2 2 3 1d8 3 17 1 0
-388 0 0 1 0 8 1 0
-389 24 Ebon Bronzed Breastplate 4 3 4 20 1 0 0 0 0
+385 35 31 11 32 12 5 194 5 225 0 0 2 0 7 1 0
+386 11 6 6 Lindon 25 230 230 14 15 16 13 13 13 8 1 0
+387 0 0 24 Ebon Bronzed Breastplate 4 3 4 -1 -1 -1 -1 -1 15 1 0
+388 11 Terror Ward 1 4 1 16 1 0
+389 19 Wasp, Bow of Trials 2 2 2 3 1d8 3 17 1 0
+390 0 0 1 0 12 1 0
+391 22 Armbands of Lost Power 1 1 20 1 7
+392 23 6 6 Lindon 25 230 230 14 15 16 13 13 13 8
+393 24 Ebon Bronzed Breastplate 4 3 4 -1 -1 -1 -1 -1 15
+394 11 Terror Ward 1 4 1 16
+395 19 Wasp, Bow of Trials 2 2 2 3 1d8 3 17
+396 1 0 12
+397 22 Armbands of Lost Power 1 1 20 1 0 0 0 0

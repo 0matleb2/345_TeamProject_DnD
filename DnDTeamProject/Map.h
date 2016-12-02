@@ -113,8 +113,8 @@ public:
 	Cell* getExit();
 	Cursor* getCursor();
 	Character* getPlayerCharacter();
-	std::vector<Character*> getNpcCharacters();
-	std::vector<Chest*> getChests();
+	std::vector<Character*>& getNpcCharacters();
+	std::vector<Chest*>& getChests();
 	std::string getDrawPrefix();
 	std::string getDrawSuffix();
 	bool getDrawModeLOS();
@@ -146,7 +146,6 @@ public:
 	std::string drawToString();
 
 	void resolveNpcDeaths();
-
 	void resolveEmptyChests();
 
 	void linkGridCells(); //Links adjacent Cells upon map initialization and loading
