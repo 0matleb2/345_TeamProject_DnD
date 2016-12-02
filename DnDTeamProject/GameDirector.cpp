@@ -281,3 +281,55 @@ void GameDirector::credits() {
 	std::cout << "Press any key to return to the Main Menu..." << std::endl;
 	_getch();
 }
+
+//logging-related, decided to forgo the observer and implement directly into director
+
+void GameDirector::logDir(bool choice)
+{
+	_isLogging = choice;
+}
+
+void GameDirector::setFile(std::string fileName)
+{
+	_destination = fileName;
+}
+
+std::string GameDirector::getFile()
+{
+	return _destination;
+}
+
+void GameDirector::campaignStartLog()
+{
+	std::string logStr = "Starting Campaign \"" + _campaign->getName() + "\"...";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::mapStartLog(std::string mapName)
+{
+	std::string logStr = "Loading Map \"" + mapName + "\"...";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::phaseLog(bool ePhase)
+{
+	std::string logStr;
+
+	if (ePhase)
+		logStr = "/Enemy Phase/";
+	else
+		logStr = "/Player Phase/";
+
+	if (_isLogging)
+		writeLog(logStr, _destination);
+}
+
+void GameDirector::clearLog()
+{
+	clearFile(_destination);
+}
+
