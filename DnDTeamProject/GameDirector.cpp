@@ -34,10 +34,21 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	player->setY(level->getEntry()->getY());
 	level->setDrawModeLOS(true);
 
+	//observers for NPCs
+	std::vector<CharacterObserver*> npcObs = std::vector<CharacterObserver*>();
+
+	for (int i = 0; i < level->getNpcCharacters().size(); i++)
+	{
+		npcObs.push_back(new CharacterObserver(level->getNpcCharacters()[i], level));
+	}
+
 	//Scale NPCs to player levels
 	for (int i = 0, n = level->getNpcCharacters().size(); i < n; ++i) {
 		level->getNpcCharacters()[i]->scale(player->getLvl());
 	}
+
+	//Set NPC strategy (set all to hostile for test)
+	level->setNPCstrat(2);
 
 	//Game loop
 	while (true) {
@@ -60,6 +71,9 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 			}
 		}
 
+		//enemy phase
+		level->executeNPCstrat();
+
 		//Loot phase
 		if (player->chestInRange(level)) {
 			Chest* targetChest = player->selectLootTarget(level);
@@ -70,6 +84,10 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	}
 
 exitReached:
+	for (int i = 0; i < npcObs.size(); i++)
+	{
+		delete npcObs[i];
+	}
 	return true;
 
 }
