@@ -277,6 +277,13 @@ int Character::abilityScoreToModifier(int score) {
 
 void Character::move(Map* context) {
 	
+	bool onLoggingMenu = true;
+	bool togglePlayer = false;
+	bool toggleNPC = false;
+	bool toggleMap = false;
+	bool toggleDice = false;
+	bool toggleCampaign = false;
+
 	unsigned char keypress = _getch();
 	if (keypress == 0 || keypress == 0xE0) { // Arrow key presses require this first char to be ignored
 		keypress = _getch();
@@ -319,10 +326,44 @@ void Character::move(Map* context) {
 	case 'l':
 	case 'L': //Log info view
 		system("cls");
-		GameLogger::instance()->printLog();
-		std::cout << std::endl << "Press any key to return..." << std::endl;
-		_getch();
-		context->draw();
+		while (onLoggingMenu) {
+			switch (menu(loggerMenuOptions, "Logging Menu. What do you want to do?")) {
+			case 1: //View log
+				GameLogger::instance()->printLog();
+				std::cout << std::endl << "Press any key to return..." << std::endl;
+				_getch();
+				system("cls");
+				break;
+			case 2: //Toggle player log
+				GameLogger::instance()->loggingPC(togglePlayer);
+				std::cout << "Player log toggled " << ((togglePlayer) ? "on." : "off.") << std::endl << std::endl;
+				togglePlayer = !togglePlayer;
+				break;
+			case 3: //Toggle NPC log
+				GameLogger::instance()->loggingNPCs(toggleNPC);
+				std::cout << "Npc log toggled " << ((toggleNPC) ? "on." : "off.") << std::endl << std::endl;
+				toggleNPC = !toggleNPC;
+				break;
+			case 4: //Toggle Map log
+				GameLogger::instance()->loggingMap(toggleMap);
+				std::cout << "Map log toggled " << ((toggleMap) ? "on." : "off.") << std::endl << std::endl;
+				toggleMap = !toggleMap;
+				break;
+			case 5: //Toggle Dice log
+				GameLogger::instance()->loggingDice(toggleDice);
+				std::cout << "Dice log toggled " << ((toggleDice) ? "on." : "off.") << std::endl << std::endl;
+				toggleDice = !toggleDice;
+				break;
+			case 6: //Toggle Campaign log
+				GameLogger::instance()->loggingDir(toggleCampaign);
+				std::cout << "Campaign log toggled " << ((toggleCampaign) ? "on." : "off.") << std::endl << std::endl;
+				toggleCampaign = !toggleCampaign;
+				break;
+			case 7: //Return to game
+				onLoggingMenu = false;
+				break;
+			}
+		}
 		break;
 	}
 }
@@ -501,9 +542,17 @@ Character* Character::selectAttackTarget(Map* context) {
 	attackSelectCursor->setX(_x);
 	attackSelectCursor->setY(_y);
 
+	bool onLoggingMenu = true;
+	bool togglePlayer = false;
+	bool toggleNPC = false;
+	bool toggleMap = false;
+	bool toggleDice = false;
+	bool toggleCampaign = false;
+
 	std::vector<Character*> levelNPCs = context->getNpcCharacters();
 
 	while (true) {
+		onLoggingMenu = true;
 		int cursorX = context->getCursor()->getX();
 		int cursorY = context->getCursor()->getY();
 		unsigned char keypress = _getch();
@@ -568,10 +617,46 @@ Character* Character::selectAttackTarget(Map* context) {
 		case 'l':
 		case 'L': //Log info view
 			system("cls");
-			GameLogger::instance()->printLog();
-			std::cout << std::endl << "Press any key to return..." << std::endl;
-			_getch();
-			context->draw();
+			while (onLoggingMenu) {
+				switch (menu(loggerMenuOptions, "Logging Menu. What do you want to do?")) {
+				case 1: //View log
+					GameLogger::instance()->printLog();
+					std::cout << std::endl << "Press any key to return..." << std::endl;
+					_getch();
+					system("cls");
+					break;
+				case 2: //Toggle player log
+					GameLogger::instance()->loggingPC(togglePlayer);
+					std::cout << "Player log toggled " << ((togglePlayer) ? "on." : "off.") << std::endl << std::endl;
+					togglePlayer = !togglePlayer;
+					break;
+				case 3: //Toggle NPC log
+					GameLogger::instance()->loggingNPCs(toggleNPC);
+					std::cout << "Npc log toggled " << ((toggleNPC) ? "on." : "off.") << std::endl << std::endl;
+					toggleNPC = !toggleNPC;
+					break;
+				case 4: //Toggle Map log
+					GameLogger::instance()->loggingMap(toggleMap);
+					std::cout << "Map log toggled " << ((toggleMap) ? "on." : "off.") << std::endl << std::endl;
+					toggleMap = !toggleMap;
+					break;
+				case 5: //Toggle Dice log
+					GameLogger::instance()->loggingDice(toggleDice);
+					std::cout << "Dice log toggled " << ((toggleDice) ? "on." : "off.") << std::endl << std::endl;
+					toggleDice = !toggleDice;
+					break;
+				case 6: //Toggle Campaign log
+					GameLogger::instance()->loggingDir(toggleCampaign);
+					std::cout << "Campaign log toggled " << ((toggleCampaign) ? "on." : "off.") << std::endl << std::endl;
+					toggleCampaign = !toggleCampaign;
+					break;
+				case 7: //Return to game
+					onLoggingMenu = false;
+					system("cls");
+					context->draw();
+					break;
+				}
+			}
 			break;
 		}
 	}
@@ -619,9 +704,17 @@ Chest* Character::selectLootTarget(Map* context) {
 	lootSelectCursor->setX(_x);
 	lootSelectCursor->setY(_y);
 
+	bool onLoggingMenu = true;
+	bool togglePlayer = false;
+	bool toggleNPC = false;
+	bool toggleMap = false;
+	bool toggleDice = false;
+	bool toggleCampaign = false;
+
 	std::vector<Chest*> levelChests = context->getChests();
 
 	while (true) {
+		onLoggingMenu = true;
 		int cursorX = context->getCursor()->getX();
 		int cursorY = context->getCursor()->getY();
 		unsigned char keypress = _getch();
@@ -686,10 +779,46 @@ Chest* Character::selectLootTarget(Map* context) {
 		case 'l':
 		case 'L': //Log info view
 			system("cls");
-			GameLogger::instance()->printLog();
-			std::cout << std::endl << "Press any key to return..." << std::endl;
-			_getch();
-			context->draw();
+			while (onLoggingMenu) {
+				switch (menu(loggerMenuOptions, "Logging Menu. What do you want to do?")) {
+				case 1: //View log
+					GameLogger::instance()->printLog();
+					std::cout << std::endl << "Press any key to return..." << std::endl;
+					_getch();
+					system("cls");
+					break;
+				case 2: //Toggle player log
+					GameLogger::instance()->loggingPC(togglePlayer);
+					std::cout << "Player log toggled " << ((togglePlayer) ? "on." : "off.") << std::endl << std::endl;
+					togglePlayer = !togglePlayer;
+					break;
+				case 3: //Toggle NPC log
+					GameLogger::instance()->loggingNPCs(toggleNPC);
+					std::cout << "Npc log toggled " << ((toggleNPC) ? "on." : "off.") << std::endl << std::endl;
+					toggleNPC = !toggleNPC;
+					break;
+				case 4: //Toggle Map log
+					GameLogger::instance()->loggingMap(toggleMap);
+					std::cout << "Map log toggled " << ((toggleMap) ? "on." : "off.") << std::endl << std::endl;
+					toggleMap = !toggleMap;
+					break;
+				case 5: //Toggle Dice log
+					GameLogger::instance()->loggingDice(toggleDice);
+					std::cout << "Dice log toggled " << ((toggleDice) ? "on." : "off.") << std::endl << std::endl;
+					toggleDice = !toggleDice;
+					break;
+				case 6: //Toggle Campaign log
+					GameLogger::instance()->loggingDir(toggleCampaign);
+					std::cout << "Campaign log toggled " << ((toggleCampaign) ? "on." : "off.") << std::endl << std::endl;
+					toggleCampaign = !toggleCampaign;
+					break;
+				case 7: //Return to game
+					onLoggingMenu = false;
+					system("cls");
+					context->draw();
+					break;
+				}
+			}
 			break;
 		}
 	}
@@ -760,7 +889,11 @@ void Character::attack(Character* target, Map* context) {
 
 
 void Character::scale(int targetLevel) {
-	double averageHpUpPerLvl = (double)(_maxHp - 10) / (double)(_lvl - 1);
+	double averageHpUpPerLvl;
+	if (_lvl == 1)
+		averageHpUpPerLvl = 5;
+	else
+		averageHpUpPerLvl = (double)(_maxHp - 10) / (double)(_lvl - 1);
 	_maxHp = 10 + (int)std::round((targetLevel - 1) * averageHpUpPerLvl);
 	_hp = _maxHp;
 	_lvl = targetLevel;

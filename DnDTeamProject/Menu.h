@@ -149,6 +149,16 @@ static std::vector<std::string> inGameMenuOptions = {
 	"Return to game"
 };
 
+static std::vector<std::string> loggerMenuOptions = {
+	"View log",
+	"Toggle player log",
+	"Toggle NPC log",
+	"Toggle Map log",
+	"Toggle Dice log",
+	"Toggle Campaign log",
+	"Return to game"
+};
+
 
 static std::vector<std::string> dndLogo = {
 	"                                                                                                                                                                                                        ",

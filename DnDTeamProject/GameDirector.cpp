@@ -42,9 +42,9 @@ void GameDirector::startGame() {
 
 bool GameDirector::playLevel(Character* player, Map* level) {
 	level->setPlayerCharacter(player);
-	CharacterObserver characterObserver(player, level);
 	player->setX(level->getEntry()->getX());
 	player->setY(level->getEntry()->getY());
+	CharacterObserver characterObserver(player, level);
 	level->setDrawModeLOS(true);
 
 	//observers for NPCs
@@ -67,12 +67,13 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 	GameLogger::instance()->loggingAll(true); //turn on all logging
 
 	//Set NPC strategy (set all to hostile for test)
-	level->setNPCstrat(2);
+	level->setNPCstrat(1);
 
 	//Game loop
 	while (true) {
 
 		//Move phase
+		GameDirector::instance()->phaseLog(false);
 		level->setDrawSuffix("<Move Phase>\n\n" + std::to_string(3) + " moves remaining...\n\nUse [W, A, S, D] or [Arrow keys] to move.\nPress [C] to access character menu and inventory.\nPress [L] to view game log information.\nPress [Esc] to continue without moving.");
 		for (int i = 0; i < 3; ++i) {
 			level->draw();
@@ -91,6 +92,7 @@ bool GameDirector::playLevel(Character* player, Map* level) {
 		}
 
 		//enemy phase
+		GameDirector::instance()->phaseLog(true);
 		level->executeNPCstrat();
 
 		//Loot phase
